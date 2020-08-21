@@ -1,15 +1,12 @@
-import Vector3 from "./vector3.js";
-import Texture from "./texture.js";
 import * as matrix4 from "./matrix4.js";
 
 class Mesh{
-    constructor(gl, position){
+    constructor(gl, x,y,z){
         this.verticies = [];
         this.colors = [];
         this.uvs = [];
         this.modelViewMatrix = matrix4.create();
-        this.position = position;
-        //console.log(verticies);
+        this.position = {x,y,z};
         this.gl = gl;
 
         this.positionBuffer = gl.createBuffer();
@@ -31,7 +28,6 @@ class Mesh{
         uvs.forEach(uv => { this.uvs.push(uv);});
     }
 
-
     updateMesh(){
         var gl = this.gl;
         
@@ -42,30 +38,30 @@ class Mesh{
 
         var counter = 0;
         this.verticies.forEach(vertex => { 
-            this.verticiesBuffer32[counter] = vertex.x;
-            this.verticiesBuffer32[counter+1] = vertex.y;
-            this.verticiesBuffer32[counter+2] = vertex.z;
+            this.verticiesBuffer32[counter] = vertex[0];
+            this.verticiesBuffer32[counter+1] = vertex[1];
+            this.verticiesBuffer32[counter+2] = vertex[2];
             counter += 3;
         });
 
         counter = 0;
         this.colors.forEach(color => {
-            this.colorArrayBuffer32[counter] = color.r;
-            this.colorArrayBuffer32[counter+1] = color.g;
-            this.colorArrayBuffer32[counter+2] = color.b;
-            this.colorArrayBuffer32[counter+3] = color.a;
+            this.colorArrayBuffer32[counter] = color[0];
+            this.colorArrayBuffer32[counter+1] = color[1];
+            this.colorArrayBuffer32[counter+2] = color[2];
+            this.colorArrayBuffer32[counter+3] = color[3];
             counter += 4;
         });
 
         counter = 0;
         this.uvs.forEach(uv => {
-            this.uvArrayBuffer32[counter] = uv.x;
-            this.uvArrayBuffer32[counter+1] = uv.y;
+            console.log(uv);
+            this.uvArrayBuffer32[counter] = uv[0];
+            this.uvArrayBuffer32[counter+1] = uv[1];
             counter += 2;
         });
 
         counter = 0;
-        //console.log(this.verticiesBuffer32);
         for (let i = 0; i < indiciesNeeded; i++){
             this.indiciesBuffer16[counter] = 0 + vertexCounter;
             this.indiciesBuffer16[counter+1] = 1 + vertexCounter;
@@ -76,8 +72,6 @@ class Mesh{
             vertexCounter += 4;
             counter += 6;
         }
-
-        //console.log(this.indiciesBuffer16);
 
         this.numberOfIndicies = counter;
 
@@ -94,30 +88,22 @@ class Mesh{
         gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, this.indiciesBuffer16, gl.DYNAMIC_DRAW);
     }
 
-    update(gl){
-
-    }
-
-    getRndInteger(min, max) {
-        return Math.floor(Math.random() * (max - min) ) + min;
-    }
-
     translate(x, y, z){
-        mat4.translate(this.modelViewMatrix,
+        matrix4.translate(this.modelViewMatrix,
             this.modelViewMatrix,
             [x,y,z]);
     }
 
     rotateX(r){
-        mat4.rotateX(this.modelViewMatrix, this.modelViewMatrix, r);
+        matrix4.rotateX(this.modelViewMatrix, this.modelViewMatrix, r);
     }
 
     rotateY(r){
-        mat4.rotateY(this.modelViewMatrix, this.modelViewMatrix, r);
+        matrix4.rotateY(this.modelViewMatrix, this.modelViewMatrix, r);
     }
 
     rotateZ(r){
-        mat4.rotateZ(this.modelViewMatrix, this.modelViewMatrix, r);
+        matrix4.rotateZ(this.modelViewMatrix, this.modelViewMatrix, r);
     }
 
     render(gl, shaderProgram, projectionMatrix, viewMatrix, texture){

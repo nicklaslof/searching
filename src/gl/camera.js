@@ -1,36 +1,25 @@
-import Vector3 from "./vector3.js";
 import * as matrix4 from "./matrix4.js";
 
 class Camera{
-
-
-    constructor(gl, initialPosition){
+    constructor(gl, x,y,z){
         
         const fieldOfView = 64 * Math.PI / 180;   // in radians
         const aspect = gl.canvas.clientWidth / gl.canvas.clientHeight;
 
         const zNear = 0;
-        const zFar = 1000;
+        const zFar = 100;
 
-        this.projectionMatrix = matrix4.create();
-        this.cameraMatrix = matrix4.create();
-        this.viewMatrix = matrix4.create();
-        this.viewProjectionMatrix = matrix4.create();
-        this.position = new Vector3(initialPosition.x, initialPosition.y, initialPosition.z);
-        this.translation = new Vector3(this.position.x, this.position.y, this.position.z);
+        this.pm = matrix4.create();
+        this.cm = matrix4.create();
+        this.vm = matrix4.create();
+        this.pos = {x,y,z};
+        this.trans = {x,y,z};
         this.rot = 0;
-
-        matrix4.perspective(this.projectionMatrix,
+        matrix4.perspective(this.pm,
             fieldOfView,
             aspect,
             zNear,
             zFar);
-
-
-
-           
-            console.log(this.cameraMatrix);
-
        this.update();
     }
 
@@ -39,26 +28,26 @@ class Camera{
     }
 
     translate(x,y,z){
-        this.translation.x = x;
-        this.translation.y = y;
-        this.translation.z = z;
+        this.trans.x = x;
+        this.trans.y = y;
+        this.trans.z = z;
 
-        this.position.x += x;
-        this.position.y += y;
-        this.position.z += z;
+        this.pos.x += x;
+        this.pos.y += y;
+        this.pos.z += z;
     }
 
     update(){
-        matrix4.translate(this.cameraMatrix,this.cameraMatrix, [0,0,-this.position.z]);
-        matrix4.rotateY(this.cameraMatrix,this.cameraMatrix,-this.rot*5);;
-        matrix4.translate(this.cameraMatrix,this.cameraMatrix, [0,0,this.position.z]);
-        matrix4.invert(this.viewMatrix, this.cameraMatrix);
-        matrix4.translate(this.projectionMatrix,
-            this.projectionMatrix,
-            [this.translation.x, this.translation.y, this.translation.z]);
-        this.translation.x = 0;
-        this.translation.y = 0;
-        this.translation.z = 0;
+        matrix4.translate(this.cm,this.cm, [0,0,-this.pos.z]);
+        matrix4.rotateY(this.cm,this.cm,-this.rot*5);;
+        matrix4.translate(this.cm,this.cm, [0,0,this.pos.z]);
+        matrix4.invert(this.vm, this.cm);
+        matrix4.translate(this.pm,
+            this.pm,
+            [this.trans.x, this.trans.y, this.trans.z]);
+        this.trans.x = 0;
+        this.trans.y = 0;
+        this.trans.z = 0;
         this.rot = 0;
     }
 }

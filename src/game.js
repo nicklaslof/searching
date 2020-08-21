@@ -41,7 +41,7 @@ constructor() {
             uniform sampler2D s;
             void main() {
                 vec4 col = texture2D(s, uv) * vc;
-                gl_FragColor = vec4(col.rgb-(zDist*3.5),1.0);
+                gl_FragColor = vec4(col.rgb-(zDist*4.5),1.0);
             }
         `
         );

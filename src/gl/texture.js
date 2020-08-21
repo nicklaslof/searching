@@ -11,7 +11,7 @@ class Texture {
         var srcFormat = gl.RGBA;
         var srcType = gl.UNSIGNED_BYTE;
         var pixel = new Uint8Array([255, 255, 255, 255]);
-        gl.texImage2D(gl.TEXTURE_2D, level, internalFormat, width, height, border, srcFormat, srcType, pixel); // placeholder while loading
+        gl.texImage2D(gl.TEXTURE_2D, level, internalFormat, width, height, border, srcFormat, srcType, pixel);
         var image = new Image();
         image.onload  = () =>{
             gl.bindTexture(gl.TEXTURE_2D, this.tex);
