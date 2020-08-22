@@ -7,7 +7,7 @@ class LevelRender{
     constructor(gl,shaderprogram) {
         this.shaderprogram = shaderprogram;
         this.gl = gl;
-        LevelRender.camera = new Camera(gl, 2,-0.2,2);
+        LevelRender.camera = new Camera(gl, 0,-0.2,0);
         this.wallTexture = new Texture(gl, "./assets/bricks.png");
         this.floorTexture = new Texture(gl, "./assets/floor.png");
         this.roofTexture = new Texture(gl, "./assets/roof.png");
@@ -15,6 +15,25 @@ class LevelRender{
         this.wallmeshes = [];
         this.roofMeshes = [];
         this.floorMeshes = [];
+
+        let v = [];
+        let c = [];
+        let u = [];
+        let s = 0.5;
+        let x = 2;
+        let y = 0;
+        let z = 2;
+        u.push([0,0],[1,0],[1,1],[0,1]);
+        v.push(
+            [0-s,0-s,0+s],
+            [0+s,0-s,0+s],
+            [0+s,0+s,0+s],
+            [0-s,0+s,0+s]);
+        c.push([1,1,1,1.0],[1,1,1,1.0],[1,1,1,1.0],[1,1,1,1.0]);
+
+        this.mesh = new Mesh(gl,x,y,z);
+        this.mesh.addVerticies(v,c,u);
+        this.mesh.updateMesh();
     }
 
     start(){
@@ -110,8 +129,8 @@ class LevelRender{
         );
     }
 
-    tick(inputHandler){
-        
+    tick(deltaTime){
+        this.mesh.setQuaternion(LevelRender.camera.getQuaternion());
     }
 
     render(){
@@ -124,6 +143,8 @@ class LevelRender{
         this.floorMeshes.forEach(mesh =>{
             mesh.render(this.gl,this.shaderprogram,LevelRender.camera.pm, LevelRender.camera.vm,this.floorTexture);
         });
+
+        this.mesh.render(this.gl,this.shaderprogram,LevelRender.camera.pm, LevelRender.camera.vm,this.floorTexture);
     }
 }
 

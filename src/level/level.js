@@ -2,6 +2,7 @@ import LevelRender from "./levelrender.js";
 import WallTile from "../tiles/walltile.js";
 import Tiles from "../tiles/tiles.js";
 import Player from "../entities/player.js";
+import Mesh from "../gl/mesh.js";
 
 class Level{
     constructor(gl,shaderprogram,levelname) {
@@ -15,6 +16,9 @@ class Level{
         this.read(levelname,() => {
             this.parse();
         });
+
+ 
+       
     }
 
     read(levelname,done){
@@ -77,7 +81,7 @@ class Level{
     }
 
     tick(deltaTime){
-        this.levelrender.tick();
+        this.levelrender.tick(deltaTime);
         this.entities.forEach(entity => {
             entity.tick(deltaTime,this);
         });

@@ -1,4 +1,5 @@
 import * as matrix4 from "./matrix4.js";
+import * as quaternion from "./quaternion.js";
 
 class Mesh{
     constructor(gl, x,y,z){
@@ -8,6 +9,7 @@ class Mesh{
         this.modelViewMatrix = matrix4.create();
         this.position = {x,y,z};
         this.gl = gl;
+        this.quaternion = quaternion.create();
 
         this.positionBuffer = gl.createBuffer();
         this.colorBuffer = gl.createBuffer();
@@ -55,7 +57,6 @@ class Mesh{
 
         counter = 0;
         this.uvs.forEach(uv => {
-            //console.log(uv);
             this.uletrayBuffer32[counter] = uv[0];
             this.uletrayBuffer32[counter+1] = uv[1];
             counter += 2;
@@ -94,16 +95,18 @@ class Mesh{
             [x,y,z]);
     }
 
-    rotateX(r){
-        matrix4.rotateX(this.modelViewMatrix, this.modelViewMatrix, r);
-    }
-
     rotateY(r){
-        matrix4.rotateY(this.modelViewMatrix, this.modelViewMatrix, r);
+        quaternion.rotateY(this.quaternion, this.quaternion, r);
+        matrix4.fromRotationTranslation(this.modelViewMatrix, this.quaternion, [this.position.x, this.position.y, this.position.z]);
     }
+    setQuaternion(q){
+        this.quaternion = q;
+        matrix4.fromRotationTranslation(this.modelViewMatrix, this.quaternion, [this.position.x, this.position.y, this.position.z]);
+    }
+    setRotation(r){
 
-    rotateZ(r){
-        matrix4.rotateZ(this.modelViewMatrix, this.modelViewMatrix, r);
+        quaternion.fromEuler(this.quaternion,0,r,0);
+        matrix4.fromRotationTranslation(this.modelViewMatrix, this.quaternion, [this.position.x, this.position.y, this.position.z]);
     }
 
     render(gl, shaderProgram, projectionMatrix, viewMatrix, texture){
