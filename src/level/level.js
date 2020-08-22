@@ -1,135 +1,90 @@
-import Camera from "../gl/camera.js"
-import Texture from "../gl/texture.js"
-import Mesh from "../gl/mesh.js"
-const s = 0.5;
+import LevelRender from "./levelrender.js";
+import WallTile from "../tiles/walltile.js";
+import Tiles from "../tiles/tiles.js";
+import Player from "../entities/player.js";
+
 class Level{
-    constructor(gl,shaderprogram) {
-        this.shaderprogram = shaderprogram;
-        this.gl = gl;
-        this.camera = new Camera(gl, 0,-0.2,-10);
-        this.wallTexture = new Texture(gl, "./assets/bricks.png");
-        this.floorTexture = new Texture(gl, "./assets/floor.png");
-        this.roofTexture = new Texture(gl, "./assets/roof.png");
+    constructor(gl,shaderprogram,levelname) {
+        this.levelrender = new LevelRender(gl,shaderprogram);
+        new Tiles();
+        this.tiles = new Array(64*64);
+        this.tiles.fill(Tiles.airtile);
+        this.entities = new Array();
 
-        this.wallmeshes = [];
-        this.roofMeshes = [];
-        this.floorMeshes = [];
 
-        this.addWalls();
-        this.addRoof();
-        this.addFloor();
+        this.read(levelname,() => {
+            this.parse();
+        });
     }
 
-    addRoof(){
-        let m = new Mesh(this.gl,0,0,0);
-        let v = [];
-        let c = [];
-        let u = [];
-        for (let z = 0; z < 16; z++) {
-            this.roof(v, c, u,0,0,z);
+    read(levelname,done){
+        var canvas = document.createElement( 'canvas' );
+        canvas.width = 64;
+        canvas.height = 64;
+
+        var context = canvas.getContext( '2d' );
+        var img = new Image();
+        img.src="assets/"+levelname+".png";
+
+        var level = this;
+        img.onload = function() {
+            context.drawImage(img,0,0);
+            for (let x = 0; x < 64; x++) {
+                for (let z = 0; z < 64; z++) {
+                    var c = new Uint32Array(context.getImageData(x, z, 1, 1).data.buffer);
+                    if (c == 0xffffffff)level.tiles[ x + (z*64)] = new WallTile();
+                    if (c == 0xff00ff00)level.entities.push(new Player(x,0,z));
+                    //if (c == 0xff00ffff)level.entities.push(new Torch(x,0.10,z,scene));
+                    //if (c == 0xff202020)level.entities.push(new Bat(x,0.10,z,scene));
+                }
+            }
+            done();
         }
-        m.addVerticies(v, c, u);
-        m.updateMesh();
-        this.roofMeshes.push(m);
     }
-    addFloor(){
-        let m = new Mesh(this.gl,0,0,0);
-        let v = [];
-        let c = [];
-        let u = [];
-        
-        for (let z = 0; z < 16; z++) {
-            this.floor(v, c, u,0,0,z);
+
+    parse(){
+        let wr = this.levelrender.start();
+        let fr = this.levelrender.start();   
+        let rr = this.levelrender.start();       
+        for (let x = 0; x < 64; x++) {
+            for (let z = 0; z < 64; z++) {
+                var tile = this.tiles[x + (z * 64)];
+                if (tile != Tiles.airtile){
+                    let f = this.getTile(x,z+1) == Tiles.airtile;
+                    let b = this.getTile(x,z-1) == Tiles.airtile;
+                    let l = this.getTile(x-1,z) == Tiles.airtile;
+                    let r = this.getTile(x+1,z) == Tiles.airtile;
+                    if (l) this.levelrender.left(wr,x,0,z);
+                    if (r) this.levelrender.right(wr,x,0,z);
+                    if (f) this.levelrender.front(wr,x,0,z);
+                    if (b) this.levelrender.back(wr,x,0,z);
+                    
+                }else{
+                    this.levelrender.floor(fr,x,-1,z);
+                    this.levelrender.roof(rr,x,1,z);
+                }
+            }
         }
-        m.addVerticies(v, c, u);
-        m.updateMesh();
-        this.floorMeshes.push(m);
+        this.levelrender.endWall(wr);
+        this.levelrender.endRoof(rr);
+        this.levelrender.endFloor(fr);
     }
 
-    addWalls(){
-        let m = new Mesh(this.gl,0,0,0);
-        let v = [];
-        let c = [];
-        let u = [];
-        for (let z = 0; z < 16; z++) {
-            this.left(v, c, u,0,0,z);
-            this.right(v, c, u,0,0,z);
-        }
-        m.addVerticies(v, c, u);
-        m.updateMesh();
-        this.wallmeshes.push(m);
+    getTile(x,z){
+        var tile = this.tiles[x + (z*64)];
+        if (tile == null) return Tiles.airtile;
+        return tile;
     }
 
-    ac(colors){
-        colors.push([1,1,1,1.0],[1,1,1,1.0],[1,1,1,1.0],[1,1,1,1.0]);
-    }
-
-    roof(verticies, colors,uvs,x,y,z){
-        this.ac(colors);
-        uvs.push([0,0],[1,0],[1,1],[0,1]);
-        verticies.push(
-            [x-s,y+s,z-s],
-            [x-s,y+s,z+s],
-            [x+s,y+s,z+s],
-            [x+s,y+s,z-s]
-        );
-    }
-    floor(verticies,colors,uvs,x,y,z){
-        this.ac(colors);
-        uvs.push([1,0],[0,0],[0,1],[1,1]);
-        verticies.push(
-            [x-s,y-s,z-s],
-            [x+s,y-s,z-s],
-            [x+s,y-s,z+s],
-            [x-s,y-s,z+s]
-        ); 
-    }
-
-    left(verticies, colors,uvs,x,y,z){
-        this.ac(colors);
-        uvs.push([0,1],[1,1],[1,0],[0,0]);
-        verticies.push(
-            [x-s,y-s,z-s],
-            [x-s,y-s,z+s],
-            [x-s,y+s,z+s],
-            [x-s,y+s,z-s]
-        );
-    }
-    right(verticies, colors,uvs,x,y,z){
-        this.ac(colors);
-        uvs.push([1,1],[1,0],[0,0],[0,1]);
-        verticies.push(
-            [x+s,y-s,z-s],
-            [x+s,y+s,z-s],
-            [x+s,y+s,z+s],
-            [x+s,y-s,z+s]
-        );
-    }
-
-    tick(inputHandler){
+    tick(){
         let deltaTime = 0.016;
-        this.counter += deltaTime;
-        let v = {x:0,y:0,z:0};
-
-        if (inputHandler.isKeyDown(65))this.camera.rotate(-1 * deltaTime);
-        if (inputHandler.isKeyDown(68))this.camera.rotate(1 * deltaTime);
-        if (inputHandler.isKeyDown(87))v.z = 4;
-        if (inputHandler.isKeyDown(83))v.z = -4;
-        this.camera.translate(v.x*deltaTime, v.y*deltaTime, v.z*deltaTime);
-        this.camera.update();
+        this.levelrender.tick();
+        this.entities.forEach(entity => {
+            entity.tick(deltaTime,this);
+        });
     }
-
     render(){
-        this.wallmeshes.forEach(mesh =>{
-            mesh.render(this.gl,this.shaderprogram,this.camera.pm, this.camera.vm, this.wallTexture);
-        });
-        this.roofMeshes.forEach(mesh =>{
-            mesh.render(this.gl,this.shaderprogram,this.camera.pm, this.camera.vm,this.roofTexture);
-        });
-        this.floorMeshes.forEach(mesh =>{
-            mesh.render(this.gl,this.shaderprogram,this.camera.pm, this.camera.vm,this.floorTexture);
-        });
+        this.levelrender.render();
     }
 }
-
 export default Level

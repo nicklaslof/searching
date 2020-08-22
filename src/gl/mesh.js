@@ -14,10 +14,10 @@ class Mesh{
         this.uvBuffer = gl.createBuffer();
         this.indiciesBuffer = gl.createBuffer();
 
-        this.verticiesBuffer32 = new Float32Array(6400);
-        this.colorArrayBuffer32 =  new Float32Array(6400*20);
-        this.uletrayBuffer32 = new Float32Array(6400*20);
-        this.indiciesBuffer16 = new Uint16Array(6400*20);
+        this.verticiesBuffer32 = new Float32Array(164000);
+        this.colorArrayBuffer32 =  new Float32Array(164000*20);
+        this.uletrayBuffer32 = new Float32Array(164000*20);
+        this.indiciesBuffer16 = new Uint16Array(164000*20);
 
         matrix4.fromTranslation(this.modelViewMatrix, [this.position.x, this.position.y, this.position.z]);
     }
@@ -55,7 +55,7 @@ class Mesh{
 
         counter = 0;
         this.uvs.forEach(uv => {
-            console.log(uv);
+            //console.log(uv);
             this.uletrayBuffer32[counter] = uv[0];
             this.uletrayBuffer32[counter+1] = uv[1];
             counter += 2;
