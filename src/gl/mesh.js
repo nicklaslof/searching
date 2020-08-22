@@ -8,6 +8,7 @@ class Mesh{
         this.uvs = [];
         this.modelViewMatrix = matrix4.create();
         this.position = {x,y,z};
+        this.scale = [1,1,1];
         this.gl = gl;
         this.quaternion = quaternion.create();
 
@@ -90,23 +91,37 @@ class Mesh{
     }
 
     translate(x, y, z){
-        matrix4.translate(this.modelViewMatrix,
-            this.modelViewMatrix,
-            [x,y,z]);
+        this.position.x = x;
+        this.position.y = y;
+        this.position.z = z;
+        matrix4.fromRotationTranslationScale(this.modelViewMatrix, this.quaternion, [this.position.x, this.position.y, this.position.z],this.scale);
+        //matrix4.translate(this.modelViewMatrix,
+        //    this.modelViewMatrix,
+        //    [x,y,z]);
+    }
+
+    setScale(s){
+        this.scale[0]=s;
+        this.scale[1]=s;
+        this.scale[2]=s;
+        matrix4.fromRotationTranslationScale(this.modelViewMatrix, this.quaternion, [this.position.x, this.position.y, this.position.z],this.scale);
     }
 
     rotateY(r){
         quaternion.rotateY(this.quaternion, this.quaternion, r);
-        matrix4.fromRotationTranslation(this.modelViewMatrix, this.quaternion, [this.position.x, this.position.y, this.position.z]);
+        //matrix4.fromRotationTranslation(this.modelViewMatrix, this.quaternion, [this.position.x, this.position.y, this.position.z]);
+        matrix4.fromRotationTranslationScale(this.modelViewMatrix, this.quaternion, [this.position.x, this.position.y, this.position.z],this.scale);
     }
     setQuaternion(q){
         this.quaternion = q;
-        matrix4.fromRotationTranslation(this.modelViewMatrix, this.quaternion, [this.position.x, this.position.y, this.position.z]);
+        //matrix4.fromRotationTranslation(this.modelViewMatrix, this.quaternion, [this.position.x, this.position.y, this.position.z]);
+        matrix4.fromRotationTranslationScale(this.modelViewMatrix, this.quaternion, [this.position.x, this.position.y, this.position.z],this.scale);
     }
     setRotation(r){
 
         quaternion.fromEuler(this.quaternion,0,r,0);
-        matrix4.fromRotationTranslation(this.modelViewMatrix, this.quaternion, [this.position.x, this.position.y, this.position.z]);
+        //matrix4.fromRotationTranslation(this.modelViewMatrix, this.quaternion, [this.position.x, this.position.y, this.position.z]);
+        matrix4.fromRotationTranslationScale(this.modelViewMatrix, this.quaternion, [this.position.x, this.position.y, this.position.z],this.scale);
     }
 
     render(gl, shaderProgram, projectionMatrix, viewMatrix, texture){
