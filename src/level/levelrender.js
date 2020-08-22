@@ -1,7 +1,6 @@
 import Camera from "../gl/camera.js"
 import Texture from "../gl/texture.js"
 import Mesh from "../gl/mesh.js"
-import Level from "./level.js";
 const s = 0.5;
 class LevelRender{
     static camera;

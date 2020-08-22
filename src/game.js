@@ -6,6 +6,7 @@ import InputHandler from "./inputhandler.js";
 class Game{
     static inputHandler;
 constructor() {
+        this.supportsPerformance = (typeof performance === 'undefined' ? false : true);
         this.canvas = document.getElementById("webgl-canvas");
         this.width = this.canvas.width;
         this.height = this.canvas.height;
@@ -57,7 +58,14 @@ constructor() {
         this.gl.frontFace(this.gl.CCW);
         this.gl.enable(this.gl.CULL_FACE);
         this.gl.cullFace(this.gl.BACK);
-        this.gamescreen.tick(this.inputHandler);
+        if (this.supportsPerformance){
+            this.now = performance.now();
+        }else{
+            this.now = Date.now();
+        }
+        var deltaTime = this.now - this.previousUpdate;
+        this.previousUpdate = this.now;
+        this.gamescreen.tick(deltaTime/1000);
         this.gamescreen.render();
     }
 }

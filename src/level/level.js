@@ -76,8 +76,7 @@ class Level{
         return tile;
     }
 
-    tick(){
-        let deltaTime = 0.016;
+    tick(deltaTime){
         this.levelrender.tick();
         this.entities.forEach(entity => {
             entity.tick(deltaTime,this);

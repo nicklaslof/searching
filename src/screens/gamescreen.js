@@ -7,8 +7,8 @@ class GameScreen{
         this.level = new Level(this.gl, this.shaderprogram,"level1");
     }
 
-    tick(inputHandler){
-        this.level.tick(inputHandler);
+    tick(deltaTime){
+        this.level.tick(deltaTime);
     }
 
     render(){
