@@ -3,16 +3,16 @@ class Texture {
         this.tex = gl.createTexture();
         gl.bindTexture(gl.TEXTURE_2D, this.tex);
 
-        var level = 0;
-        var internalFormat = gl.RGBA;
-        var width = 1;
-        var height = 1;
-        var border = 0;
-        var srcFormat = gl.RGBA;
-        var srcType = gl.UNSIGNED_BYTE;
-        var pixel = new Uint8Array([255, 255, 255, 255]);
+        let level = 0;
+        let internalFormat = gl.RGBA;
+        let width = 1;
+        let height = 1;
+        let border = 0;
+        let srcFormat = gl.RGBA;
+        let srcType = gl.UNSIGNED_BYTE;
+        let pixel = new Uint8Array([255, 255, 255, 255]);
         gl.texImage2D(gl.TEXTURE_2D, level, internalFormat, width, height, border, srcFormat, srcType, pixel);
-        var image = new Image();
+        let image = new Image();
         image.onload  = () =>{
             gl.bindTexture(gl.TEXTURE_2D, this.tex);
             gl.texImage2D(gl.TEXTURE_2D, level, internalFormat, srcFormat, srcType, image);

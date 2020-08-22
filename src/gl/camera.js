@@ -3,12 +3,10 @@ import * as matrix4 from "./matrix4.js";
 class Camera{
     constructor(gl, x,y,z){
         
-        const fieldOfView = 64 * Math.PI / 180;   // in radians
-        const aspect = gl.canvas.clientWidth / gl.canvas.clientHeight;
-
-        const zNear = 0;
-        const zFar = 100;
-
+        let fieldOfView = 64 * Math.PI / 180;   // in radians
+        let aspect = gl.canvas.clientWidth / gl.canvas.clientHeight;
+        let zNear = 0.1;
+        let zFar = 100;
         this.pm = matrix4.create();
         this.cm = matrix4.create();
         this.vm = matrix4.create();

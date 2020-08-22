@@ -40,6 +40,7 @@ constructor() {
             varying float zDist;
             uniform sampler2D s;
             void main() {
+                //gl_FragColor = texture2D(s, uv) * vc;
                 vec4 col = texture2D(s, uv) * vc;
                 gl_FragColor = vec4(col.rgb-(zDist*4.5),1.0);
             }
@@ -50,10 +51,14 @@ constructor() {
     }
      mainloop(){
         this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
+        this.gl.clearDepth(1);
         this.gl.clearColor(0,0,0,1);
-        //this.gl.frontFace(this.gl.CW);
+        this.gl.enable(this.gl.DEPTH_TEST);
+        this.gl.frontFace(this.gl.CCW);
         this.gl.enable(this.gl.CULL_FACE);
         this.gl.cullFace(this.gl.FRONT);
+
+       // this.gl.depthFunc(this.gl.LEQUAL );
         this.gamescreen.tick(this.inputHandler);
         this.gamescreen.render();
     }

@@ -16,7 +16,7 @@ class Mesh{
 
         this.verticiesBuffer32 = new Float32Array(6400);
         this.colorArrayBuffer32 =  new Float32Array(6400*20);
-        this.uvArrayBuffer32 = new Float32Array(6400*20);
+        this.uletrayBuffer32 = new Float32Array(6400*20);
         this.indiciesBuffer16 = new Uint16Array(6400*20);
 
         matrix4.fromTranslation(this.modelViewMatrix, [this.position.x, this.position.y, this.position.z]);
@@ -29,14 +29,14 @@ class Mesh{
     }
 
     updateMesh(){
-        var gl = this.gl;
+        let gl = this.gl;
         
-        var indiciesNeeded = this.verticies.length/4;
-        var vertexCounter = 0;
+        let indiciesNeeded = this.verticies.length/4;
+        let vertexCounter = 0;
 
         this.verticiesBuffer32
 
-        var counter = 0;
+        let counter = 0;
         this.verticies.forEach(vertex => { 
             this.verticiesBuffer32[counter] = vertex[0];
             this.verticiesBuffer32[counter+1] = vertex[1];
@@ -56,8 +56,8 @@ class Mesh{
         counter = 0;
         this.uvs.forEach(uv => {
             console.log(uv);
-            this.uvArrayBuffer32[counter] = uv[0];
-            this.uvArrayBuffer32[counter+1] = uv[1];
+            this.uletrayBuffer32[counter] = uv[0];
+            this.uletrayBuffer32[counter+1] = uv[1];
             counter += 2;
         });
 
@@ -82,7 +82,7 @@ class Mesh{
         gl.bufferData(gl.ARRAY_BUFFER, this.colorArrayBuffer32, gl.DYNAMIC_DRAW);
 
         gl.bindBuffer(gl.ARRAY_BUFFER, this.uvBuffer);
-        gl.bufferData(gl.ARRAY_BUFFER, this.uvArrayBuffer32, gl.DYNAMIC_DRAW);
+        gl.bufferData(gl.ARRAY_BUFFER, this.uletrayBuffer32, gl.DYNAMIC_DRAW);
 
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.indiciesBuffer);
         gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, this.indiciesBuffer16, gl.DYNAMIC_DRAW);
