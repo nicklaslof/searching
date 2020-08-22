@@ -4,36 +4,24 @@ import Mesh from "../gl/mesh.js"
 const s = 0.5;
 class LevelRender{
     static camera;
+    static wallTexture;
+    static floorTexture;
+    static roofTexture;
+    static batTexture;
     constructor(gl,shaderprogram) {
         this.shaderprogram = shaderprogram;
         this.gl = gl;
         LevelRender.camera = new Camera(gl, 0,-0.2,0);
-        this.wallTexture = new Texture(gl, "./assets/bricks.png");
-        this.floorTexture = new Texture(gl, "./assets/floor.png");
-        this.roofTexture = new Texture(gl, "./assets/roof.png");
+        LevelRender.wallTexture = new Texture(gl, "./assets/bricks.png");
+        LevelRender.floorTexture = new Texture(gl, "./assets/floor.png");
+        LevelRender.roofTexture = new Texture(gl, "./assets/roof.png");
+        LevelRender.batTexture = new Texture(gl, "./assets/bat.png");
 
         this.wallmeshes = [];
         this.roofMeshes = [];
         this.floorMeshes = [];
 
-        let v = [];
-        let c = [];
-        let u = [];
-        let s = 0.5;
-        let x = 2;
-        let y = 0;
-        let z = 2;
-        u.push([0,0],[1,0],[1,1],[0,1]);
-        v.push(
-            [0-s,0-s,0+s],
-            [0+s,0-s,0+s],
-            [0+s,0+s,0+s],
-            [0-s,0+s,0+s]);
-        c.push([1,1,1,1.0],[1,1,1,1.0],[1,1,1,1.0],[1,1,1,1.0]);
 
-        this.mesh = new Mesh(gl,x,y,z);
-        this.mesh.addVerticies(v,c,u);
-        this.mesh.updateMesh();
     }
 
     start(){
@@ -130,21 +118,25 @@ class LevelRender{
     }
 
     tick(deltaTime){
-        this.mesh.setQuaternion(LevelRender.camera.getQuaternion());
+        //this.mesh.setQuaternion(LevelRender.camera.getQuaternion());
     }
 
     render(){
         this.wallmeshes.forEach(mesh =>{
-            mesh.render(this.gl,this.shaderprogram,LevelRender.camera.pm, LevelRender.camera.vm, this.wallTexture);
+            mesh.render(this.gl,this.shaderprogram,LevelRender.camera.pm, LevelRender.camera.vm, LevelRender.wallTexture);
         });
         this.roofMeshes.forEach(mesh =>{
-            mesh.render(this.gl,this.shaderprogram,LevelRender.camera.pm, LevelRender.camera.vm,this.roofTexture);
+            mesh.render(this.gl,this.shaderprogram,LevelRender.camera.pm, LevelRender.camera.vm,LevelRender.roofTexture);
         });
         this.floorMeshes.forEach(mesh =>{
-            mesh.render(this.gl,this.shaderprogram,LevelRender.camera.pm, LevelRender.camera.vm,this.floorTexture);
+            mesh.render(this.gl,this.shaderprogram,LevelRender.camera.pm, LevelRender.camera.vm,LevelRender.floorTexture);
         });
 
-        this.mesh.render(this.gl,this.shaderprogram,LevelRender.camera.pm, LevelRender.camera.vm,this.floorTexture);
+        //this.mesh.render(this.gl,this.shaderprogram,LevelRender.camera.pm, LevelRender.camera.vm,this.floorTexture);
+    }
+
+    renderEntity(entity){
+        entity.render(this.gl, this.shaderprogram, LevelRender.camera.pm, LevelRender.camera.vm, this.floorTexture);
     }
 }
 

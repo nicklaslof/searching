@@ -43,7 +43,7 @@ constructor() {
             void main() {
                 //gl_FragColor = texture2D(s, uv) * vc;
                 vec4 col = texture2D(s, uv) * vc;
-                gl_FragColor = vec4(col.rgb-(zDist/15.0),1.0);
+                gl_FragColor = vec4(col.rgb-(zDist/15.0),col.a);
             }
         `
         );
@@ -58,6 +58,9 @@ constructor() {
         this.gl.frontFace(this.gl.CCW);
         this.gl.enable(this.gl.CULL_FACE);
         this.gl.cullFace(this.gl.BACK);
+        this.gl.enable(this.gl.BLEND);
+        this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE_MINUS_SRC_ALPHA);
+
         if (this.supportsPerformance){
             this.now = performance.now();
         }else{

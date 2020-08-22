@@ -3,11 +3,14 @@ import WallTile from "../tiles/walltile.js";
 import Tiles from "../tiles/tiles.js";
 import Player from "../entities/player.js";
 import Mesh from "../gl/mesh.js";
+import Billboardsprite from "../entities/billboardsprite.js";
+import Bat from "../entities/bat.js";
 
 class Level{
     constructor(gl,shaderprogram,levelname) {
         this.levelrender = new LevelRender(gl,shaderprogram);
         new Tiles();
+        this.gl = gl;
         this.tiles = new Array(64*64);
         this.tiles.fill(Tiles.airtile);
         this.entities = new Array();
@@ -39,7 +42,8 @@ class Level{
                     if (c == 0xffffffff)level.tiles[ x + (z*64)] = new WallTile();
                     if (c == 0xff00ff00)level.entities.push(new Player(x,0,z));
                     //if (c == 0xff00ffff)level.entities.push(new Torch(x,0.10,z,scene));
-                    //if (c == 0xff202020)level.entities.push(new Bat(x,0.10,z,scene));
+                    
+                    if (c == 0xff202020)level.entities.push(new Bat(x,0,z,level.gl));
                 }
             }
             done();
@@ -88,6 +92,9 @@ class Level{
     }
     render(){
         this.levelrender.render();
+        this.entities.forEach(entity => {
+            this.levelrender.renderEntity(entity);
+        });
     }
 }
 export default Level

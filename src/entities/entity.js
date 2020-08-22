@@ -15,7 +15,7 @@ class Entity{
         
     }
 
-    render(){
+    render(gl,shaderprogram,pm,vm){
         
     }
 
