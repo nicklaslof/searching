@@ -41,6 +41,11 @@ class Level{
                     var c = new Uint32Array(context.getImageData(x, z, 1, 1).data.buffer);
                     if (c == 0xffffffff)level.tiles[ x + (z*64)] = new WallTile();
                     if (c == 0xff00ff00)level.entities.push(new Player(x,0,z));
+                    if (c == 0xff00aa00){
+                        if (Math.random()< 0.5) level.entities.push(new Billboardsprite(x,Math.random()/0.95,z,LevelRender.roofGrassTexture,level.gl));
+                        else level.entities.push(new Billboardsprite(x,Math.min(0,-0.1+Math.random()/0.95),z,LevelRender.grassTexture,level.gl));
+                        
+                    }
                     //if (c == 0xff00ffff)level.entities.push(new Torch(x,0.10,z,scene));
                     
                     if (c == 0xff202020)level.entities.push(new Bat(x,0.2,z,level.gl));

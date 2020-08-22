@@ -55,6 +55,7 @@ constructor() {
         this.gl.clearDepth(1);
         this.gl.clearColor(0,0,0,1);
         this.gl.enable(this.gl.DEPTH_TEST);
+        this.gl.depthFunc(this.gl.LESS);
         this.gl.frontFace(this.gl.CCW);
         this.gl.enable(this.gl.CULL_FACE);
         this.gl.cullFace(this.gl.BACK);

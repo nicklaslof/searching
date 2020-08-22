@@ -8,6 +8,8 @@ class LevelRender{
     static floorTexture;
     static roofTexture;
     static batTexture;
+    static roofGrassTexture;
+    static grassTexture;
     constructor(gl,shaderprogram) {
         this.shaderprogram = shaderprogram;
         this.gl = gl;
@@ -16,6 +18,8 @@ class LevelRender{
         LevelRender.floorTexture = new Texture(gl, "./assets/floor.png");
         LevelRender.roofTexture = new Texture(gl, "./assets/roof.png");
         LevelRender.batTexture = new Texture(gl, "./assets/bat.png");
+        LevelRender.roofGrassTexture = new Texture(gl, "./assets/roofgrass.png");
+        LevelRender.grassTexture = new Texture(gl, "./assets/grass.png");
 
         this.wallmeshes = [];
         this.roofMeshes = [];
@@ -136,6 +140,7 @@ class LevelRender{
     }
 
     renderEntity(entity){
+        //this.gl.depthFunc(this.gl.LEQUAL);
         entity.render(this.gl, this.shaderprogram, LevelRender.camera.pm, LevelRender.camera.vm, this.floorTexture);
     }
 }
