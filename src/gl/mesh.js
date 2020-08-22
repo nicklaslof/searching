@@ -91,9 +91,9 @@ class Mesh{
     }
 
     translate(x, y, z){
-        this.position.x = x;
-        this.position.y = y;
-        this.position.z = z;
+        this.position.x += x;
+        this.position.y += y;
+        this.position.z += z;
         matrix4.fromRotationTranslationScale(this.modelViewMatrix, this.quaternion, [this.position.x, this.position.y, this.position.z],this.scale);
         //matrix4.translate(this.modelViewMatrix,
         //    this.modelViewMatrix,

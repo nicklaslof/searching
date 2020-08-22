@@ -6,13 +6,32 @@ class Bat extends Billboardsprite{
         super(x,y,z,LevelRender.batTexture,gl);
         this.mesh.setScale(0.5);
         this.counter = 0;
+        this.random = Math.random();
+        this.radius = 0.8;
     }
 
     tick(deltaTime,level){
         super.tick(deltaTime,level);
         this.counter += deltaTime;
-        var c = Math.cos((this.counter + this.random)/50);
-        this.mesh.translate(0,0.2,0);
+        let y = Math.sin(this.counter*4* 0.9+this.random)/200;
+        let x = Math.cos(this.counter* 0.7+this.random)/50;
+        let z = 0;
+        if (this.random < 0.5){
+            z = Math.cos((this.counter/2) * 0.9+this.random)/30;
+        }else{
+            z = Math.sin((this.counter/2) * 0.9+this.random)/30;
+        }
+        
+
+        if (this.canMove(level,x+this.position.x,z+this.position.z)){
+            this.mesh.translate(x,y,z);
+        }else{
+            this.mesh.translate(0,y,0);
+        }
+
+
+        //console.log(this.mesh.position);
+        //console.log(this.mesh.position);
     }
 }
 export default Bat;

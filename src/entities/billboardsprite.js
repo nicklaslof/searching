@@ -5,7 +5,8 @@ class Billboardsprite extends Sprite{
         super(x,y,z,tex,gl);
     }
 
-    tick(deltatime){
+    tick(deltatime,level){
+        super.tick(deltatime,level);
         this.mesh.setQuaternion(LevelRender.camera.getQuaternion());
     }
 }

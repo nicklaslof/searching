@@ -20,10 +20,12 @@ class Entity{
     }
 
     canMove(level,x,z){
+
         var x1 = Math.floor(x + 0.5 + this.radius);
         var z1 = Math.floor(z + 0.5 + this.radius);
 		var x2 = Math.floor(x + 0.5 - this.radius);
         var z2 = Math.floor(z + 0.5 - this.radius);
+        //console.log(x1+" "+z1+ "       "+x2+"    "+z2);
         if (level.getTile(x1, z1).b(this)) return false;
         if (level.getTile(x2, z1).b(this)) return false;
         if (level.getTile(x1, z2).b(this)) return false;

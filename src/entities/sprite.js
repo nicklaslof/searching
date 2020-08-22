@@ -22,6 +22,12 @@ class Sprite extends Entity{
         this.mesh.updateMesh();
     }
 
+    tick(deltatime,level){
+        this.position.x = this.mesh.position.x;
+        this.position.y = this.mesh.position.y;
+        this.position.z = this.mesh.position.z;
+    }
+
     render(gl,shaderprogram,pm,vm){
         this.mesh.render(gl,shaderprogram,pm,vm,this.tex);
     }
