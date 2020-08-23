@@ -6,11 +6,14 @@ class Game{
     static inputHandler;
 constructor() {
         this.supportsPerformance = (typeof performance === 'undefined' ? false : true);
+        this.uicanvas = document.getElementById("ui-canvas").getContext("2d");
         this.canvas = document.getElementById("webgl-canvas");
+        
         this.width = this.canvas.width;
         this.height = this.canvas.height;
         this.gl = this.canvas.getContext("webgl");
         console.log(this.gl);
+        console.log(this.uicanvas);
         Game.inputHandler = new InputHandler(document);
         this.shaderProgram = new ShaderProgram(this.gl,
             `
@@ -48,7 +51,7 @@ constructor() {
         `
         );
 
-        this.gamescreen = new GameScreen(this.gl, this.shaderProgram);
+        this.gamescreen = new GameScreen(this.gl, this.uicanvas, this.shaderProgram);
     }
      mainloop(){
         this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
@@ -70,6 +73,18 @@ constructor() {
         this.previousUpdate = this.now;
         this.gamescreen.tick(deltaTime/1000);
         this.gamescreen.render();
+
+
+
+//var gradient = this.uicanvas.createLinearGradient(0, 0, this.uicanvas.canvas.width, 0);
+//gradient.addColorStop("0"," magenta");
+//gradient.addColorStop("0.5", "blue");
+//gradient.addColorStop("1.0", "red");
+// Fill with gradient
+//this.uicanvas.fillStyle = gradient;
+
+
+
     }
 }
 
