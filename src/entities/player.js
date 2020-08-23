@@ -17,10 +17,10 @@ class Player extends Entity{
         let v = {x:0,y:0,z:0};
         let cameraDirection = LevelRender.camera.getDirection();
 
-        if (inputHandler.isKeyDown(65))LevelRender.camera.rotate(2 * deltaTime);
-        if (inputHandler.isKeyDown(68))LevelRender.camera.rotate(-2 * deltaTime);
-        if (inputHandler.isKeyDown(87))v.z = -2;
-        if (inputHandler.isKeyDown(83))v.z = 2;
+        if (inputHandler.isKeyDown(65))LevelRender.camera.rotate(5 * deltaTime);
+        if (inputHandler.isKeyDown(68))LevelRender.camera.rotate(-5 * deltaTime);
+        if (inputHandler.isKeyDown(87))v.z = -5;
+        if (inputHandler.isKeyDown(83))v.z = 5;
         
         if (v.x !=0 || v.z != 0){
 

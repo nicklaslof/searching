@@ -7,11 +7,15 @@ class LevelRender{
     static camera;
 
     static stoneWall;
+    static grassyStoneWall;
+    static bricks;
     static dirt;
     static grassGround;
     static roofGrass;
     static floorGrass;
     static bat;
+    static floor;
+    static bars;
 
     constructor(gl,shaderprogram) {
         this.shaderprogram = shaderprogram;
@@ -20,10 +24,15 @@ class LevelRender{
         LevelRender.camera.setRotation(180);
         this.atlas = new GLTexture(gl, "./assets/atlas.png");
         LevelRender.stoneWall = new Texture(this.atlas,0,0,16,16);
+        LevelRender.grassyStoneWall = new Texture(this.atlas,0,16,16,16);
+        LevelRender.bricks = new Texture(this.atlas,80,0,16,16);
         LevelRender.dirt = new Texture(this.atlas,32,0,16,16);
         LevelRender.grassGround = new Texture(this.atlas,16,0,16,16);
         LevelRender.roofGrass = new Texture(this.atlas,48,0,16,16);
         LevelRender.floorGrass = new Texture(this.atlas,64,0,16,16);
+        LevelRender.floor = new Texture(this.atlas, 96,0,16,16);
+        LevelRender.bars = new Texture(this.atlas,80,16,16,16);
+
         LevelRender.bat = new Array();
 
         for (let i = 0; i < 5; i++) {
@@ -43,19 +52,19 @@ class LevelRender{
         return {m,v,c,u};
     }
     endWall(r){
-        console.log(r);
+        //console.log(r);
         r.m.addVerticies(r.v, r.c, r.u);
         r.m.updateMesh();
         this.wallmeshes.push(r.m);
     }
     endRoof(r){
-        console.log(r);
+        //console.log(r);
         r.m.addVerticies(r.v, r.c, r.u);
         r.m.updateMesh();
         this.roofMeshes.push(r.m);
     }
     endFloor(r){
-        console.log(r);
+        //console.log(r);
         r.m.addVerticies(r.v, r.c, r.u);
         r.m.updateMesh();
         this.floorMeshes.push(r.m);

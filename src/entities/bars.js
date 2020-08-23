@@ -3,7 +3,7 @@ import LevelRender from "../level/levelrender.js";
 class Bars extends Sprite{
     constructor(x,y,z,gl) {
         console.log("bar at "+x+" "+z);
-        super(x,y,z,LevelRender.barsTexture,gl);
+        super(x,y,z,LevelRender.bars,gl);
         this.mesh.setRotation(270);
     }
 

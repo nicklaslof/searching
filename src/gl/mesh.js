@@ -24,7 +24,6 @@ class Mesh{
     }
 
     addVerticies(verticies, colors, uvs){
-        console.log(uvs);
         verticies.forEach(vertex => { this.verticies.push(vertex); });
         colors.forEach(color => { this.colors.push(color);});
         uvs.forEach(uv => { this.uvs.push(uv);});

@@ -3,6 +3,8 @@ import Tiles from "../tiles/tiles.js";
 import Player from "../entities/player.js";
 import Billboardsprite from "../entities/billboardsprite.js";
 import Bat from "../entities/bat.js";
+import Bars from "../entities/bars.js";
+import Tile from "../tiles/tile.js";
 
 class Level{
     constructor(gl,shaderprogram,levelname) {
@@ -33,18 +35,20 @@ class Level{
                 for (let z = 0; z < 64; z++) {
                     var c = new Uint32Array(context.getImageData(x, z, 1, 1).data.buffer);
                     if (c == 0xffffffff)level.tiles[ x + (z*64)] = Tiles.walltile;
+                    if (c == 0xff333324)level.tiles[ x + (z*64)] = Tiles.stoneWallTile;
+                    if (c == 0xff444424)level.tiles[ x + (z*64)] = Tiles.grassyStoneWallTile;
                     if (c == 0xff00ff00)level.entities.push(new Player(x,0,z));
                     if (c == 0xff00aa00){
                         if (Math.random()< 0.5) level.entities.push(new Billboardsprite(x,Math.random()/0.95,z,LevelRender.roofGrass,level.gl));
                         else level.entities.push(new Billboardsprite(x,Math.min(0,-0.1+Math.random()/0.95),z,LevelRender.floorGrass,level.gl));
                         
                     }
-                    /*
+                    
                     if (c == 0xffaaaaaa){
                         level.entities.push(new Bars(x,0,z,level.gl));
                         level.tiles[ x + (z*64)] = new Tile();
                     }
-                    */
+                    
                     if (c == 0xff202020)level.entities.push(new Bat(x,0.2,z,level.gl));
                 }
             }
@@ -59,7 +63,7 @@ class Level{
         for (let x = 0; x < 64; x++) {
             for (let z = 0; z < 64; z++) {
                 var tile = this.tiles[x + (z * 64)];
-                if (tile == Tiles.walltile){
+                if (tile == Tiles.walltile || tile == Tiles.stoneWallTile || tile == Tiles.grassyStoneWallTile){
                     let f = !this.getTile(x,z+1).c(tile);
                     let b = !this.getTile(x,z-1).c(tile);
                     let l = !this.getTile(x-1,z).c(tile);
@@ -70,8 +74,15 @@ class Level{
                     if (b) this.levelrender.back(tile,wr,x,0,z);
                     
                 }else{
-                    this.levelrender.floor(LevelRender.grassGround, fr,x,-1,z);
-                    this.levelrender.roof(LevelRender.dirt,rr,x,1,z);
+                    if (x < 16 && z < 16){
+                        this.levelrender.floor(LevelRender.grassGround, fr,x,-1,z);
+                        this.levelrender.roof(LevelRender.dirt,rr,x,1,z);
+                    }else{
+                        this.levelrender.floor(LevelRender.floor, fr,x,-1,z);
+                        this.levelrender.roof(LevelRender.dirt,rr,x,1,z);
+                    }
+                    
+
                 }
             }
         }
