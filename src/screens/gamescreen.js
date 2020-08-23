@@ -13,6 +13,7 @@ class GameScreen{
 
     render(){
        this.level.render();
+
     }
 }
 export default GameScreen

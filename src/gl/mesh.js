@@ -103,6 +103,13 @@ class Mesh{
         matrix4.fromRotationTranslationScale(this.modelViewMatrix, this.quaternion, [this.position.x, this.position.y, this.position.z],this.scale);
     }
 
+    setPosition(x, y, z){
+        this.position.x = x;
+        this.position.y = y;
+        this.position.z = z;
+        matrix4.fromRotationTranslationScale(this.modelViewMatrix, this.quaternion, [this.position.x, this.position.y, this.position.z],this.scale);
+    }
+
     setScale(s){
         this.scale[0]=s;
         this.scale[1]=s;
