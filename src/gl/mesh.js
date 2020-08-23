@@ -3,6 +3,7 @@ import * as quaternion from "./quaternion.js";
 
 class Mesh{
     constructor(gl, x,y,z){
+        this.dirty = true;
         this.verticies = [];
         this.colors = [];
         this.uvs = [];
@@ -17,10 +18,7 @@ class Mesh{
         this.uvBuffer = gl.createBuffer();
         this.indiciesBuffer = gl.createBuffer();
 
-        this.verticiesBuffer32 = new Float32Array(164000);
-        this.colorArrayBuffer32 =  new Float32Array(164000*20);
-        this.uvArrayBuffer32 = new Float32Array(164000*20);
-        this.indiciesBuffer16 = new Uint16Array(164000*20);
+
 
         matrix4.fromTranslation(this.modelViewMatrix, [this.position.x, this.position.y, this.position.z]);
     }
@@ -36,9 +34,13 @@ class Mesh{
         let gl = this.gl;
         
         let indiciesNeeded = this.verticies.length/4;
-        let vertexCounter = 0;
 
-        this.verticiesBuffer32
+        this.verticiesBuffer32 = new Float32Array(this.verticies.length*10);
+        this.colorArrayBuffer32 =  new Float32Array(this.verticies.length*10);
+        this.uvArrayBuffer32 = new Float32Array(this.verticies.length*10);
+        this.indiciesBuffer16 = new Uint16Array(indiciesNeeded*10);
+
+        let vertexCounter = 0;
 
         let counter = 0;
         this.verticies.forEach(vertex => { 
@@ -90,6 +92,8 @@ class Mesh{
 
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.indiciesBuffer);
         gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, this.indiciesBuffer16, gl.DYNAMIC_DRAW);
+
+        this.dirty = false;
     }
 
     translate(x, y, z){
@@ -119,7 +123,24 @@ class Mesh{
         matrix4.fromRotationTranslationScale(this.modelViewMatrix, this.quaternion, [this.position.x, this.position.y, this.position.z],this.scale);
     }
 
-    render(gl, shaderProgram, projectionMatrix, viewMatrix, texture){
+    render(gl, shaderProgram, projectionMatrix, viewMatrix, texture, uvs){
+        if (this.dirty) return;
+        if (uvs != null){
+            this.uvs = [];
+            uvs.forEach(uv => { this.uvs.push(uv);});
+            let counter = 0;
+            this.uvs.forEach(uv => {
+                this.uvArrayBuffer32[counter] = uv[0];
+                this.uvArrayBuffer32[counter+1] = uv[1];
+                counter += 2;
+            });
+            gl.bindBuffer(gl.ARRAY_BUFFER, this.uvBuffer);
+            gl.bufferData(gl.ARRAY_BUFFER, this.uvArrayBuffer32, gl.DYNAMIC_DRAW);
+
+        }
+
+
+
         gl.bindBuffer(gl.ARRAY_BUFFER, this.positionBuffer);
         gl.vertexAttribPointer(shaderProgram.locations.attribLocations.vertexPosition, 3, gl.FLOAT, false, 0, 0);
         gl.enableVertexAttribArray(shaderProgram.locations.attribLocations.vertexPosition);

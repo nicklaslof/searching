@@ -9,15 +9,10 @@ class LevelRender{
     static stoneWall;
     static dirt;
     static grassGround;
-    /*static stoneWallTexture;
-    static floorTexture;
-    static grassGround;
-    static roofTexture;
-    static batTexture;
-    static roofGrassTexture;
-    static grassTexture;
-    static barsTexture;
-    static dirtTexture;*/
+    static roofGrass;
+    static floorGrass;
+    static bat;
+
     constructor(gl,shaderprogram) {
         this.shaderprogram = shaderprogram;
         this.gl = gl;
@@ -27,16 +22,14 @@ class LevelRender{
         LevelRender.stoneWall = new Texture(this.atlas,0,0,16,16);
         LevelRender.dirt = new Texture(this.atlas,32,0,16,16);
         LevelRender.grassGround = new Texture(this.atlas,16,0,16,16);
-        /*LevelRender.stoneWallTexture = new Texture(gl, "./assets/stonewall.png");
-        LevelRender.stoneWallGrassTexture = new Texture(gl, "./assets/stonewall-grass.png");
-        LevelRender.floorTexture = new Texture(gl, "./assets/floor.png");
-        LevelRender.grassGround = new Texture(gl, "./assets/grass-dirt-ground.png");
-        LevelRender.roofTexture = new Texture(gl, "./assets/roof.png");
-        LevelRender.dirtTexture = new Texture(gl, "./assets/dirt.png");
-        LevelRender.batTexture = new Texture(gl, "./assets/bat.png");
-        LevelRender.roofGrassTexture = new Texture(gl, "./assets/roofgrass.png");
-        LevelRender.grassTexture = new Texture(gl, "./assets/grass.png");
-        LevelRender.barsTexture = new Texture(gl, "./assets/bars.png");*/
+        LevelRender.roofGrass = new Texture(this.atlas,48,0,16,16);
+        LevelRender.floorGrass = new Texture(this.atlas,64,0,16,16);
+        LevelRender.bat = new Array();
+
+        for (let i = 0; i < 5; i++) {
+            LevelRender.bat.push(new Texture(this.atlas,16*i,32,16,16));
+        }
+
         this.wallmeshes = [];
         this.roofMeshes = [];
         this.floorMeshes = [];
@@ -163,7 +156,7 @@ class LevelRender{
     }
 
     renderEntity(entity){
-        //entity.render(this.gl, this.shaderprogram, LevelRender.camera.pm, LevelRender.camera.vm, this.floorTexture);
+        entity.render(this.gl, this.shaderprogram, LevelRender.camera.pm, LevelRender.camera.vm, this.floorTexture);
     }
 }
 export default LevelRender

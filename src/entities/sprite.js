@@ -1,16 +1,27 @@
 import Entity from "./entity.js";
 import Mesh from "../gl/mesh.js";
 class Sprite extends Entity{
-    constructor(x,y,z,tex,gl){
+    constructor(x,y,z,texture,gl){
         super(x,y,z);
-        this.tex = tex;
+        if (texture instanceof Array){
+            this.animated = true;
+            this.numberOfFrames = texture.length;
+            this.texture = texture[0];
+            this.textureAnimation = texture;
+            console.log(this.numberOfFrames);
+            this.currentFrame = 0;
+            this.frameCounter = 0;
+        }else{
+            this.texture = texture;
+            this.animated = false;
+        }
+        
         let s = 0.5;
         let v = [];
         let c = [];
-        let u = [];
+        let u = [];        
 
-        u.push([1,1],[0,1],[0,0],[1,0]);
-        u.push([0,0],[1,0],[1,],[0,1]);
+        this.texture.getUVs().forEach(uv => { u.push(uv); });
         v.push(
             [0-s,0-s,0+s],
             [0+s,0-s,0+s],
@@ -27,10 +38,28 @@ class Sprite extends Entity{
         this.position.x = this.mesh.position.x;
         this.position.y = this.mesh.position.y;
         this.position.z = this.mesh.position.z;
+
+        if (this.animated){
+            this.frameCounter += deltatime;
+            if (this.frameCounter >= 0.016*5){
+                this.frameChanged = true;
+                this.currentFrame++;
+                if (this.currentFrame > this.numberOfFrames-1) this.currentFrame = 0;
+                this.texture = this.textureAnimation[this.currentFrame];
+                this.frameCounter = 0;
+            }
+        }
+
     }
 
     render(gl,shaderprogram,pm,vm){
-        this.mesh.render(gl,shaderprogram,pm,vm,this.tex);
+        if (this.frameChanged){
+            this.mesh.render(gl,shaderprogram,pm,vm,this.texture.texture, this.texture.getUVs());
+            this.frameChanged = false;
+        }else{
+            this.mesh.render(gl,shaderprogram,pm,vm,this.texture.texture);
+        }
+        
     }
 }
 export default Sprite;

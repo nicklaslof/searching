@@ -3,7 +3,7 @@ import LevelRender from "../level/levelrender.js";
 
 class Bat extends Billboardsprite{
     constructor(x,y,z,gl){
-        super(x,y,z,LevelRender.batTexture,gl);
+        super(x,y,z,LevelRender.bat,gl);
         this.mesh.setScale(0.5);
         this.counter = 0;
         this.random = Math.random();
@@ -28,10 +28,6 @@ class Bat extends Billboardsprite{
         }else{
             this.mesh.translate(0,y,0);
         }
-
-
-        //console.log(this.mesh.position);
-        //console.log(this.mesh.position);
     }
 }
 export default Bat;
