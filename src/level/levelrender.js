@@ -1,10 +1,15 @@
 import Camera from "../gl/camera.js"
-import Texture from "../gl/texture.js"
+import GLTexture from "../gl/gltexture.js"
 import Mesh from "../gl/mesh.js"
+import Texture from "../gl/texture.js";
 const s = 0.5;
 class LevelRender{
     static camera;
-    static stoneWallTexture;
+
+    static stoneWall;
+    static dirt;
+    static grassGround;
+    /*static stoneWallTexture;
     static floorTexture;
     static grassGround;
     static roofTexture;
@@ -12,13 +17,17 @@ class LevelRender{
     static roofGrassTexture;
     static grassTexture;
     static barsTexture;
-    static dirtTexture;
+    static dirtTexture;*/
     constructor(gl,shaderprogram) {
         this.shaderprogram = shaderprogram;
         this.gl = gl;
         LevelRender.camera = new Camera(gl, 0,-0.2,0);
         LevelRender.camera.setRotation(180);
-        LevelRender.stoneWallTexture = new Texture(gl, "./assets/stonewall.png");
+        this.atlas = new GLTexture(gl, "./assets/atlas.png");
+        LevelRender.stoneWall = new Texture(this.atlas,0,0,16,16);
+        LevelRender.dirt = new Texture(this.atlas,32,0,16,16);
+        LevelRender.grassGround = new Texture(this.atlas,16,0,16,16);
+        /*LevelRender.stoneWallTexture = new Texture(gl, "./assets/stonewall.png");
         LevelRender.stoneWallGrassTexture = new Texture(gl, "./assets/stonewall-grass.png");
         LevelRender.floorTexture = new Texture(gl, "./assets/floor.png");
         LevelRender.grassGround = new Texture(gl, "./assets/grass-dirt-ground.png");
@@ -27,7 +36,7 @@ class LevelRender{
         LevelRender.batTexture = new Texture(gl, "./assets/bat.png");
         LevelRender.roofGrassTexture = new Texture(gl, "./assets/roofgrass.png");
         LevelRender.grassTexture = new Texture(gl, "./assets/grass.png");
-        LevelRender.barsTexture = new Texture(gl, "./assets/bars.png");
+        LevelRender.barsTexture = new Texture(gl, "./assets/bars.png");*/
         this.wallmeshes = [];
         this.roofMeshes = [];
         this.floorMeshes = [];
@@ -63,9 +72,10 @@ class LevelRender{
         colors.push([1,1,1,1.0],[1,1,1,1.0],[1,1,1,1.0],[1,1,1,1.0]);
     }
 
-    roof(render,x,y,z){
+    roof(texture,render,x,y,z){
         this.ac(render.c);
-        render.u.push([0,0],[1,0],[1,1],[0,1]);
+        //render.u.push([0,0],[1,0],[1,1],[0,1]);
+        texture.getUVs().forEach(uv => { render.u.push(uv); });
         render.v.push(
             [x-s,y-s,z-s],
             [x+s,y-s,z-s],
@@ -73,9 +83,10 @@ class LevelRender{
             [x-s,y-s,z+s]
         );
     }
-    floor(render,x,y,z){
+    floor(texture,render,x,y,z){
         this.ac(render.c);
-        render.u.push([1,0],[0,0],[0,1],[1,1]);
+        //render.u.push([1,0],[0,0],[0,1],[1,1]);
+        texture.getUVs().forEach(uv => { render.u.push(uv); });
         render.v.push(
 
             [x-s,y+s,z-s],
@@ -85,9 +96,13 @@ class LevelRender{
         ); 
     }
 
-    left(render,x,y,z){
+    left(tile,render,x,y,z){
         this.ac(render.c);
-        render.u.push([0,1],[1,1],[1,0],[0,0]);
+        //render.u.push([0,1],[1,1],[1,0],[0,0]);
+        //render.u.push(tile.getUVs());
+
+        tile.getUVs().forEach(uv => { render.u.push(uv); });
+        //console.log(tile.getUVs());
         render.v.push(
             [x-s,y-s,z-s],
             [x-s,y-s,z+s],
@@ -95,9 +110,11 @@ class LevelRender{
             [x-s,y+s,z-s]
         );
     }
-    right(render,x,y,z){
+    right(tile,render,x,y,z){
         this.ac(render.c);
-        render.u.push([1,1],[1,0],[0,0],[0,1]);
+        //render.u.push([1,1],[1,0],[0,0],[0,1]);
+        //render.u.push(tile.getUVs());
+        tile.getUVs().forEach(uv => { render.u.push(uv); });
         render.v.push(
             [x+s,y-s,z-s],
             [x+s,y+s,z-s],
@@ -105,9 +122,11 @@ class LevelRender{
             [x+s,y-s,z+s]
         );
     }
-    front(render,x,y,z){
+    front(tile,render,x,y,z){
         this.ac(render.c);
-        render.u.push([1,1],[0,1],[0,0],[1,0]);
+        //render.u.push([1,1],[0,1],[0,0],[1,0]);
+        //render.u.push(tile.getUVs());
+        tile.getUVs().forEach(uv => { render.u.push(uv); });
         render.v.push(
             [x-s,y-s,z+s],
             [x+s,y-s,z+s],
@@ -115,9 +134,11 @@ class LevelRender{
             [x-s,y+s,z+s]
         );
     }
-    back(render,x,y,z){
+    back(tile,render,x,y,z){
         this.ac(render.c);
-        render.u.push([1,1],[1,0],[0,0],[0,1]);
+        //render.u.push([1,1],[1,0],[0,0],[0,1]);
+        //render.u.push(tile.getUVs());
+        tile.getUVs().forEach(uv => { render.u.push(uv); });
         render.v.push(
             [x-s,y-s,z-s],
             [x-s,y+s,z-s],
@@ -131,18 +152,18 @@ class LevelRender{
 
     render(){
         this.wallmeshes.forEach(mesh =>{
-            mesh.render(this.gl,this.shaderprogram,LevelRender.camera.pm, LevelRender.camera.vm, LevelRender.stoneWallTexture);
+            mesh.render(this.gl,this.shaderprogram,LevelRender.camera.pm, LevelRender.camera.vm, this.atlas);
         });
         this.roofMeshes.forEach(mesh =>{
-            mesh.render(this.gl,this.shaderprogram,LevelRender.camera.pm, LevelRender.camera.vm,LevelRender.dirtTexture);
+            mesh.render(this.gl,this.shaderprogram,LevelRender.camera.pm, LevelRender.camera.vm,this.atlas);
         });
         this.floorMeshes.forEach(mesh =>{
-            mesh.render(this.gl,this.shaderprogram,LevelRender.camera.pm, LevelRender.camera.vm,LevelRender.grassGround);
+            mesh.render(this.gl,this.shaderprogram,LevelRender.camera.pm, LevelRender.camera.vm,this.atlas);
         });
     }
 
     renderEntity(entity){
-        entity.render(this.gl, this.shaderprogram, LevelRender.camera.pm, LevelRender.camera.vm, this.floorTexture);
+        //entity.render(this.gl, this.shaderprogram, LevelRender.camera.pm, LevelRender.camera.vm, this.floorTexture);
     }
 }
 export default LevelRender

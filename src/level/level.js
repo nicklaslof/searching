@@ -37,7 +37,7 @@ class Level{
                     var c = new Uint32Array(context.getImageData(x, z, 1, 1).data.buffer);
                     if (c == 0xffffffff)level.tiles[ x + (z*64)] = Tiles.walltile;
                     if (c == 0xff00ff00)level.entities.push(new Player(x,0,z));
-                    if (c == 0xff00aa00){
+                    /*if (c == 0xff00aa00){
                         if (Math.random()< 0.5) level.entities.push(new Billboardsprite(x,Math.random()/0.95,z,LevelRender.roofGrassTexture,level.gl));
                         else level.entities.push(new Billboardsprite(x,Math.min(0,-0.1+Math.random()/0.95),z,LevelRender.grassTexture,level.gl));
                         
@@ -47,7 +47,7 @@ class Level{
                         level.tiles[ x + (z*64)] = new Tile();
                     }
                     
-                    if (c == 0xff202020)level.entities.push(new Bat(x,0.2,z,level.gl));
+                    if (c == 0xff202020)level.entities.push(new Bat(x,0.2,z,level.gl));*/
                 }
             }
             done();
@@ -66,14 +66,14 @@ class Level{
                     let b = !this.getTile(x,z-1).c(tile);
                     let l = !this.getTile(x-1,z).c(tile);
                     let r = !this.getTile(x+1,z).c(tile);
-                    if (l) this.levelrender.left(wr,x,0,z);
-                    if (r) this.levelrender.right(wr,x,0,z);
-                    if (f) this.levelrender.front(wr,x,0,z);
-                    if (b) this.levelrender.back(wr,x,0,z);
+                    if (l) this.levelrender.left(tile,wr,x,0,z);
+                    if (r) this.levelrender.right(tile,wr,x,0,z);
+                    if (f) this.levelrender.front(tile,wr,x,0,z);
+                    if (b) this.levelrender.back(tile,wr,x,0,z);
                     
                 }else{
-                    this.levelrender.floor(fr,x,-1,z);
-                    this.levelrender.roof(rr,x,1,z);
+                    this.levelrender.floor(LevelRender.grassGround, fr,x,-1,z);
+                    this.levelrender.roof(LevelRender.dirt,rr,x,1,z);
                 }
             }
         }

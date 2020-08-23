@@ -1,30 +1,33 @@
-class Texture {
-    constructor(gl, file) {
-        this.tex = gl.createTexture();
-        gl.bindTexture(gl.TEXTURE_2D, this.tex);
-
-        let level = 0;
-        let internalFormat = gl.RGBA;
-        let width = 1;
-        let height = 1;
-        let border = 0;
-        let srcFormat = gl.RGBA;
-        let srcType = gl.UNSIGNED_BYTE;
-        let pixel = new Uint8Array([255, 255, 255, 255]);
-        gl.texImage2D(gl.TEXTURE_2D, level, internalFormat, width, height, border, srcFormat, srcType, pixel);
-        let image = new Image();
-        image.onload  = () =>{
-            gl.bindTexture(gl.TEXTURE_2D, this.tex);
-            gl.texImage2D(gl.TEXTURE_2D, level, internalFormat, srcFormat, srcType, image);
-            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
-            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
-            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-
-        };
-
-        image.src = file;
+class Texture{
+    constructor(texture, x, y, width, height){
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
+        this.texture = texture;
+        this.dirty = false;
     }
+
+    getUVs(){
+        if (!this.textureWidth || this.dirty){
+            //this.textureWidth = this.texture.width;
+            //this.textureHeight = this.texture.height;
+            this.textureWidth = 1024;
+            this.textureHeight = 1024;
+            let w = 1 / this.textureWidth;
+            let h = 1 / this.textureHeight;
+
+            let u = (this.x * w)%1;
+            let v = (this.y * h)%1;
+            let u2 = ((this.width) * w)+u;
+            let v2 = ((this.height) * h)+v;
+
+            this.uvs = [[u,v2,0.0],[u2,v2,0.0], [u2,v,0.0],[u,v,0.0]];
+            console.log(this.uvs);
+        }
+        return this.uvs;
+    }
+
 }
 
 export default Texture;

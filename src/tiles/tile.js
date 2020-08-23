@@ -1,7 +1,13 @@
 
 class Tile{
-    constructor() {
-       
+    constructor(texture) {
+       if (texture != null){
+           this.texture = texture;
+       }
+    }
+
+    getUVs(){
+        return this.texture.getUVs();
     }
 
     b(entity){

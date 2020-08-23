@@ -19,13 +19,14 @@ class Mesh{
 
         this.verticiesBuffer32 = new Float32Array(164000);
         this.colorArrayBuffer32 =  new Float32Array(164000*20);
-        this.uletrayBuffer32 = new Float32Array(164000*20);
+        this.uvArrayBuffer32 = new Float32Array(164000*20);
         this.indiciesBuffer16 = new Uint16Array(164000*20);
 
         matrix4.fromTranslation(this.modelViewMatrix, [this.position.x, this.position.y, this.position.z]);
     }
 
     addVerticies(verticies, colors, uvs){
+        console.log(uvs);
         verticies.forEach(vertex => { this.verticies.push(vertex); });
         colors.forEach(color => { this.colors.push(color);});
         uvs.forEach(uv => { this.uvs.push(uv);});
@@ -58,10 +59,11 @@ class Mesh{
 
         counter = 0;
         this.uvs.forEach(uv => {
-            this.uletrayBuffer32[counter] = uv[0];
-            this.uletrayBuffer32[counter+1] = uv[1];
+            this.uvArrayBuffer32[counter] = uv[0];
+            this.uvArrayBuffer32[counter+1] = uv[1];
             counter += 2;
         });
+        //console.log(this.uvs);
 
         counter = 0;
         for (let i = 0; i < indiciesNeeded; i++){
@@ -84,7 +86,7 @@ class Mesh{
         gl.bufferData(gl.ARRAY_BUFFER, this.colorArrayBuffer32, gl.DYNAMIC_DRAW);
 
         gl.bindBuffer(gl.ARRAY_BUFFER, this.uvBuffer);
-        gl.bufferData(gl.ARRAY_BUFFER, this.uletrayBuffer32, gl.DYNAMIC_DRAW);
+        gl.bufferData(gl.ARRAY_BUFFER, this.uvArrayBuffer32, gl.DYNAMIC_DRAW);
 
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.indiciesBuffer);
         gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, this.indiciesBuffer16, gl.DYNAMIC_DRAW);
