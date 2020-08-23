@@ -10,6 +10,7 @@ class LevelRender{
     static batTexture;
     static roofGrassTexture;
     static grassTexture;
+    static barsTexture;
     constructor(gl,shaderprogram) {
         this.shaderprogram = shaderprogram;
         this.gl = gl;
@@ -20,12 +21,10 @@ class LevelRender{
         LevelRender.batTexture = new Texture(gl, "./assets/bat.png");
         LevelRender.roofGrassTexture = new Texture(gl, "./assets/roofgrass.png");
         LevelRender.grassTexture = new Texture(gl, "./assets/grass.png");
-
+        LevelRender.barsTexture = new Texture(gl, "./assets/bars.png");
         this.wallmeshes = [];
         this.roofMeshes = [];
         this.floorMeshes = [];
-
-
     }
 
     start(){
@@ -122,7 +121,6 @@ class LevelRender{
     }
 
     tick(deltaTime){
-        //this.mesh.setQuaternion(LevelRender.camera.getQuaternion());
     }
 
     render(){
@@ -135,14 +133,10 @@ class LevelRender{
         this.floorMeshes.forEach(mesh =>{
             mesh.render(this.gl,this.shaderprogram,LevelRender.camera.pm, LevelRender.camera.vm,LevelRender.floorTexture);
         });
-
-        //this.mesh.render(this.gl,this.shaderprogram,LevelRender.camera.pm, LevelRender.camera.vm,this.floorTexture);
     }
 
     renderEntity(entity){
-        //this.gl.depthFunc(this.gl.LEQUAL);
         entity.render(this.gl, this.shaderprogram, LevelRender.camera.pm, LevelRender.camera.vm, this.floorTexture);
     }
 }
-
 export default LevelRender

@@ -7,5 +7,6 @@ class AirTile extends Tile{
     b(entity){
         return false;
     }
+    
 }
 export default AirTile;

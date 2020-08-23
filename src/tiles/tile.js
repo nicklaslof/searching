@@ -7,5 +7,8 @@ class Tile{
     b(entity){
        return true;
     }
+    c(tile){
+        return false;
+    }
 }
 export default Tile

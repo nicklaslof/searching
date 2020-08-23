@@ -95,9 +95,6 @@ class Mesh{
         this.position.y += y;
         this.position.z += z;
         matrix4.fromRotationTranslationScale(this.modelViewMatrix, this.quaternion, [this.position.x, this.position.y, this.position.z],this.scale);
-        //matrix4.translate(this.modelViewMatrix,
-        //    this.modelViewMatrix,
-        //    [x,y,z]);
     }
 
     setScale(s){
@@ -109,18 +106,14 @@ class Mesh{
 
     rotateY(r){
         quaternion.rotateY(this.quaternion, this.quaternion, r);
-        //matrix4.fromRotationTranslation(this.modelViewMatrix, this.quaternion, [this.position.x, this.position.y, this.position.z]);
         matrix4.fromRotationTranslationScale(this.modelViewMatrix, this.quaternion, [this.position.x, this.position.y, this.position.z],this.scale);
     }
     setQuaternion(q){
         this.quaternion = q;
-        //matrix4.fromRotationTranslation(this.modelViewMatrix, this.quaternion, [this.position.x, this.position.y, this.position.z]);
         matrix4.fromRotationTranslationScale(this.modelViewMatrix, this.quaternion, [this.position.x, this.position.y, this.position.z],this.scale);
     }
     setRotation(r){
-
         quaternion.fromEuler(this.quaternion,0,r,0);
-        //matrix4.fromRotationTranslation(this.modelViewMatrix, this.quaternion, [this.position.x, this.position.y, this.position.z]);
         matrix4.fromRotationTranslationScale(this.modelViewMatrix, this.quaternion, [this.position.x, this.position.y, this.position.z],this.scale);
     }
 

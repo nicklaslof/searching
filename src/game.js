@@ -1,6 +1,5 @@
 import ShaderProgram from "./gl/shaderprogram.js"
 import GameScreen from "./screens/gamescreen.js"
-import * as matrix4 from "./gl/matrix4.js";
 import InputHandler from "./inputhandler.js";
 
 class Game{
@@ -59,8 +58,7 @@ constructor() {
         this.gl.frontFace(this.gl.CCW);
         this.gl.enable(this.gl.CULL_FACE);
         this.gl.cullFace(this.gl.BACK);
-        this.gl.enable(this.gl.BLEND);
-        this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE_MINUS_SRC_ALPHA);
+        this.gl.disable(this.gl.BLEND);
 
         if (this.supportsPerformance){
             this.now = performance.now();

@@ -3,7 +3,7 @@ import * as quaternion from "./quaternion.js";
 
 class Camera{
     constructor(gl, x,y,z){
-        this.fieldOfView = 64 * Math.PI / 180;   // in radians
+        this.fieldOfView = 64 * Math.PI / 180;
         this.aspect = gl.canvas.clientWidth / gl.canvas.clientHeight;
         this.zNear = 0.1;
         this.zFar = 1000;
