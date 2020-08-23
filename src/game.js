@@ -43,6 +43,7 @@ constructor() {
                 //gl_FragColor = texture2D(s, uv) * vc;
                 vec4 col = texture2D(s, uv) * vc;
                 gl_FragColor = vec4(col.rgb-(zDist/15.0),col.a);
+                //gl_FragColor = vec4(col.rgb-(zDist/4.0),col.a);
             }
         `
         );

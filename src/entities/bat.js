@@ -7,7 +7,7 @@ class Bat extends Billboardsprite{
         this.mesh.setScale(0.5);
         this.counter = 0;
         this.random = Math.random();
-        this.radius = 0.8;
+        this.radius = 0.2;
     }
 
     tick(deltaTime,level){

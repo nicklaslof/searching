@@ -17,7 +17,7 @@ class LevelRender{
         this.shaderprogram = shaderprogram;
         this.gl = gl;
         LevelRender.camera = new Camera(gl, 0,-0.2,0);
-        LevelRender.camera.setRotation(270);
+        LevelRender.camera.setRotation(180);
         LevelRender.stoneWallTexture = new Texture(gl, "./assets/stonewall.png");
         LevelRender.stoneWallGrassTexture = new Texture(gl, "./assets/stonewall-grass.png");
         LevelRender.floorTexture = new Texture(gl, "./assets/floor.png");
