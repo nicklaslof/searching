@@ -4,20 +4,26 @@ import Mesh from "../gl/mesh.js"
 const s = 0.5;
 class LevelRender{
     static camera;
-    static wallTexture;
+    static stoneWallTexture;
     static floorTexture;
+    static grassGround;
     static roofTexture;
     static batTexture;
     static roofGrassTexture;
     static grassTexture;
     static barsTexture;
+    static dirtTexture;
     constructor(gl,shaderprogram) {
         this.shaderprogram = shaderprogram;
         this.gl = gl;
         LevelRender.camera = new Camera(gl, 0,-0.2,0);
-        LevelRender.wallTexture = new Texture(gl, "./assets/bricks.png");
+        LevelRender.camera.setRotation(270);
+        LevelRender.stoneWallTexture = new Texture(gl, "./assets/stonewall.png");
+        LevelRender.stoneWallGrassTexture = new Texture(gl, "./assets/stonewall-grass.png");
         LevelRender.floorTexture = new Texture(gl, "./assets/floor.png");
+        LevelRender.grassGround = new Texture(gl, "./assets/grass-dirt-ground.png");
         LevelRender.roofTexture = new Texture(gl, "./assets/roof.png");
+        LevelRender.dirtTexture = new Texture(gl, "./assets/dirt.png");
         LevelRender.batTexture = new Texture(gl, "./assets/bat.png");
         LevelRender.roofGrassTexture = new Texture(gl, "./assets/roofgrass.png");
         LevelRender.grassTexture = new Texture(gl, "./assets/grass.png");
@@ -125,13 +131,13 @@ class LevelRender{
 
     render(){
         this.wallmeshes.forEach(mesh =>{
-            mesh.render(this.gl,this.shaderprogram,LevelRender.camera.pm, LevelRender.camera.vm, LevelRender.wallTexture);
+            mesh.render(this.gl,this.shaderprogram,LevelRender.camera.pm, LevelRender.camera.vm, LevelRender.stoneWallTexture);
         });
         this.roofMeshes.forEach(mesh =>{
-            mesh.render(this.gl,this.shaderprogram,LevelRender.camera.pm, LevelRender.camera.vm,LevelRender.roofTexture);
+            mesh.render(this.gl,this.shaderprogram,LevelRender.camera.pm, LevelRender.camera.vm,LevelRender.dirtTexture);
         });
         this.floorMeshes.forEach(mesh =>{
-            mesh.render(this.gl,this.shaderprogram,LevelRender.camera.pm, LevelRender.camera.vm,LevelRender.floorTexture);
+            mesh.render(this.gl,this.shaderprogram,LevelRender.camera.pm, LevelRender.camera.vm,LevelRender.grassGround);
         });
     }
 

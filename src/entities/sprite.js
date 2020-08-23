@@ -10,6 +10,7 @@ class Sprite extends Entity{
         let u = [];
 
         u.push([1,1],[0,1],[0,0],[1,0]);
+        u.push([0,0],[1,0],[1,],[0,1]);
         v.push(
             [0-s,0-s,0+s],
             [0+s,0-s,0+s],

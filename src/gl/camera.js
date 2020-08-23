@@ -19,6 +19,15 @@ class Camera{
 
     rotate(rot){
         this.currentRot += rot;
+        this.updateRotation();
+    }
+
+    setRotation(rot){
+        this.currentRot = rot * Math.PI / 180;
+        this.updateRotation();
+    }
+
+    updateRotation(){
         this.currentRot = this.currentRot%(Math.PI*2);
         if (this.currentRot < 0) this.currentRot = Math.PI*2;
         quaternion.fromEuler(this.quaternion, 0, this.getRotationDeg(), 0);
