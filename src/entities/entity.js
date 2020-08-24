@@ -24,8 +24,8 @@ class Entity{
             if (this.canMove(level, knockX, this.position.z))this.position.x = knockX;
             if (this.canMove(level, this.position.x, knockZ))this.position.z = knockZ;
             
-            this.knockBack.x /= 1.1;
-            this.knockBack.z /= 1.1;
+            this.knockBack.x /= 68*deltaTime;
+            this.knockBack.z /= 68*deltaTime;
         }
         
         this.hitCounter +=deltaTime;
@@ -91,12 +91,17 @@ class Entity{
     }
 
     normalize(v) {
-        var len = v.x * v.x + v.z * v.z;
+        let len = v.x * v.x + v.z * v.z;
         if (len > 0) {
           len = 1 / Math.sqrt(len);
         }
         v.x *= len;
         v.z *= len;
+    }
+    distance(v1, v2) {
+        let x = v1.x - v2.x
+        let z = v1.z - v2.z;
+        return Math.hypot(x, z);
       }
     
 }

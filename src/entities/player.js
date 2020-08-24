@@ -25,7 +25,6 @@ class Player extends Entity{
             if (inputHandler.isKeyDown(83))v.z = 5;
             
             if (v.x !=0 || v.z != 0){
-    
                 tv.x = cameraDirection.x * v.z * deltaTime;
                 tv.y = cameraDirection.y * v.z * deltaTime;
                 tv.z = cameraDirection.z * v.z * deltaTime;
@@ -43,16 +42,18 @@ class Player extends Entity{
 
     collidedBy(entity, level){
         super.collidedBy(entity,level);
-        if (this.hitCounter>= 0.3){
-            this.hitCounter = 0;
-
-            let dirX = entity.position.x - this.position.x;
-            let dirZ = entity.position.z - this.position.z;
-            super.knockBack(dirX, dirZ);            
+        let dirX = entity.position.x - this.position.x;
+        let dirZ = entity.position.z - this.position.z;
+        let myPos = {x:this.position.x,z:this.position.z}
+        let ePos = {x:entity.position.x,z:entity.position.z}
+        let d = super.distance(myPos, ePos);
+        if(d < 1){
+            if (this.hitCounter>= 0.3){
+                this.hitCounter = 0;
+                super.knockBack(dirX, dirZ);
+            }
         }
     }
-
-    
 }
 
 export default Player;

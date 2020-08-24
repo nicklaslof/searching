@@ -152,10 +152,6 @@ class LevelRender{
             [x+s,y-s,z-s]
         );
     }
-
-    tick(deltaTime){
-    }
-
     render(){
         this.wallmeshes.forEach(mesh =>{
             mesh.render(this.gl,this.shaderprogram,LevelRender.camera.pm, LevelRender.camera.vm, this.atlas);

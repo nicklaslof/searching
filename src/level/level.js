@@ -116,10 +116,6 @@ class Level{
     }
 
     tick(deltaTime){
-        this.collisionTiles.forEach(c => {
-            c.tick(deltaTime);
-        });
-        this.levelrender.tick(deltaTime);
         this.entities.forEach(entity => {
             entity.tick(deltaTime,this);
         });
