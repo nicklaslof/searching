@@ -125,7 +125,7 @@ class Mesh{
         matrix4.fromRotationTranslationScale(this.modelViewMatrix, this.quaternion, [this.position.x, this.position.y, this.position.z],this.scale);
     }
 
-    render(gl, shaderProgram, projectionMatrix, viewMatrix, texture, uvs){
+    render(gl, shaderProgram, projectionMatrix, viewMatrix, texture, uvs, colors){
         if (this.dirty) return;
         if (uvs != null){
             this.uvs = [];
@@ -138,6 +138,22 @@ class Mesh{
             });
             gl.bindBuffer(gl.ARRAY_BUFFER, this.uvBuffer);
             gl.bufferData(gl.ARRAY_BUFFER, this.uvArrayBuffer32, gl.DYNAMIC_DRAW);
+
+        }
+
+        if (colors != null){
+            this.colors = [];
+            colors.forEach(col => { this.colors.push(col);});
+            let counter = 0;
+            this.colors.forEach(col => {
+                this.colorArrayBuffer32[counter] = col[0];
+                this.colorArrayBuffer32[counter+1] = col[1];
+                this.colorArrayBuffer32[counter+2] = col[2];
+                this.colorArrayBuffer32[counter+3] = col[3];
+                counter += 4;
+            });
+            gl.bindBuffer(gl.ARRAY_BUFFER, this.colorBuffer);
+            gl.bufferData(gl.ARRAY_BUFFER, this.colorArrayBuffer32, gl.DYNAMIC_DRAW);
 
         }
 

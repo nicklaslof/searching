@@ -20,7 +20,6 @@ class Entity{
     }
 
     hit(hitByEntity, amount){
-
             if (this.hitCounter>= 0.3){
                 let dirX = hitByEntity.position.x - this.position.x;
                 let dirZ = hitByEntity.position.z - this.position.z;

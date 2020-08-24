@@ -11,10 +11,16 @@ class Sprite extends Entity{
             console.log(this.numberOfFrames);
             this.currentFrame = 0;
             this.frameCounter = 0;
+
+
         }else{
             this.texture = texture;
             this.animated = false;
         }
+
+        this.color = [1,1,1,1];
+        this.hitColorCountDown = 0;
+        this.changeBackColorAfterHit = false;
         
         let s = 0.5;
         let v = [];
@@ -27,15 +33,36 @@ class Sprite extends Entity{
             [0+s,0-s,0+s],
             [0+s,0+s,0+s],
             [0-s,0+s,0+s]);
-        c.push([1,1,1,1.0],[1,1,1,1.0],[1,1,1,1.0],[1,1,1,1.0]);
+        c.push(this.color, this.color, this.color, this.color);
 
         this.mesh = new Mesh(gl,x,y,z);
         this.mesh.addVerticies(v,c,u);
         this.mesh.updateMesh();
     }
 
+    setColor(color){
+        this.color = color;
+        this.colorChanged = true;
+    }
+
+    hit(hitByEntity, amount){
+        if (this.hitCounter>= 0.3){
+            this.setColor([1,0,0,1]);
+            this.hitColorCountDown = 0.5;
+            this.changeBackColorAfterHit = true;
+
+        }
+        super.hit(hitByEntity,amount);
+    }
+
     tick(deltatime,level){
         super.tick(deltatime,level);
+            if (this.changeBackColorAfterHit && this.hitColorCountDown > 0) this.hitColorCountDown -= deltatime;
+            if (this.changeBackColorAfterHit && this.hitColorCountDown <= 0){
+                this.setColor([1,1,1,1]);
+                this.changeBackColorAfterHit = false;
+            }
+
         this.mesh.position.x = this.position.x;
         this.mesh.position.y = this.position.y;
         this.mesh.position.z = this.position.z;
@@ -53,13 +80,17 @@ class Sprite extends Entity{
     }
 
     render(gl,shaderprogram,pm,vm){
+        let c = null;
+        if (this.colorChanged){
+            c = [this.color, this.color, this.color, this.color];
+            this.colorChanged = false;
+        }
         if (this.frameChanged){
-            this.mesh.render(gl,shaderprogram,pm,vm,this.texture.texture, this.texture.getUVs());
+            this.mesh.render(gl,shaderprogram,pm,vm,this.texture.texture, this.texture.getUVs(),c);
             this.frameChanged = false;
         }else{
-            this.mesh.render(gl,shaderprogram,pm,vm,this.texture.texture);
+            this.mesh.render(gl,shaderprogram,pm,vm,this.texture.texture,null,c);
         }
-        
     }
 }
 export default Sprite;
