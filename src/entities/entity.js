@@ -1,5 +1,5 @@
 class Entity{
-    constructor(name,x,y,z) {
+    constructor(name,x,y,z,health) {
         this.name = name;
         this.position = {x,y,z};
         this.tempVector = {x:0,y:0,z:0};
@@ -9,6 +9,25 @@ class Entity{
         this.currentTileX = Math.round(this.position.x);
         this.currentTileZ = Math.round(this.position.z);
         this.hitCounter = 0;
+
+        if (health == null){
+            this.invinsible = true;
+        }else{
+            this.currentHealth = health;
+            this.maxHealth = health;
+        }
+
+    }
+
+    hit(hitByEntity, amount){
+
+            if (this.hitCounter>= 0.3){
+                let dirX = hitByEntity.position.x - this.position.x;
+                let dirZ = hitByEntity.position.z - this.position.z;
+                this.hitCounter = 0;
+                this.knockback(dirX, dirZ);
+                this.currentHealth -= amount;
+            }
     }
 
     getPosition(){
@@ -16,6 +35,12 @@ class Entity{
     }
 
     tick(deltaTime,level){
+
+        if (this.currentHealth <=0 && !this.invinsible){
+            this.removeFromCollision(level,this.currentTileX, this.currentTileZ);
+            level.removeEntity(this);
+        }
+
         if (this.knockBack.x > -0.2 && this.knockBack.x < 0.2) this.knockBack.x = 0;
         if (this.knockBack.z > -0.2 && this.knockBack.z < 0.2) this.knockBack.z = 0;
         if (this.knockBack.x !=0 || this.knockBack.z !=0){
@@ -23,7 +48,6 @@ class Entity{
             let knockZ = this.position.z - this.knockBack.z * 15 *deltaTime;
             if (this.canMove(level, knockX, this.position.z))this.position.x = knockX;
             if (this.canMove(level, this.position.x, knockZ))this.position.z = knockZ;
-            
             this.knockBack.x /= 68*deltaTime;
             this.knockBack.z /= 68*deltaTime;
         }
@@ -67,7 +91,7 @@ class Entity{
         level.getCollisionTile(x, z).removeEntityFromTile(this);
     }
 
-    knockBack(x,z){
+    knockback(x,z){
         if (this.knockBack.x !=0 || this.knockBack.z !=0) return;
         this.knockBack.x = x;
         this.knockBack.z = z;

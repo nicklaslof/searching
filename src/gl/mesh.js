@@ -161,7 +161,6 @@ class Mesh{
 
         gl.uniformMatrix4fv(shaderProgram.locations.uniformLocations.projectionMatrix, false, projectionMatrix);
         gl.uniformMatrix4fv(shaderProgram.locations.uniformLocations.modelViewMatrix, false, this.modelViewMatrix);
-        gl.uniformMatrix4fv(shaderProgram.locations.uniformLocations.viewMatrix, false, viewMatrix);
 
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.indiciesBuffer);
         gl.drawElements(gl.TRIANGLES,  this.numberOfIndicies,gl.UNSIGNED_SHORT,0);

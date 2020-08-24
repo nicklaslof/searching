@@ -19,7 +19,6 @@ class ShaderProgram{
               },
               uniformLocations: {
                 projectionMatrix: gl.getUniformLocation(this.shaderProgram, 'pm'),
-                viewMatrix: gl.getUniformLocation(this.shaderProgram, 'vm'),
                 modelViewMatrix: gl.getUniformLocation(this.shaderProgram, 'mvm'),
                 uSampler: gl.getUniformLocation(this.shaderProgram, 's'),
               },
