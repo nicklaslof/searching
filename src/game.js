@@ -17,7 +17,7 @@ constructor() {
         Game.inputHandler = new InputHandler(document);
         this.shaderProgram = new ShaderProgram(this.gl,
             `
-            precision highp float;
+            precision lowp float;
 
             attribute vec4 vp;
             attribute vec4 col;
@@ -37,7 +37,7 @@ constructor() {
             }
           `,
           `
-            precision highp float;
+            precision lowp float;
             varying vec4 vc;
             varying vec2 uv;
             varying float zDist;
@@ -63,6 +63,7 @@ constructor() {
         this.gl.enable(this.gl.CULL_FACE);
         this.gl.cullFace(this.gl.BACK);
         this.gl.disable(this.gl.BLEND);
+        this.gl.pixelStorei(this.gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, true)
 
         if (this.supportsPerformance){
             this.now = performance.now();

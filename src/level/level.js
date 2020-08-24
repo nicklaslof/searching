@@ -17,6 +17,8 @@ class Level{
         this.read(levelname,() => {
             this.parse();
         });
+
+        this.text = "darkness! it is so dark in here"
     }
 
     read(levelname,done){
@@ -95,6 +97,10 @@ class Level{
         var tile = this.tiles[x + (z*64)];
         if (tile == null) return Tiles.airtile;
         return tile;
+    }
+
+    getUIText(){
+        return this.text;
     }
 
     tick(deltaTime){

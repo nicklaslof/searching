@@ -16,7 +16,7 @@ class GameScreen{
 
     render(){
        this.level.render();
-       this.ui.render();
+       this.ui.render(this.level);
 
     }
 }

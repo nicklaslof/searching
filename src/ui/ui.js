@@ -2,6 +2,7 @@ class UI{
     constructor(canvas) {
         this.canvas = canvas;
         this.canvas.imageSmoothingEnabled = false;
+        this.centerX = this.canvas.canvas.width/2;
         this.image = new Image();
         this.image.onload  = () =>{
         };
@@ -16,29 +17,23 @@ class UI{
 
     }
 
-    render(){
-        //this.canvas.font = '50px serif';
-//this.canvas.fillStyle = "#ffffff"
-//this.canvas.fillText("Big smile!", 10, 90);
-
-        //console.log(this.characters.indexOf("0"));
+    render(level){
         this.canvas.clearRect(0, 0, this.canvas.canvas.width, this.canvas.canvas.height);
-        this.drawText("DARKNESS! IT IS SO DARK IN HERE",50,50);
-
-
+        this.drawText(level.getUIText(),150);
     }
 
+    drawText(text,y){
+        this.drawTextAt(text,this.centerX - (text.length * 8)+this.fontWidth,y);
+    }
 
-    drawText(text,x,y){
+    drawTextAt(text,x,y){
+        this.canvas.globalAlpha = 0.7;
         for (let i = 0; i < text.length; i++) {
-            //console.log(text[i]);
-            let index = this.characters.indexOf(text[i]);
-            this.canvas.drawImage(this.image,index*this.fontWidth,0,this.fontWidth,this.fontHeight,x,y,10,10);
+            this.canvas.drawImage(this.image,this.characters.indexOf(text[i].toUpperCase())*this.fontWidth,0,this.fontWidth,this.fontHeight,x,y,10,10);
             x += 16;
-
-          }
+        }
+        this.canvas.globalAlpha = 1;
     }
-
 }
 
 export default UI;

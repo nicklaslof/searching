@@ -23,13 +23,13 @@ class LevelRender{
         LevelRender.camera = new Camera(gl, 0,-0.2,0);
         LevelRender.camera.setRotation(180);
         this.atlas = new GLTexture(gl, "./assets/atlas.png");
-        LevelRender.stoneWall = new Texture(this.atlas,0,0,16,16);
-        LevelRender.grassyStoneWall = new Texture(this.atlas,0,16,16,16);
+        LevelRender.stoneWall = new Texture(this.atlas,16,64,16,16);
+        LevelRender.grassyStoneWall = new Texture(this.atlas,16,96,16,16);
         LevelRender.bricks = new Texture(this.atlas,80,0,16,16);
-        LevelRender.dirt = new Texture(this.atlas,32,0,16,16);
-        LevelRender.grassGround = new Texture(this.atlas,16,0,16,16);
-        LevelRender.roofGrass = new Texture(this.atlas,48,0,16,16);
-        LevelRender.floorGrass = new Texture(this.atlas,64,0,16,16);
+        LevelRender.dirt = new Texture(this.atlas,80,64,16,16);
+        LevelRender.grassGround = new Texture(this.atlas,48,64,16,16);
+        LevelRender.roofGrass = new Texture(this.atlas,0,0,16,16);
+        LevelRender.floorGrass = new Texture(this.atlas,32,0,16,16);
         LevelRender.floor = new Texture(this.atlas, 96,0,16,16);
         LevelRender.bars = new Texture(this.atlas,80,16,16,16);
 
