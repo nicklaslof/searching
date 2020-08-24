@@ -1,8 +1,8 @@
 import Entity from "./entity.js";
 import Mesh from "../gl/mesh.js";
 class Sprite extends Entity{
-    constructor(x,y,z,texture,gl){
-        super(x,y,z);
+    constructor(name, x,y,z,texture,gl){
+        super(name, x,y,z);
         if (texture instanceof Array){
             this.animated = true;
             this.numberOfFrames = texture.length;
@@ -35,10 +35,10 @@ class Sprite extends Entity{
     }
 
     tick(deltatime,level){
+        super.tick(deltatime,level);
         this.position.x = this.mesh.position.x;
         this.position.y = this.mesh.position.y;
         this.position.z = this.mesh.position.z;
-
         if (this.animated){
             this.frameCounter += deltatime;
             if (this.frameCounter >= 0.016*5){

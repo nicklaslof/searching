@@ -10,8 +10,6 @@ class Texture{
 
     getUVs(){
         if (!this.textureWidth || this.dirty){
-            //this.textureWidth = this.texture.width;
-            //this.textureHeight = this.texture.height;
             this.textureWidth = 128;
             this.textureHeight = 128;
             let w = 1 / this.textureWidth;

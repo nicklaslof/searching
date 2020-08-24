@@ -96,25 +96,6 @@ export function perspective(out, fovy, aspect, near, far) {
   
     return out;
   }
-export function fromTranslation(out, v) {
-    out[0] = 1;
-    out[1] = 0;
-    out[2] = 0;
-    out[3] = 0;
-    out[4] = 0;
-    out[5] = 1;
-    out[6] = 0;
-    out[7] = 0;
-    out[8] = 0;
-    out[9] = 0;
-    out[10] = 1;
-    out[11] = 0;
-    out[12] = v[0];
-    out[13] = v[1];
-    out[14] = v[2];
-    out[15] = 1;
-    return out;
-  }
  
   export function rotateY(out, a, rad) {
     let s = Math.sin(rad);
@@ -129,7 +110,6 @@ export function fromTranslation(out, v) {
     let a23 = a[11];
   
     if (a !== out) {
-      // If the source and destination differ, copy the unchanged rows
       out[4] = a[4];
       out[5] = a[5];
       out[6] = a[6];
@@ -139,8 +119,7 @@ export function fromTranslation(out, v) {
       out[14] = a[14];
       out[15] = a[15];
     }
-  
-    // Perform axis-specific matrix multiplication
+
     out[0] = a00 * c - a20 * s;
     out[1] = a01 * c - a21 * s;
     out[2] = a02 * c - a22 * s;
@@ -153,7 +132,6 @@ export function fromTranslation(out, v) {
   }
 
 export function fromRotationTranslationScale(out, q, v, s) {
-  // Quaternion math
   let x = q[0],
     y = q[1],
     z = q[2],

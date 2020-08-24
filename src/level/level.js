@@ -5,6 +5,7 @@ import Billboardsprite from "../entities/billboardsprite.js";
 import Bat from "../entities/bat.js";
 import Bars from "../entities/bars.js";
 import Tile from "../tiles/tile.js";
+import CollisionTile from "./collisiontile.js";
 
 class Level{
     constructor(gl,shaderprogram,levelname) {
@@ -13,6 +14,14 @@ class Level{
         this.gl = gl;
         this.tiles = new Array(64*64);
         this.tiles.fill(Tiles.airtile);
+
+        this.collisionTiles = new Array(64*64);
+        for (let x = 0; x < 64; x++){
+            for (let z = 0; z < 64; z++){
+                this.collisionTiles[x + (z*64)] = new CollisionTile(x,z);
+            }
+        }
+
         this.entities = new Array();
         this.read(levelname,() => {
             this.parse();
@@ -41,8 +50,8 @@ class Level{
                     if (c == 0xff444424)level.tiles[ x + (z*64)] = Tiles.grassyStoneWallTile;
                     if (c == 0xff00ff00)level.entities.push(new Player(x,0,z));
                     if (c == 0xff00aa00){
-                        if (Math.random()< 0.5) level.entities.push(new Billboardsprite(x,Math.random()/0.95,z,LevelRender.roofGrass,level.gl));
-                        else level.entities.push(new Billboardsprite(x,Math.min(0,-0.1+Math.random()/0.95),z,LevelRender.floorGrass,level.gl));
+                        if (Math.random()< 0.5) level.entities.push(new Billboardsprite("grass", x,Math.random()/0.95,z,LevelRender.roofGrass,level.gl));
+                        else level.entities.push(new Billboardsprite("grass",x,Math.min(0,-0.1+Math.random()/0.95),z,LevelRender.floorGrass,level.gl));
                         
                     }
                     
@@ -98,12 +107,18 @@ class Level{
         if (tile == null) return Tiles.airtile;
         return tile;
     }
+    getCollisionTile(x,z){
+        return this.collisionTiles[x + (z*64)];
+    }
 
     getUIText(){
         return this.text;
     }
 
     tick(deltaTime){
+        this.collisionTiles.forEach(c => {
+            c.tick(deltaTime);
+        });
         this.levelrender.tick(deltaTime);
         this.entities.forEach(entity => {
             entity.tick(deltaTime,this);

@@ -17,10 +17,6 @@ class Mesh{
         this.colorBuffer = gl.createBuffer();
         this.uvBuffer = gl.createBuffer();
         this.indiciesBuffer = gl.createBuffer();
-
-
-
-        matrix4.fromTranslation(this.modelViewMatrix, [this.position.x, this.position.y, this.position.z]);
     }
 
     addVerticies(verticies, colors, uvs){
@@ -144,8 +140,6 @@ class Mesh{
             gl.bufferData(gl.ARRAY_BUFFER, this.uvArrayBuffer32, gl.DYNAMIC_DRAW);
 
         }
-
-
 
         gl.bindBuffer(gl.ARRAY_BUFFER, this.positionBuffer);
         gl.vertexAttribPointer(shaderProgram.locations.attribLocations.vertexPosition, 3, gl.FLOAT, false, 0, 0);
