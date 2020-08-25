@@ -1,8 +1,6 @@
 import Game from "../game.js";
 import LevelRender from "../level/levelrender.js";
 import Entity from "./entity.js";
-import Sprite from "./sprite.js";
-import * as quaternion from "../gl/quaternion.js";
 
 class Player extends Entity{
     constructor(x,y,z) {

@@ -1,6 +1,4 @@
 import Mesh from "../gl/mesh.js";
-import LevelRender from "../level/levelrender.js";
-import * as quaternion from "../gl/quaternion.js";
 class Item{
     constructor(name, x,y,z,texture,gl) {
         this.texture = texture;
@@ -16,10 +14,10 @@ class Item{
 
         this.texture.getUVs().forEach(uv => { u.push(uv); });
         v.push(
-            [0-s,0-s,0+s],
-            [0+s,0-s,0+s],
-            [0+s,0+s,0+s],
-            [0-s,0+s,0+s]);
+            [0.75-s,0-s,0+s],
+            [0.75+s,0-s,0+s],
+            [0.75+s,0+s,0+s],
+            [0.75-s,0+s,0+s]);
         c.push(this.color, this.color, this.color, this.color);
 
         this.mesh = new Mesh(gl,x,y,z);
