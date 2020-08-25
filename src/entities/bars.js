@@ -4,7 +4,7 @@ class Bars extends Sprite{
     constructor(x,y,z,gl) {
         console.log("bar at "+x+" "+z);
         super("bars", x,y,z,LevelRender.bars,gl);
-        this.mesh.setRotation(270);
+        this.mesh.setRotationY(270);
     }
 
     tick(deltatime,level){

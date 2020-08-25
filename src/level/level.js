@@ -6,6 +6,7 @@ import Bat from "../entities/bat.js";
 import Bars from "../entities/bars.js";
 import Tile from "../tiles/tile.js";
 import CollisionTile from "./collisiontile.js";
+import Dagger from "../entities/dagger.js";
 
 class Level{
     constructor(gl,shaderprogram,levelname) {
@@ -48,7 +49,13 @@ class Level{
                     if (c == 0xffffffff)level.tiles[ x + (z*64)] = Tiles.walltile;
                     if (c == 0xff333324)level.tiles[ x + (z*64)] = Tiles.stoneWallTile;
                     if (c == 0xff444424)level.tiles[ x + (z*64)] = Tiles.grassyStoneWallTile;
-                    if (c == 0xff00ff00)level.entities.push(new Player(x,0,z));
+                    if (c == 0xff00ff00){
+                        let player = new Player(x,0,z);
+                        let dagger = new Dagger(0,0,0,level.gl);
+                        player.addItem(dagger);
+                        level.entities.push(player);
+                        level.entities.push(dagger);
+                    }
                     if (c == 0xff00aa00){
                         if (Math.random()< 0.5) level.entities.push(new Billboardsprite("grass", x,Math.random()/0.95,z,LevelRender.roofGrass,level.gl));
                         else level.entities.push(new Billboardsprite("grass",x,Math.min(0,-0.1+Math.random()/0.95),z,LevelRender.floorGrass,level.gl));

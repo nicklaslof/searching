@@ -16,6 +16,7 @@ class LevelRender{
     static bat;
     static floor;
     static bars;
+    static dagger;
 
     constructor(gl,shaderprogram) {
         this.shaderprogram = shaderprogram;
@@ -32,6 +33,8 @@ class LevelRender{
         LevelRender.floorGrass = this.newAtlasTexture(32,0,16,16);
         LevelRender.floor = this.newAtlasTexture(96,0,16,16);
         LevelRender.bars = this.newAtlasTexture(80,16,16,16);
+
+        LevelRender.dagger = this.newAtlasTexture(96,32,8,16);
 
         LevelRender.bat = new Array();
 
@@ -162,6 +165,7 @@ class LevelRender{
         this.floorMeshes.forEach(mesh =>{
             mesh.render(this.gl,this.shaderprogram,LevelRender.camera.pm, LevelRender.camera.vm,this.atlas);
         });
+        
     }
 
     renderEntity(entity){

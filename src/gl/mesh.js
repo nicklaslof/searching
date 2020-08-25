@@ -12,6 +12,8 @@ class Mesh{
         this.scale = [1,1,1];
         this.gl = gl;
         this.quaternion = quaternion.create();
+        this.rotX = 0;
+        this.rotY = 0;
 
         this.positionBuffer = gl.createBuffer();
         this.colorBuffer = gl.createBuffer();
@@ -112,6 +114,11 @@ class Mesh{
         matrix4.fromRotationTranslationScale(this.modelViewMatrix, this.quaternion, [this.position.x, this.position.y, this.position.z],this.scale);
     }
 
+    rotateX(r){
+        quaternion.rotateX(this.quaternion, this.quaternion, r);
+        matrix4.fromRotationTranslationScale(this.modelViewMatrix, this.quaternion, [this.position.x, this.position.y, this.position.z],this.scale);
+    }
+
     rotateY(r){
         quaternion.rotateY(this.quaternion, this.quaternion, r);
         matrix4.fromRotationTranslationScale(this.modelViewMatrix, this.quaternion, [this.position.x, this.position.y, this.position.z],this.scale);
@@ -120,8 +127,16 @@ class Mesh{
         this.quaternion = q;
         matrix4.fromRotationTranslationScale(this.modelViewMatrix, this.quaternion, [this.position.x, this.position.y, this.position.z],this.scale);
     }
-    setRotation(r){
-        quaternion.fromEuler(this.quaternion,0,r,0);
+
+    setRotationX(r){
+        this.rotX = r;
+        quaternion.fromEuler(this.quaternion,this.rotX,this.rotY,0);
+        matrix4.fromRotationTranslationScale(this.modelViewMatrix, this.quaternion, [this.position.x, this.position.y, this.position.z],this.scale);
+    }
+    
+    setRotationY(r){
+        this.rotY = r;
+        quaternion.fromEuler(this.quaternion,this.rotX,this.rotY,0);
         matrix4.fromRotationTranslationScale(this.modelViewMatrix, this.quaternion, [this.position.x, this.position.y, this.position.z],this.scale);
     }
 
