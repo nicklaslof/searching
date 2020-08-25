@@ -2,6 +2,7 @@ import Game from "../game.js";
 import LevelRender from "../level/levelrender.js";
 import Entity from "./entity.js";
 import Inventory from "./inventory.js";
+import ItemSprite from "./itemsprite.js";
 
 class Player extends Entity{
     constructor(x,y,z) {
@@ -9,7 +10,6 @@ class Player extends Entity{
         this.speed = 3;
         this.isAttacking = false;
         this.inventory = new Inventory();
-
     }
 
     tick(deltaTime, level){
@@ -25,7 +25,6 @@ class Player extends Entity{
             let v = {x:0,y:0,z:0};
             let cameraDirection = LevelRender.camera.getDirection();
     
-    
             if (inputHandler.isKeyDown(65))LevelRender.camera.rotate(3 * deltaTime);
             if (inputHandler.isKeyDown(68))LevelRender.camera.rotate(-3* deltaTime);
             if (inputHandler.isKeyDown(87))v.z = -4;
@@ -36,6 +35,8 @@ class Player extends Entity{
             }else{
                 this.isAttacking = false;
             }
+
+            if (inputHandler.wasKeyJustPressed(81)) this.dropCurrentItem(level);
             
             if (v.x !=0 || v.z != 0){
                 tv.x = cameraDirection.x * v.z * deltaTime;
@@ -61,8 +62,14 @@ class Player extends Entity{
         LevelRender.camera.setPos(this.position.x, +0.2, this.position.z);
     }
 
+    dropCurrentItem(level){
+        if (this.item != null){
+            level.addEntity(new ItemSprite(this.item,this.position.x-LevelRender.camera.getDirection().x/2,0,this.position.z-LevelRender.camera.getDirection().z/2,this.item.texture,level.gl)); 
+            this.inventory.removeItemFromSlot(this.inventory.selectedSlot);
+        }
+    }
+
     pickup(item){
-        console.log("Pickup "+item);
         this.inventory.addItemToFirstAvailableSlot(item);
     }
 

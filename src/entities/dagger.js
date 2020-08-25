@@ -2,8 +2,9 @@ import LevelRender from "../level/levelrender.js";
 import Item from "./item.js";
 import * as quaternion from "../gl/quaternion.js";
 class Dagger extends Item{
-    constructor(x,y,z,gl) {
+    constructor(x,y,z,gl,onGroundScale) {
         super("dagger",x,y,z,LevelRender.dagger,gl);
+        this.onGroundScale = onGroundScale;
     }
 
     renderPlayerAttack(pos,scale){     

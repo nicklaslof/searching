@@ -3,16 +3,14 @@ import Game from "./../game.js";
 
 class ItemSprite extends Billboardsprite{
 constructor(item,x,y,z,tex, gl) {
-    super("dagger", x,y,z,tex,gl, 1)
+    super(item.name, x,y,z,tex,gl, 1)
     this.item = item;
     this.counter = 0;
     this.nospace = false;
+    console.log(item.onGroundScale);
+    this.mesh.setScale(item.onGroundScale);
 }
 
-setScale(s){
-    this.mesh.setScale(s);
-    return this;
-}
 
 collidedBy(entity, level){
     if (this.dispose) return;

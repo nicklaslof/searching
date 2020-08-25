@@ -1,16 +1,24 @@
+import LevelRender from "../level/levelrender.js";
 class UI{
     constructor(canvas) {
         this.canvas = canvas;
         this.canvas.imageSmoothingEnabled = false;
         this.centerX = this.canvas.canvas.width/2;
-        this.image = new Image();
-        this.image.onload  = () =>{
+        this.font = new Image();
+        this.font.onload  = () =>{
         };
-        this.image.src="./assets/font.png";
+        this.font.src="./assets/font.png";
+
+        this.atlas = new Image();
+        this.atlas.onload  = () =>{
+        };
+        this.atlas.src="./assets/atlas.png";
 
         this.characters = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ!+:";
         this.fontWidth = 6;
         this.fontHeight = 8;
+        this.numberOfSlots = 8;
+        this.sizeOfSlot = 24;
     }
 
     tick(deltatime){
@@ -33,21 +41,22 @@ class UI{
     drawInventorySlots(level){
         let selectedSlot = level.player.inventory.selectedSlot;
             
-        let number=8;
-        let size=24;
 
-        let slotNumber = 1;
-        for (let x = 0; x < number; x+=1.1) {
-            if (slotNumber == selectedSlot) this.canvas.strokeStyle ="#ffffff";
-            else this.canvas.strokeStyle ="#444444";
-            this.drawBox(this.canvas,(size*x)+this.centerX-(number/2)*size,10,size);
-            slotNumber++;
+        for (let slot = 1; slot < this.numberOfSlots+1; slot++){
+            if (slot == selectedSlot) this.canvas.strokeStyle ="#ffffff"; else this.canvas.strokeStyle ="#444444";
+            this.drawBox(this.canvas,((this.sizeOfSlot*slot)+this.centerX-((this.numberOfSlots/2)+2)*this.sizeOfSlot)+(slot*5),10,this.sizeOfSlot);
         }
 
     }
 
     renderItems(level){
-
+        for(let slot=0; slot < 8; slot++){
+            let item = level.player.inventory.getItemInSlot(slot);
+            if (item != null){
+                let x = ((this.sizeOfSlot*slot)+this.centerX-((this.numberOfSlots/2)+2)*this.sizeOfSlot)+(slot*5);
+                this.canvas.drawImage(this.atlas, item.texture.x, item.texture.y,item.texture.width,item.texture.height,x+4,8,item.texture.width*1.7, item.texture.height*1.7);
+            }
+        }
     }
 
     drawBox(canvas,x,y,size){
@@ -62,16 +71,7 @@ class UI{
         this.canvas.stroke();
         this.canvas.fillStyle = "#22222299";
         this.canvas.fill();
-        //this.drawLine(this.canvas,x+0,y+0,x+size,y+0);
-        //this.drawLine(this.canvas,x+size,y+0,x+size,y+size);
-       // this.drawLine(this.canvas,x+size,y+size,x+0,y+size);
-        //this.drawLine(this.canvas,x+0,y+size,x+0,y+0);
     }
-
-    //drawLine(canvas,mx,my,lx,ly){
-    //    canvas.moveTo(mx,my);
-   //     canvas.lineTo(lx,ly);
-   // }
 
     drawText(text,y){
         this.drawTextAt(text,this.centerX - (text.length * 8)+this.fontWidth,y);
@@ -80,7 +80,7 @@ class UI{
     drawTextAt(text,x,y){
         this.canvas.globalAlpha = 0.7;
         for (let i = 0; i < text.length; i++) {
-            this.canvas.drawImage(this.image,this.characters.indexOf(text[i].toUpperCase())*this.fontWidth,0,this.fontWidth,this.fontHeight,x,y,10,10);
+            this.canvas.drawImage(this.font,this.characters.indexOf(text[i].toUpperCase())*this.fontWidth,0,this.fontWidth,this.fontHeight,x,y,10,10);
             x += 16;
         }
         this.canvas.globalAlpha = 1;

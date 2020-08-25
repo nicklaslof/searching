@@ -72,11 +72,15 @@ class Level{
                     
                     if (c == 0xff202020)level.entities.push(new Bat(x,0.2,z,level.gl));
 
-                    if (c == 0xff808080)level.entities.push(new ItemSprite(new Dagger(x,0,z,level.gl),x,0,z,LevelRender.dagger,level.gl).setScale(0.3));
+                    if (c == 0xff808080)level.entities.push(new ItemSprite(new Dagger(x,0,z,level.gl,0.3),x,0,z,LevelRender.dagger,level.gl));
                 }
             }
             done();
         }
+    }
+
+    addEntity(entity){
+        this.entities.push(entity);
     }
 
     parse(){

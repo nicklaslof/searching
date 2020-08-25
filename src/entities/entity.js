@@ -87,7 +87,6 @@ class Entity{
                 }
             }
         }
-
     }
 
     collidedBy(entity, level){
