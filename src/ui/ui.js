@@ -20,33 +20,48 @@ class UI{
     render(level){
         this.canvas.clearRect(0, 0, this.canvas.canvas.width, this.canvas.canvas.height);
         this.drawText(level.getUIText(),150);
-        this.renderItemBar();
+        if (level.player != null){
+            this.renderItemBar(level);
+        }
     }
 
-    renderItemBar(){
-        this.canvas.beginPath();
-        this.canvas.strokeStyle ="#444444";
-        
+    renderItemBar(level){
+        this.drawInventorySlots(level)
+        this.renderItems(level);
+    }
+
+    drawInventorySlots(level){
+        let selectedSlot = level.player.inventory.selectedSlot;
+            
         let number=8;
         let size=24;
+
+        let slotNumber = 1;
         for (let x = 0; x < number; x+=1.1) {
+            if (slotNumber == selectedSlot) this.canvas.strokeStyle ="#ffffff";
+            else this.canvas.strokeStyle ="#444444";
             this.drawBox(this.canvas,(size*x)+this.centerX-(number/2)*size,10,size);
-            
+            slotNumber++;
         }
 
+    }
 
-        this.canvas.closePath();
-        this.canvas.stroke();
-        this.canvas.fillStyle = "#22222299";
-        this.canvas.fill();
+    renderItems(level){
+
     }
 
     drawBox(canvas,x,y,size){
+        this.canvas.beginPath();
         canvas.moveTo(x,y);
         canvas.lineTo(x+size,y);
         canvas.lineTo(x+size,y+size);
         canvas.lineTo(x,y+size);
         canvas.lineTo(x,y);
+        
+        this.canvas.closePath();
+        this.canvas.stroke();
+        this.canvas.fillStyle = "#22222299";
+        this.canvas.fill();
         //this.drawLine(this.canvas,x+0,y+0,x+size,y+0);
         //this.drawLine(this.canvas,x+size,y+0,x+size,y+size);
        // this.drawLine(this.canvas,x+size,y+size,x+0,y+size);

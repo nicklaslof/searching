@@ -1,18 +1,22 @@
 import Game from "../game.js";
 import LevelRender from "../level/levelrender.js";
 import Entity from "./entity.js";
+import Inventory from "./inventory.js";
 
 class Player extends Entity{
     constructor(x,y,z) {
         super("player",x,y,z,5);
         this.speed = 3;
         this.isAttacking = false;
+        this.inventory = new Inventory();
 
     }
 
     tick(deltaTime, level){
         super.tick(deltaTime,level);
-        
+        this.inventory.tick(deltaTime,level);
+        this.item = this.inventory.getItemInSlot(this.inventory.selectedSlot);
+
         if (this.knockBack.x == 0 || this.knockBack.z == 0){
             let tv = this.tempVector;
             let pos = this.position;
@@ -22,8 +26,8 @@ class Player extends Entity{
             let cameraDirection = LevelRender.camera.getDirection();
     
     
-            if (inputHandler.isKeyDown(65))LevelRender.camera.rotate(4 * deltaTime);
-            if (inputHandler.isKeyDown(68))LevelRender.camera.rotate(-4 * deltaTime);
+            if (inputHandler.isKeyDown(65))LevelRender.camera.rotate(3 * deltaTime);
+            if (inputHandler.isKeyDown(68))LevelRender.camera.rotate(-3* deltaTime);
             if (inputHandler.isKeyDown(87))v.z = -4;
             if (inputHandler.isKeyDown(83))v.z = 4;
             if (inputHandler.isKeyDown(32)){
@@ -45,17 +49,25 @@ class Player extends Entity{
                 if (this.canMove(level,pos.x,tv.z)) pos.z += tv.z-pos.z;
             }
         }
-        let itemPos = {x:this.position.x - LevelRender.camera.getDirection().x/4,y:0,z:this.position.z - LevelRender.camera.getDirection().z/4};
-        if (!this.isAttacking){
-            this.item.renderPlayerHolding(itemPos,0.11);
-        }else{
-            this.item.renderPlayerAttack(itemPos,0.10);
+        
+        if (this.item != null){
+            let itemPos = {x:this.position.x - LevelRender.camera.getDirection().x/4,y:0,z:this.position.z - LevelRender.camera.getDirection().z/4};
+            if (!this.isAttacking){
+             this.item.renderPlayerHolding(itemPos,0.11);
+            }else{
+                this.item.renderPlayerAttack(itemPos,0.10);
+            }
         }
         LevelRender.camera.setPos(this.position.x, +0.2, this.position.z);
     }
 
-    addItem(item){
-        this.item = item;
+    pickup(item){
+        console.log("Pickup "+item);
+        this.inventory.addItemToFirstAvailableSlot(item);
+    }
+
+    hasSpace(){
+       return this.inventory.hasSpace();
     }
 
     collidedBy(entity, level){
@@ -63,9 +75,7 @@ class Player extends Entity{
         if (entity.name == "bat"){
             let dirX = entity.position.x - this.position.x;
             let dirZ = entity.position.z - this.position.z;
-            let myPos = {x:this.position.x,z:this.position.z}
-            let ePos = {x:entity.position.x,z:entity.position.z}
-            let d = super.distance(myPos, ePos);
+            let d = this.distanceToOtherEntity(entity);
             if(d < 1){
                 if (this.hitCounter>= 0.3){
                     this.hitCounter = 0;
@@ -76,6 +86,7 @@ class Player extends Entity{
     }
 
     attack(level){
+        if (this.item == null) return;
         let cameraDirection = LevelRender.camera.getDirection();
         if (!this.findEnemyAndAttack(level.getCollisionTile(Math.round(this.position.x - cameraDirection.x), Math.round(this.position.z - cameraDirection.z)))){
             this.findEnemyAndAttack(level.getCollisionTile(Math.round(this.position.x - cameraDirection.x*1.5), Math.round(this.position.z - cameraDirection.z*1.5)));

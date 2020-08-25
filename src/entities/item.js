@@ -30,6 +30,7 @@ class Item{
     }
 
     render(gl,shaderprogram,pm,vm){
+
         this.mesh.render(gl,shaderprogram,pm,vm,this.texture.texture);
     }
 }
