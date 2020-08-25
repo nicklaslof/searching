@@ -1,10 +1,32 @@
 import Sprite from "./sprite.js"
 import LevelRender from "../level/levelrender.js";
+import Tile from "../tiles/tile.js";
 class Bars extends Sprite{
-    constructor(x,y,z,gl) {
-        console.log("bar at "+x+" "+z);
-        super("bars", x,y,z,LevelRender.bars,gl);
+    constructor(x,y,z,gl, triggerId) {
+        super("bars", x,y,z,LevelRender.bars,gl,0,triggerId);
         this.mesh.setRotationY(270);
+        this.triggered = false;
+    }
+
+
+    trigger(level, source){
+        super.trigger(level,source);
+        if (source == this) return;
+        if (!this.triggered){
+            this.mesh.translate(0,1,0);
+            level.removeTile(this.position.x, this.position.z);
+            this.triggered = true;
+        }
+    }
+
+    untrigger(level, source){
+        super.untrigger(level,source);
+        if (source == this) return;
+        if (this.triggered){
+            this.mesh.translate(0,0,0);
+            level.addTile(this.position.x, this.position.z, new Tile());
+            this.triggered = false;
+        }
     }
 
     tick(deltatime,level){

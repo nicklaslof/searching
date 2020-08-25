@@ -7,7 +7,7 @@ constructor(item,x,y,z,tex, gl) {
     this.item = item;
     this.counter = 0;
     this.nospace = false;
-    console.log(item.onGroundScale);
+    
     this.mesh.setScale(item.onGroundScale);
 }
 

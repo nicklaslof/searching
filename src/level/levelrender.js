@@ -17,6 +17,8 @@ class LevelRender{
     static floor;
     static bars;
     static dagger;
+    static floorTriggerActive;
+    static floorTriggerNoActive;
 
     constructor(gl,shaderprogram) {
         this.shaderprogram = shaderprogram;
@@ -33,6 +35,8 @@ class LevelRender{
         LevelRender.floorGrass = this.newAtlasTexture(32,0,16,16);
         LevelRender.floor = this.newAtlasTexture(96,0,16,16);
         LevelRender.bars = this.newAtlasTexture(80,16,16,16);
+        LevelRender.floorTriggerNoActive = this.newAtlasTexture(48,20,6,6);
+        LevelRender.floorTriggerActive = this.newAtlasTexture(55,20,6,6);
 
         LevelRender.dagger = this.newAtlasTexture(96,32,8,16);
 

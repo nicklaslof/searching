@@ -1,4 +1,4 @@
-import LevelRender from "./levelrender.js";;
+import LevelRender from "./levelrender.js";
 import Tiles from "../tiles/tiles.js";
 import Player from "../entities/player.js";
 import Billboardsprite from "../entities/billboardsprite.js";
@@ -8,6 +8,7 @@ import Tile from "../tiles/tile.js";
 import CollisionTile from "./collisiontile.js";
 import Dagger from "../entities/dagger.js";
 import ItemSprite from "../entities/itemsprite.js";
+import FloorTrigger from "../entities/floortrigger.js";
 
 class Level{
     constructor(gl,shaderprogram,levelname) {
@@ -50,6 +51,8 @@ class Level{
             for (let x = 0; x < 64; x++) {
                 for (let z = 0; z < 64; z++) {
                     var c = new Uint32Array(context.getImageData(x, z, 1, 1).data.buffer);
+                    var alpha = (c >> 24 )& 0xff;
+                    //console.log(alpha);
                     if (c == 0xffffffff)level.tiles[ x + (z*64)] = Tiles.walltile;
                     if (c == 0xff333324)level.tiles[ x + (z*64)] = Tiles.stoneWallTile;
                     if (c == 0xff444424)level.tiles[ x + (z*64)] = Tiles.grassyStoneWallTile;
@@ -65,14 +68,20 @@ class Level{
                         
                     }
                     
-                    if (c == 0xffaaaaaa){
-                        level.entities.push(new Bars(x,0,z,level.gl));
-                        level.tiles[ x + (z*64)] = new Tile();
-                    }
+                   
                     
                     if (c == 0xff202020)level.entities.push(new Bat(x,0.2,z,level.gl));
 
                     if (c == 0xff808080)level.entities.push(new ItemSprite(new Dagger(x,0,z,level.gl,0.3),x,0,z,LevelRender.dagger,level.gl));
+
+                    if (c == 0xfeaaaaaa){
+                        level.entities.push(new Bars(x,0,z,level.gl,alpha));
+                        level.tiles[ x + (z*64)] = new Tile();
+                    }
+
+                    if (c == 0xfeffffff){
+                        level.entities.push(new FloorTrigger(x,0,z,level.gl,alpha));
+                    }
                 }
             }
             done();
@@ -123,12 +132,38 @@ class Level{
         if (tile == null) return Tiles.airtile;
         return tile;
     }
+
+    addTile(x,z, tile){
+        this.tiles[x + (z*64)] = tile;
+    }
+
+    removeTile(x,z){
+        console.log("Removing "+x+" "+z);
+        this.tiles[x + (z*64)] = Tiles.airtile;
+    }
+
     getCollisionTile(x,z){
         return this.collisionTiles[x + (z*64)];
     }
 
     getUIText(){
         return this.text;
+    }
+
+    trigger(triggerId,source){
+        this.entities.forEach(entity => {
+            if (entity.triggerId !=null && entity.triggerId == triggerId){
+                entity.trigger(this, source);
+            }
+        });
+    }
+
+    untrigger(triggerId,source){
+        this.entities.forEach(entity => {
+            if (entity.triggerId !=null && entity.triggerId == triggerId){
+                entity.untrigger(this, source);
+            }
+        });
     }
 
     displayMessage(text,timeToShow){

@@ -1,5 +1,5 @@
 class Entity{
-    constructor(name,x,y,z,health) {
+    constructor(name,x,y,z,health, triggerId) {
         this.name = name;
         this.position = {x,y,z};
         this.tempVector = {x:0,y:0,z:0};
@@ -11,8 +11,9 @@ class Entity{
         this.hitCounter = 0;
         this.notAddedToCollider = true;
         this.dispose = false;
+        this.triggerId = triggerId;
 
-        if (health == null){
+        if (health == null || health == 0){
             this.invinsible = true;
         }else{
             this.currentHealth = health;
@@ -42,7 +43,6 @@ class Entity{
     }
 
     tick(deltaTime,level){
-
         if (this.notAddedToCollider){
             this.addToCollision(level,this.currentTileX, this.currentTileZ);
             this.notAddedToCollider = false;
@@ -90,6 +90,15 @@ class Entity{
     }
 
     collidedBy(entity, level){
+    }
+
+    trigger(level, source){
+        if (source == this) return;
+        console.log("Triggered! "+this);
+    }
+    untrigger(level, source){
+        if (source == this) return;
+        console.log("unTriggered! "+this);
     }
 
     addToCollision(level,x,z){

@@ -1,8 +1,8 @@
 import Entity from "./entity.js";
 import Mesh from "../gl/mesh.js";
 class Sprite extends Entity{
-    constructor(name, x,y,z,texture,gl, health){
-        super(name, x,y,z, health);
+    constructor(name, x,y,z,texture,gl, health, triggerId){
+        super(name, x,y,z, health, triggerId);
         if (texture instanceof Array){
             this.animated = true;
             this.numberOfFrames = texture.length;

@@ -1,8 +1,8 @@
 import LevelRender from "../level/levelrender.js";
 import Sprite from "./sprite.js";
 class Billboardsprite extends Sprite{
-    constructor(name, x,y,z,tex,gl, health){
-        super(name, x,y,z,tex,gl, health);
+    constructor(name, x,y,z,tex,gl, health, triggerId){
+        super(name, x,y,z,tex,gl, health, triggerId);
     }
 
     tick(deltatime,level){
