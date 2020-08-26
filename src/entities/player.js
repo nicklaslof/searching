@@ -104,7 +104,7 @@ class Player extends Entity{
     findEnemyAndAttack(ct){
         ct.getEntities().forEach(e => {
             if (e == this) return;
-            if (e.name == "bat"){
+            if (e.name == "bat" || e.name == "pot"){
                 e.hit(this,1);
                 return true;
             }
