@@ -45,6 +45,11 @@ class Sprite extends Entity{
         this.colorChanged = true;
     }
 
+    setScale(scale){
+        this.mesh.setScale(scale);
+        return this;
+    }
+
     hit(hitByEntity, amount){
         if (this.hitCounter>= 0.3){
             this.setColor([1,0,0,1]);

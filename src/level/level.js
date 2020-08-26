@@ -9,6 +9,8 @@ import CollisionTile from "./collisiontile.js";
 import Dagger from "../entities/dagger.js";
 import ItemSprite from "../entities/itemsprite.js";
 import FloorTrigger from "../entities/floortrigger.js";
+import Pot from "../entities/pot.js";
+import Aquamarine from "../entities/aquamarine.js";
 
 class Level{
     constructor(gl,shaderprogram,levelname) {
@@ -73,6 +75,9 @@ class Level{
                     if (c == 0xff202020)level.entities.push(new Bat(x,0.2,z,level.gl));
 
                     if (c == 0xff808080)level.entities.push(new ItemSprite(new Dagger(x,0,z,level.gl,0.3),x,0,z,LevelRender.dagger,level.gl));
+
+                    if (c == 0xff003359)level.entities.push(new Pot(x,0,z,level.gl));
+                    if (c == 0xff836014)level.entities.push(new ItemSprite(new Aquamarine(x,0,z,level.gl,0.3),x,0,z,LevelRender.aquamarine,level.gl));
 
                     if (c == 0xfeaaaaaa || c == 0xfdaaaaaa){
                         level.entities.push(new Bars(x,0,z,level.gl,alpha));
