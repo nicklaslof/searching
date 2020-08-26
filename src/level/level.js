@@ -62,7 +62,7 @@ class Level{
                         //level.player.addItem(dagger);
                         level.entities.push(level.player);
                     }
-                    if (c == 0xff00aa00){
+                   if (c == 0xff00aa00){
                         if (Math.random()< 0.5) level.entities.push(new Billboardsprite("grass", x,Math.random()/0.95,z,LevelRender.roofGrass,level.gl));
                         else level.entities.push(new Billboardsprite("grass",x,Math.min(0,-0.1+Math.random()/0.95),z,LevelRender.floorGrass,level.gl));
                         

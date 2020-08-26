@@ -29,10 +29,10 @@ class Sprite extends Entity{
 
         this.texture.getUVs().forEach(uv => { u.push(uv); });
         v.push(
-            [0-s,0-s,0+s],
-            [0+s,0-s,0+s],
-            [0+s,0+s,0+s],
-            [0-s,0+s,0+s]);
+            0-s,0-s,0+s,
+            0+s,0-s,0+s,
+            0+s,0+s,0+s,
+            0-s,0+s,0+s);
         c.push(this.color, this.color, this.color, this.color);
 
         this.mesh = new Mesh(gl,x,y,z);

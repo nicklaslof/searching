@@ -27,55 +27,34 @@ class Mesh{
 
     addVerticies(verticies, colors, uvs){
         verticies.forEach(vertex => { this.verticies.push(vertex); });
-        colors.forEach(color => { this.colors.push(color);});
+        this.updateColors(colors);  
         uvs.forEach(uv => { this.uvs.push(uv);});
     }
 
     updateMesh(){
         let gl = this.gl;
-        
         let indiciesNeeded = this.verticies.length/4;
 
-        this.verticiesBuffer32 = new Float32Array(this.verticies.length*10);
-        this.colorArrayBuffer32 =  new Float32Array(this.verticies.length*10);
-        this.uvArrayBuffer32 = new Float32Array(this.verticies.length*10);
-        this.indiciesBuffer16 = new Uint16Array(indiciesNeeded*10);
+        this.verticiesBuffer32 = new Float32Array(this.verticies.length*3);
+        this.verticiesBuffer32.set(this.verticies);
+        this.uvArrayBuffer32 = new Float32Array(this.uvs.length*12);
+        this.indiciesBuffer16 = new Uint16Array(indiciesNeeded*6);
 
         let vertexCounter = 0;
-
         let counter = 0;
-        this.verticies.forEach(vertex => { 
-            this.verticiesBuffer32[counter] = vertex[0];
-            this.verticiesBuffer32[counter+1] = vertex[1];
-            this.verticiesBuffer32[counter+2] = vertex[2];
-            counter += 3;
-        });
 
-        counter = 0;
-        this.colors.forEach(color => {
-            this.colorArrayBuffer32[counter] = color[0];
-            this.colorArrayBuffer32[counter+1] = color[1];
-            this.colorArrayBuffer32[counter+2] = color[2];
-            this.colorArrayBuffer32[counter+3] = color[3];
-            counter += 4;
-        });
-
-        counter = 0;
         this.uvs.forEach(uv => {
             this.uvArrayBuffer32[counter] = uv[0];
             this.uvArrayBuffer32[counter+1] = uv[1];
             counter += 2;
         });
-        //console.log(this.uvs);
 
+        let indicies = [0,1,2,0,2,3];
         counter = 0;
         for (let i = 0; i < indiciesNeeded; i++){
-            this.indiciesBuffer16[counter] = 0 + vertexCounter;
-            this.indiciesBuffer16[counter+1] = 1 + vertexCounter;
-            this.indiciesBuffer16[counter+2] = 2 + vertexCounter;
-            this.indiciesBuffer16[counter+3] = 0 + vertexCounter;
-            this.indiciesBuffer16[counter+4] = 2 + vertexCounter;
-            this.indiciesBuffer16[counter+5] = 3 + vertexCounter;
+            for (let c = 0; c < 6; c++){
+                this.indiciesBuffer16[counter+c] = indicies[c] + vertexCounter;
+            }
             vertexCounter += 4;
             counter += 6;
         }
@@ -85,8 +64,7 @@ class Mesh{
         gl.bindBuffer(this.ab, this.positionBuffer);
         gl.bufferData(this.ab, this.verticiesBuffer32, this.dd);
 
-        gl.bindBuffer(this.ab, this.colorBuffer);
-        gl.bufferData(this.ab, this.colorArrayBuffer32, this.dd);
+        this.uploadColors();
 
         gl.bindBuffer(this.ab, this.uvBuffer);
         gl.bufferData(this.ab, this.uvArrayBuffer32, this.dd);
@@ -101,47 +79,62 @@ class Mesh{
         this.position.x += x;
         this.position.y += y;
         this.position.z += z;
-        matrix4.fromRotationTranslationScale(this.modelViewMatrix, this.quaternion, [this.position.x, this.position.y, this.position.z],this.scale);
+        this.updateMatrix();
     }
 
     setPosition(x, y, z){
         this.position.x = x;
         this.position.y = y;
         this.position.z = z;
-        matrix4.fromRotationTranslationScale(this.modelViewMatrix, this.quaternion, [this.position.x, this.position.y, this.position.z],this.scale);
+        this.updateMatrix();
     }
 
     setScale(s){
         this.scale[0]=s;
         this.scale[1]=s;
         this.scale[2]=s;
-        matrix4.fromRotationTranslationScale(this.modelViewMatrix, this.quaternion, [this.position.x, this.position.y, this.position.z],this.scale);
+        this.updateMatrix();
     }
 
     rotateX(r){
         quaternion.rotateX(this.quaternion, this.quaternion, r);
-        matrix4.fromRotationTranslationScale(this.modelViewMatrix, this.quaternion, [this.position.x, this.position.y, this.position.z],this.scale);
+        this.updateMatrix();
     }
 
     rotateY(r){
         quaternion.rotateY(this.quaternion, this.quaternion, r);
-        matrix4.fromRotationTranslationScale(this.modelViewMatrix, this.quaternion, [this.position.x, this.position.y, this.position.z],this.scale);
+        this.updateMatrix();
     }
     setQuaternion(q){
         this.quaternion = q;
-        matrix4.fromRotationTranslationScale(this.modelViewMatrix, this.quaternion, [this.position.x, this.position.y, this.position.z],this.scale);
+        this.updateMatrix();
     }
 
     setRotationX(r){
         this.rotX = r;
         quaternion.fromEuler(this.quaternion,this.rotX,this.rotY,0);
-        matrix4.fromRotationTranslationScale(this.modelViewMatrix, this.quaternion, [this.position.x, this.position.y, this.position.z],this.scale);
+        this.updateMatrix();
     }
     
     setRotationY(r){
         this.rotY = r;
         quaternion.fromEuler(this.quaternion,this.rotX,this.rotY,0);
+        this.updateMatrix();
+    }
+    updateMatrix(){
         matrix4.fromRotationTranslationScale(this.modelViewMatrix, this.quaternion, [this.position.x, this.position.y, this.position.z],this.scale);
+    }
+
+    updateColors(colors){
+        this.colors = [];
+        colors.forEach(color => { color.forEach(c => {this.colors.push(c);})});
+    }
+
+    uploadColors(){
+        this.colorArrayBuffer32 = new Float32Array(this.colors.length*4);
+        this.colorArrayBuffer32.set(this.colors);
+        this.gl.bindBuffer(this.ab, this.colorBuffer);
+        this.gl.bufferData(this.ab, this.colorArrayBuffer32, this.dd);
     }
 
     render(gl, shaderProgram, projectionMatrix, viewMatrix, texture, uvs, colors){
@@ -161,19 +154,8 @@ class Mesh{
         }
 
         if (colors != null){
-            this.colors = [];
-            colors.forEach(col => { this.colors.push(col);});
-            let counter = 0;
-            this.colors.forEach(col => {
-                this.colorArrayBuffer32[counter] = col[0];
-                this.colorArrayBuffer32[counter+1] = col[1];
-                this.colorArrayBuffer32[counter+2] = col[2];
-                this.colorArrayBuffer32[counter+3] = col[3];
-                counter += 4;
-            });
-            gl.bindBuffer(this.ab, this.colorBuffer);
-            gl.bufferData(this.ab, this.colorArrayBuffer32, this.dd);
-
+            this.updateColors(colors);
+            this.uploadColors();
         }
 
         gl.bindBuffer(this.ab, this.positionBuffer);

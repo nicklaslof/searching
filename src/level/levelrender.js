@@ -82,7 +82,7 @@ class LevelRender{
     }
 
     ac(colors){
-        colors.push([1,1,1,1.0],[1,1,1,1.0],[1,1,1,1.0],[1,1,1,1.0]);
+        colors.push([1,1,1,1],[1,1,1,1],[1,1,1,1],[1,1,1,1]);
     }
 
     roof(texture,render,x,y,z){
@@ -90,10 +90,10 @@ class LevelRender{
         //render.u.push([0,0],[1,0],[1,1],[0,1]);
         texture.getUVs().forEach(uv => { render.u.push(uv); });
         render.v.push(
-            [x-s,y-s,z-s],
-            [x+s,y-s,z-s],
-            [x+s,y-s,z+s],
-            [x-s,y-s,z+s]
+            x-s,y-s,z-s,
+            x+s,y-s,z-s,
+            x+s,y-s,z+s,
+            x-s,y-s,z+s
         );
     }
     floor(texture,render,x,y,z){
@@ -102,10 +102,10 @@ class LevelRender{
         texture.getUVs().forEach(uv => { render.u.push(uv); });
         render.v.push(
 
-            [x-s,y+s,z-s],
-            [x-s,y+s,z+s],
-            [x+s,y+s,z+s],
-            [x+s,y+s,z-s]
+            x-s,y+s,z-s,
+            x-s,y+s,z+s,
+            x+s,y+s,z+s,
+            x+s,y+s,z-s
         ); 
     }
 
@@ -120,10 +120,10 @@ class LevelRender{
             this.ac(render.c);
             tile.getUVs().forEach(uv => { render.u.push(uv); });
             render.v.push(
-                [x-s,y+i-s,z-s],
-                [x-s,y+i-s,z+s],
-                [x-s,y+i+s,z+s],
-                [x-s,y+i+s,z-s]
+                x-s,y+i-s,z-s,
+                x-s,y+i-s,z+s,
+                x-s,y+i+s,z+s,
+                x-s,y+i+s,z-s
             );
         }
        
@@ -135,10 +135,10 @@ class LevelRender{
             //render.u.push(tile.getUVs());
             tile.getUVs().forEach(uv => { render.u.push(uv); });
             render.v.push(
-                [x+s,y+i-s,z-s],
-                [x+s,y+i+s,z-s],
-                [x+s,y+i+s,z+s],
-                [x+s,y+i-s,z+s]
+                x+s,y+i-s,z-s,
+                x+s,y+i+s,z-s,
+                x+s,y+i+s,z+s,
+                x+s,y+i-s,z+s
             );
         }
     }
@@ -149,10 +149,10 @@ class LevelRender{
             //render.u.push(tile.getUVs());
             tile.getUVs().forEach(uv => { render.u.push(uv); });
             render.v.push(
-                [x-s,y+i-s,z+s],
-                [x+s,y+i-s,z+s],
-                [x+s,y+i+s,z+s],
-                [x-s,y+i+s,z+s]
+                x-s,y+i-s,z+s,
+                x+s,y+i-s,z+s,
+                x+s,y+i+s,z+s,
+                x-s,y+i+s,z+s
             );
         }
     }
@@ -163,10 +163,10 @@ class LevelRender{
             //render.u.push(tile.getUVs());
             tile.getUVs().forEach(uv => { render.u.push(uv); });
             render.v.push(
-                [x-s,y+i-s,z-s],
-                [x-s,y+i+s,z-s],
-                [x+s,y+i+s,z-s],
-                [x+s,y+i-s,z-s]
+                x-s,y+i-s,z-s,
+                x-s,y+i+s,z-s,
+                x+s,y+i+s,z-s,
+                x+s,y+i-s,z-s
             );
         }
     }

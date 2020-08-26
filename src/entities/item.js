@@ -14,11 +14,11 @@ class Item{
 
         this.texture.getUVs().forEach(uv => { u.push(uv); });
         v.push(
-            [0.75-s,0-s,0+s],
-            [0.75+s,0-s,0+s],
-            [0.75+s,0+s,0+s],
-            [0.75-s,0+s,0+s]);
-        c.push(this.color, this.color, this.color, this.color);
+            0.75-s,0-s,0+s,
+            0.75+s,0-s,0+s,
+            0.75+s,0+s,0+s,
+            0.75-s,0+s,0+s);
+        c.push(this.color,this.color,this.color,this.color);
 
         this.mesh = new Mesh(gl,x,y,z);
         this.mesh.addVerticies(v,c,u);
