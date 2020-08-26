@@ -14,6 +14,10 @@ class Mesh{
         this.quaternion = quaternion.create();
         this.rotX = 0;
         this.rotY = 0;
+        this.ab = gl.ARRAY_BUFFER;
+        this.dd = gl.DYNAMIC_DRAW;
+        this.eab = gl.ELEMENT_ARRAY_BUFFER;
+        this.float = gl.FLOAT;
 
         this.positionBuffer = gl.createBuffer();
         this.colorBuffer = gl.createBuffer();
@@ -78,17 +82,17 @@ class Mesh{
 
         this.numberOfIndicies = counter;
 
-        gl.bindBuffer(gl.ARRAY_BUFFER, this.positionBuffer);
-        gl.bufferData(gl.ARRAY_BUFFER, this.verticiesBuffer32, gl.DYNAMIC_DRAW);
+        gl.bindBuffer(this.ab, this.positionBuffer);
+        gl.bufferData(this.ab, this.verticiesBuffer32, this.dd);
 
-        gl.bindBuffer(gl.ARRAY_BUFFER, this.colorBuffer);
-        gl.bufferData(gl.ARRAY_BUFFER, this.colorArrayBuffer32, gl.DYNAMIC_DRAW);
+        gl.bindBuffer(this.ab, this.colorBuffer);
+        gl.bufferData(this.ab, this.colorArrayBuffer32, this.dd);
 
-        gl.bindBuffer(gl.ARRAY_BUFFER, this.uvBuffer);
-        gl.bufferData(gl.ARRAY_BUFFER, this.uvArrayBuffer32, gl.DYNAMIC_DRAW);
+        gl.bindBuffer(this.ab, this.uvBuffer);
+        gl.bufferData(this.ab, this.uvArrayBuffer32, this.dd);
 
-        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.indiciesBuffer);
-        gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, this.indiciesBuffer16, gl.DYNAMIC_DRAW);
+        gl.bindBuffer(this.eab, this.indiciesBuffer);
+        gl.bufferData(this.eab, this.indiciesBuffer16, this.dd);
 
         this.dirty = false;
     }
@@ -151,8 +155,8 @@ class Mesh{
                 this.uvArrayBuffer32[counter+1] = uv[1];
                 counter += 2;
             });
-            gl.bindBuffer(gl.ARRAY_BUFFER, this.uvBuffer);
-            gl.bufferData(gl.ARRAY_BUFFER, this.uvArrayBuffer32, gl.DYNAMIC_DRAW);
+            gl.bindBuffer(this.ab, this.uvBuffer);
+            gl.bufferData(this.ab, this.uvArrayBuffer32, this.dd);
 
         }
 
@@ -167,21 +171,21 @@ class Mesh{
                 this.colorArrayBuffer32[counter+3] = col[3];
                 counter += 4;
             });
-            gl.bindBuffer(gl.ARRAY_BUFFER, this.colorBuffer);
-            gl.bufferData(gl.ARRAY_BUFFER, this.colorArrayBuffer32, gl.DYNAMIC_DRAW);
+            gl.bindBuffer(this.ab, this.colorBuffer);
+            gl.bufferData(this.ab, this.colorArrayBuffer32, this.dd);
 
         }
 
-        gl.bindBuffer(gl.ARRAY_BUFFER, this.positionBuffer);
-        gl.vertexAttribPointer(shaderProgram.locations.attribLocations.vertexPosition, 3, gl.FLOAT, false, 0, 0);
+        gl.bindBuffer(this.ab, this.positionBuffer);
+        gl.vertexAttribPointer(shaderProgram.locations.attribLocations.vertexPosition, 3, this.float, false, 0, 0);
         gl.enableVertexAttribArray(shaderProgram.locations.attribLocations.vertexPosition);
 
-        gl.bindBuffer(gl.ARRAY_BUFFER, this.colorBuffer);
-        gl.vertexAttribPointer(shaderProgram.locations.attribLocations.color, 4, gl.FLOAT, false, 0, 0);
+        gl.bindBuffer(this.ab, this.colorBuffer);
+        gl.vertexAttribPointer(shaderProgram.locations.attribLocations.color, 4, this.float, false, 0, 0);
         gl.enableVertexAttribArray(shaderProgram.locations.attribLocations.color);
 
-        gl.bindBuffer(gl.ARRAY_BUFFER, this.uvBuffer);
-        gl.vertexAttribPointer(shaderProgram.locations.attribLocations.uv, 2, gl.FLOAT, false, 0, 0);
+        gl.bindBuffer(this.ab, this.uvBuffer);
+        gl.vertexAttribPointer(shaderProgram.locations.attribLocations.uv, 2, this.float, false, 0, 0);
         gl.enableVertexAttribArray(shaderProgram.locations.attribLocations.uv);
 
         gl.useProgram(shaderProgram.shaderProgram);
@@ -193,7 +197,7 @@ class Mesh{
         gl.uniformMatrix4fv(shaderProgram.locations.uniformLocations.projectionMatrix, false, projectionMatrix);
         gl.uniformMatrix4fv(shaderProgram.locations.uniformLocations.modelViewMatrix, false, this.modelViewMatrix);
 
-        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.indiciesBuffer);
+        gl.bindBuffer(this.eab, this.indiciesBuffer);
         gl.drawElements(gl.TRIANGLES,  this.numberOfIndicies,gl.UNSIGNED_SHORT,0);
     }
 }
