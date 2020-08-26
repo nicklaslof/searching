@@ -23,6 +23,7 @@ class Bars extends Sprite{
         super.untrigger(level,source);
         if (source == this) return;
         if (this.triggered){
+            if (this.triggerId == 253) return;
             this.mesh.translate(0,0,0);
             level.addTile(this.position.x, this.position.z, new Tile());
             this.triggered = false;

@@ -14,7 +14,7 @@ class Bat extends Billboardsprite{
         super.tick(deltaTime,level);
         if (this.knockBack.x !=0 || this.knockBack.z !=0) return;
         this.counter += deltaTime;
-        let y = Math.sin(this.counter*4* 0.9+this.random)/200;
+        let y = Math.sin(this.counter*4* 0.9+this.random)/100;
         let x = Math.cos(this.counter* 0.7+this.random)/50;
         let z = 0;
         

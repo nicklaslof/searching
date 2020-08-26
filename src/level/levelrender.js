@@ -42,7 +42,7 @@ class LevelRender{
 
         LevelRender.bat = new Array();
 
-        for (let i = 0; i < 5; i++) {
+        for (let i = 0; i < 2; i++) {
             LevelRender.bat.push(new Texture(this.atlas,16*i,32,16,16));
         }
 

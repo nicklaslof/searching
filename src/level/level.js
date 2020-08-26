@@ -74,12 +74,12 @@ class Level{
 
                     if (c == 0xff808080)level.entities.push(new ItemSprite(new Dagger(x,0,z,level.gl,0.3),x,0,z,LevelRender.dagger,level.gl));
 
-                    if (c == 0xfeaaaaaa){
+                    if (c == 0xfeaaaaaa || c == 0xfdaaaaaa){
                         level.entities.push(new Bars(x,0,z,level.gl,alpha));
                         level.tiles[ x + (z*64)] = new Tile();
                     }
 
-                    if (c == 0xfeffffff){
+                    if (c == 0xfeffffff || c == 0xfdffffff){
                         level.entities.push(new FloorTrigger(x,0,z,level.gl,alpha));
                     }
                 }

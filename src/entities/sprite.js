@@ -68,7 +68,7 @@ class Sprite extends Entity{
         this.mesh.position.z = this.position.z;
         if (this.animated){
             this.frameCounter += deltatime;
-            if (this.frameCounter >= 0.016*5){
+            if (this.frameCounter >= 0.016*15){
                 this.frameChanged = true;
                 this.currentFrame++;
                 if (this.currentFrame > this.numberOfFrames-1) this.currentFrame = 0;

@@ -54,12 +54,12 @@ class Entity{
         if (this.knockBack.x > -0.2 && this.knockBack.x < 0.2) this.knockBack.x = 0;
         if (this.knockBack.z > -0.2 && this.knockBack.z < 0.2) this.knockBack.z = 0;
         if (this.knockBack.x !=0 || this.knockBack.z !=0){
-            let knockX = this.position.x - this.knockBack.x * 15 * deltaTime;
-            let knockZ = this.position.z - this.knockBack.z * 15 *deltaTime;
+            let knockX = this.position.x - this.knockBack.x * 5 * deltaTime;
+            let knockZ = this.position.z - this.knockBack.z * 5 *deltaTime;
             if (this.canMove(level, knockX, this.position.z))this.position.x = knockX;
             if (this.canMove(level, this.position.x, knockZ))this.position.z = knockZ;
-            this.knockBack.x /= 68*deltaTime;
-            this.knockBack.z /= 68*deltaTime;
+            this.knockBack.x /= 65*deltaTime;
+            this.knockBack.z /= 65*deltaTime;
         }
         
         this.hitCounter +=deltaTime;

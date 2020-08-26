@@ -30,6 +30,7 @@ class Inventory{
 
     removeItemFromSlot(slot){
         this.items[slot-1] = null;
+        this.slotWithItems--;
     }
     
     getItemInSlot(index){
