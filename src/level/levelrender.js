@@ -64,33 +64,47 @@ class LevelRender{
         let v = [];
         let c = [];
         let u = [];
-        return {m,v,c,u};
+        let l = [];
+        return {m,v,c,u,l};
     }
     endWall(r){
         //console.log(r);
-        r.m.addVerticies(r.v, r.c, r.u);
+        r.m.addVerticies(r.v, r.c, r.u,r.l);
         r.m.updateMesh();
         this.wallmeshes.push(r.m);
     }
     endRoof(r){
         //console.log(r);
-        r.m.addVerticies(r.v, r.c, r.u);
+        r.m.addVerticies(r.v, r.c, r.u,r.l);
         r.m.updateMesh();
         this.roofMeshes.push(r.m);
     }
     endFloor(r){
         //console.log(r);
-        r.m.addVerticies(r.v, r.c, r.u);
+        r.m.addVerticies(r.v, r.c, r.u,r.l);
         r.m.updateMesh();
         this.floorMeshes.push(r.m);
     }
 
-    ac(colors){
-        colors.push([1,1,1,1],[1,1,1,1],[1,1,1,1],[1,1,1,1]);
+    ac(colors,light){
+        /*if(light != null){
+            //console.log(light);
+            let c = [light,light,light,1];
+            colors.push(c,c,c,c);
+            //console.log(light+" "+c);
+        }else{*/
+            colors.push([1,1,1,1],[1,1,1,1],[1,1,1,1],[1,1,1,1]);
+       // }
     }
 
-    roof(texture,render,x,y,z){
-        this.ac(render.c);
+    al(lights,light){
+        let l = [light,light,light,1];
+        lights.push(l,l,l,l);
+    }
+
+    roof(texture,render,x,y,z,light){
+        this.ac(render.c,light);
+        this.al(render.l,light);
         //render.u.push([0,0],[1,0],[1,1],[0,1]);
         texture.getUVs().forEach(uv => { render.u.push(uv); });
         render.v.push(
@@ -100,12 +114,12 @@ class LevelRender{
             x-s,y-s,z+s
         );
     }
-    floor(texture,render,x,y,z){
+    floor(texture,render,x,y,z,light){
         this.ac(render.c);
+        this.al(render.l,light);
         //render.u.push([1,0],[0,0],[0,1],[1,1]);
         texture.getUVs().forEach(uv => { render.u.push(uv); });
         render.v.push(
-
             x-s,y+s,z-s,
             x-s,y+s,z+s,
             x+s,y+s,z+s,
@@ -113,7 +127,7 @@ class LevelRender{
         ); 
     }
 
-    left(tile,render,x,y,z){
+    left(tile,render,x,y,z,light){
 
         //render.u.push([0,1],[1,1],[1,0],[0,0]);
         //render.u.push(tile.getUVs());
@@ -121,7 +135,8 @@ class LevelRender{
         
         //console.log(tile.getUVs());
         for(let i = 0; i < 2; i++){
-            this.ac(render.c);
+            this.ac(render.c,light);
+            this.al(render.l,light);
             tile.getUVs().forEach(uv => { render.u.push(uv); });
             render.v.push(
                 x-s,y+i-s,z-s,
@@ -132,9 +147,10 @@ class LevelRender{
         }
        
     }
-    right(tile,render,x,y,z){
+    right(tile,render,x,y,z,light){
         for(let i = 0; i < 2; i++){
-            this.ac(render.c);
+            this.ac(render.c,light);
+            this.al(render.l,light);
             //render.u.push([1,1],[1,0],[0,0],[0,1]);
             //render.u.push(tile.getUVs());
             tile.getUVs().forEach(uv => { render.u.push(uv); });
@@ -146,9 +162,10 @@ class LevelRender{
             );
         }
     }
-    front(tile,render,x,y,z){
+    front(tile,render,x,y,z,light){
         for(let i = 0; i < 2; i++){
-            this.ac(render.c);
+            this.ac(render.c,light);
+            this.al(render.l,light);
             //render.u.push([1,1],[0,1],[0,0],[1,0]);
             //render.u.push(tile.getUVs());
             tile.getUVs().forEach(uv => { render.u.push(uv); });
@@ -160,9 +177,10 @@ class LevelRender{
             );
         }
     }
-    back(tile,render,x,y,z){
+    back(tile,render,x,y,z,light){
         for(let i = 0; i < 2; i++){
-            this.ac(render.c);
+            this.ac(render.c,light);
+            this.al(render.l,light);
             //render.u.push([1,1],[1,0],[0,0],[0,1]);
             //render.u.push(tile.getUVs());
             tile.getUVs().forEach(uv => { render.u.push(uv); });

@@ -26,6 +26,8 @@ class Level{
                 this.collisionTiles[x + (z*64)] = new CollisionTile(x,z);
             }
         }
+        this.lightmap = new Array(64*64);
+        this.lightmap.fill(0);
 
         this.entities = new Array();
         this.items = new Array();
@@ -58,13 +60,15 @@ class Level{
                     if (c == 0xffffffff)level.tiles[ x + (z*64)] = Tiles.walltile;
                     if (c == 0xff333324)level.tiles[ x + (z*64)] = Tiles.stoneWallTile;
                     if (c == 0xff444424)level.tiles[ x + (z*64)] = Tiles.grassyStoneWallTile;
+
+                    if (c == 0xff00a0ff){level.tiles[ x + (z*64)] = Tiles.light;}
                     if (c == 0xff00ff00){
                         level.player = new Player(x,0,z);
                        // let dagger = new Dagger(0,0,0,level.gl);
                         //level.player.addItem(dagger);
                         level.entities.push(level.player);
                     }
-                   if (c == 0xff00aa00){
+                   /*if (c == 0xff00aa00){
                         if (Math.random()< 0.5) level.entities.push(new Billboardsprite("grass", x,Math.random()/0.95,z,LevelRender.roofGrass,level.gl));
                         else level.entities.push(new Billboardsprite("grass",x,Math.min(0,-0.1+Math.random()/0.95),z,LevelRender.floorGrass,level.gl));
                         
@@ -86,7 +90,7 @@ class Level{
 
                     if (c == 0xfeffffff || c == 0xfdffffff){
                         level.entities.push(new FloorTrigger(x,0,z,level.gl,alpha));
-                    }
+                    }*/
                 }
             }
             done();
@@ -97,30 +101,142 @@ class Level{
         this.entities.push(entity);
     }
 
+    buildLight(){
+        for (let x = 0; x < 64; x++) {
+            for (let z = 0; z < 64; z++) {
+                var tile = this.tiles[x + (z * 64)];
+                if (tile == Tiles.light){
+                    let baseradius = 15;
+                    let radius = 0;
+                    let negativepass = true;
+                    let src = {x:x,z:z};
+                    for (let zc = -baseradius; zc < baseradius; zc++) {
+                        for (let xc = -radius; xc <= radius; ++xc) {
+                            let dst = {x:x-xc,z:z-zc};
+                            let v = 7-this.distance(src,dst);
+                            v *= 0.30;
+                            let light = Math.min(2,0.8*v);
+                            this.setLight(x+xc,z+zc,x,z,light);
+                        }
+                        if (negativepass) radius++;
+                        else radius--;
+                        if (radius == baseradius) negativepass = false;
+                    }
+                }
+            }
+        }
+    }
+
+    setLight(x,z,sourceX, sourceZ, light){
+        if (this.lightmap[x + (z * 64)] < light){
+            let blockingLight = false;
+            //this.lightmap[x + (z * 64)] = light;
+            let b = this.bresenham(sourceX, sourceZ, x,z);
+
+            for(let i = 0; i < b.length; i++){
+                let v = b[i];
+                if(sourceX == v.x && sourceZ == v.y){
+
+                }else{
+                    let tile = this.tiles[v.x + (v.y * 64)];
+                    if (tile != Tiles.airtile){
+                        blockingLight = true;
+                        break;
+                    } 
+                }
+            }
+
+          
+            if (!blockingLight){
+                this.lightmap[x + (z * 64)] = light;
+            }
+            //console.log(b);
+        }
+    }
+
+    bresenham(startX,startY,endX,endY){
+        let output = [];
+        let w = endX - startX;
+		let h = endY - startY;
+		let dx1 = 0, dy1 = 0, dx2 = 0, dy2 = 0;
+		if (w < 0) {
+			dx1 = -1;
+			dx2 = -1;
+		} else if (w > 0) {
+			dx1 = 1;
+			dx2 = 1;
+		}
+		if (h < 0)
+			dy1 = -1;
+		else if (h > 0) dy1 = 1;
+		let longest = Math.abs(w);
+		let shortest = Math.abs(h);
+		if (longest <= shortest) {
+			longest = Math.abs(h);
+			shortest = Math.abs(w);
+			if (h < 0)
+				dy2 = -1;
+			else if (h > 0) dy2 = 1;
+			dx2 = 0;
+		}
+		let numerator = longest >> 1;
+		for (let i = 0; i <= longest; i++) {
+			let point = {x:startX, y:startY};
+			output.push(point);
+			numerator += shortest;
+			if (numerator > longest) {
+				numerator -= longest;
+				startX += dx1;
+				startY += dy1;
+			} else {
+				startX += dx2;
+				startY += dy2;
+			}
+		}
+		return output;
+    }
+
+    distance(v1, v2) {
+        let x = v1.x - v2.x
+        let z = v1.z - v2.z;
+        return Math.hypot(x, z);
+    }
+
+
+
     parse(){
+        this.buildLight();
         let wr = this.levelrender.start();
         let fr = this.levelrender.start();   
         let rr = this.levelrender.start();       
         for (let x = 0; x < 64; x++) {
             for (let z = 0; z < 64; z++) {
                 var tile = this.tiles[x + (z * 64)];
+                
                 if (tile == Tiles.walltile || tile == Tiles.stoneWallTile || tile == Tiles.grassyStoneWallTile){
                     let f = !this.getTile(x,z+1).c(tile);
                     let b = !this.getTile(x,z-1).c(tile);
                     let l = !this.getTile(x-1,z).c(tile);
                     let r = !this.getTile(x+1,z).c(tile);
-                    if (l) this.levelrender.left(tile,wr,x,0,z);
-                    if (r) this.levelrender.right(tile,wr,x,0,z);
-                    if (f) this.levelrender.front(tile,wr,x,0,z);
-                    if (b) this.levelrender.back(tile,wr,x,0,z);
+                    var leftLight = this.getLight(x-1,z);
+                    var rightLight = this.getLight(x+1,z);
+                    var frontLight = this.getLight(x,z+1);
+                    var backLight = this.getLight(x,z-1);
+
+
+                    if (l) this.levelrender.left(tile,wr,x,0,z,leftLight);
+                    if (r) this.levelrender.right(tile,wr,x,0,z,rightLight);
+                    if (f) this.levelrender.front(tile,wr,x,0,z,frontLight);
+                    if (b) this.levelrender.back(tile,wr,x,0,z,backLight);
                     
                 }else{
+                    var light = this.getLight(x,z);
                     if (x < 16 && z < 16){
-                        this.levelrender.floor(LevelRender.grassGround, fr,x,-1,z);
-                        this.levelrender.roof(LevelRender.dirt,rr,x,2,z);
+                        this.levelrender.floor(LevelRender.grassGround, fr,x,-1,z,light);
+                        this.levelrender.roof(LevelRender.dirt,rr,x,2,z,light);
                     }else{
-                        this.levelrender.floor(LevelRender.floor, fr,x,-1,z);
-                        this.levelrender.roof(LevelRender.dirt,rr,x,2,z);
+                        this.levelrender.floor(LevelRender.floor, fr,x,-1,z,light);
+                        this.levelrender.roof(LevelRender.dirt,rr,x,2,z,light);
                     }
                     
 
@@ -136,6 +252,10 @@ class Level{
         var tile = this.tiles[x + (z*64)];
         if (tile == null) return Tiles.airtile;
         return tile;
+    }
+
+    getLight(x,z){
+        return this.lightmap[x + (z*64)];
     }
 
     addTile(x,z, tile){

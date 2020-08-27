@@ -144,7 +144,7 @@ class Entity{
         let x = v1.x - v2.x
         let z = v1.z - v2.z;
         return Math.hypot(x, z);
-      }
+    }
 
       distanceToOtherEntity(entity){
         let myPos = {x:this.position.x,z:this.position.z}

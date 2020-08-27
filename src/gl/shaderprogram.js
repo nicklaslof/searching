@@ -15,6 +15,7 @@ class ShaderProgram{
             attribLocations: {
                 vertexPosition: gl.getAttribLocation(this.shaderProgram, 'vp'),
                 color: gl.getAttribLocation(this.shaderProgram, 'col'),
+                light: gl.getAttribLocation(this.shaderProgram, 'l'),
                 uv: gl.getAttribLocation(this.shaderProgram, "aUV")
               },
               uniformLocations: {
