@@ -18,16 +18,16 @@ collidedBy(entity, level){
         let d = this.distanceToOtherEntity(entity);
         if(d < 1){
             if (!this.nospace){
-                level.displayMessage("Press shift to pickup "+this.name,1);
+                level.displayMessage("Press shift to pickup "+this.name,"",1);
             }
             
             if (Game.inputHandler.wasKeyJustPressed(16)){
                 if (entity.hasSpace()){
                     entity.pickup(this.item);
-                    level.displayMessage("Woho! I found a "+this.name,2);
+                    level.displayMessage("Woho! I found a "+this.name,"", 2);
                     this.removeThisEntity(level);
                 }else{
-                    level.displayMessage("I don't have enough space!",2);
+                    level.displayMessage("I don't have enough space!","",2);
                     this.nospace = true;
                 }
             }

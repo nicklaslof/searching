@@ -26,7 +26,9 @@ class UI{
 
     render(level){
         this.canvas.clearRect(0, 0, this.canvas.canvas.width, this.canvas.canvas.height);
-        this.drawText(level.getUIText(),150);
+        let text = level.getUIText();
+        this.drawText(text[0],150);
+        this.drawText(text[1],190);
         if (level.player != null){
             this.renderItemBar(level);
         }

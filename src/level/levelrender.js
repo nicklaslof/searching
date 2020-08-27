@@ -5,14 +5,13 @@ import Texture from "../gl/texture.js";
 const s = 0.5;
 class LevelRender{
     static camera;
+    static darkness;
 
     static stoneWall;
     static grassyStoneWall;
     static bricks;
     static dirt;
     static grassGround;
-    static roofGrass;
-    static floorGrass;
     static bat;
     static floor;
     static bars;
@@ -21,6 +20,7 @@ class LevelRender{
     static floorTriggerNoActive;
     static pot;
     static aquamarine;
+    static torch;
 
     constructor(gl,shaderprogram) {
         this.shaderprogram = shaderprogram;
@@ -33,14 +33,13 @@ class LevelRender{
         LevelRender.bricks = this.newAtlasTexture(80,0,16,16);
         LevelRender.dirt = this.newAtlasTexture(80,64,16,16);
         LevelRender.grassGround = this.newAtlasTexture(48,64,16,16);
-        LevelRender.roofGrass = this.newAtlasTexture(0,0,16,16);
-        LevelRender.floorGrass = this.newAtlasTexture(32,0,16,16);
         LevelRender.floor = this.newAtlasTexture(96,0,16,16);
         LevelRender.bars = this.newAtlasTexture(80,16,16,16);
         LevelRender.floorTriggerNoActive = this.newAtlasTexture(48,20,6,6);
         LevelRender.floorTriggerActive = this.newAtlasTexture(55,20,6,6);
         LevelRender.pot = this.newAtlasTexture(32,32,16,16);
         LevelRender.aquamarine = this.newAtlasTexture(104,32,8,16);
+        LevelRender.torch = this.newAtlasTexture(84,32,8,16);
 
         LevelRender.dagger = this.newAtlasTexture(96,32,8,16);
 
@@ -53,6 +52,7 @@ class LevelRender{
         this.wallmeshes = [];
         this.roofMeshes = [];
         this.floorMeshes = [];
+        LevelRender.darkness = 7;
     }
 
     newAtlasTexture(x,y,w,h){
@@ -194,23 +194,23 @@ class LevelRender{
     }
     render(){
         this.wallmeshes.forEach(mesh =>{
-            mesh.render(this.gl,this.shaderprogram,LevelRender.camera.pm, this.atlas);
+            mesh.render(this.gl,this.shaderprogram,LevelRender.camera.pm, this.atlas,LevelRender.darkness);
         });
         this.roofMeshes.forEach(mesh =>{
-            mesh.render(this.gl,this.shaderprogram,LevelRender.camera.pm,this.atlas);
+            mesh.render(this.gl,this.shaderprogram,LevelRender.camera.pm,this.atlas,LevelRender.darkness);
         });
         this.floorMeshes.forEach(mesh =>{
-            mesh.render(this.gl,this.shaderprogram,LevelRender.camera.pm,this.atlas);
+            mesh.render(this.gl,this.shaderprogram,LevelRender.camera.pm,this.atlas,LevelRender.darkness);
         });
         
     }
 
     renderEntity(entity){
-        entity.render(this.gl, this.shaderprogram, LevelRender.camera.pm, this.floorTexture);
+        entity.render(this.gl, this.shaderprogram, LevelRender.camera.pm,LevelRender.darkness);
     }
 
     renderItem(item){
-        item.render(this.gl, this.shaderprogram, LevelRender.camera.pm,this.floorTexture,true);
+        item.render(this.gl, this.shaderprogram, LevelRender.camera.pm,LevelRender.darkness, true);
     }
 }
 export default LevelRender

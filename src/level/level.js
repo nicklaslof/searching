@@ -11,6 +11,7 @@ import ItemSprite from "../entities/itemsprite.js";
 import FloorTrigger from "../entities/floortrigger.js";
 import Pot from "../entities/pot.js";
 import Aquamarine from "../entities/aquamarine.js";
+import Torch from "../entities/torch.js";
 
 class Level{
     constructor(gl,shaderprogram,levelname) {
@@ -35,9 +36,10 @@ class Level{
             this.parse();
         });
 
-        this.text = "darkness! it is so dark in here"
+        this.text = "";
+        this.text2 = "";
         this.player = null;
-        this.displayMessageCounter = 0;
+        this.displayMessageCounter = 0.1;
     }
 
     read(levelname,done){
@@ -64,6 +66,7 @@ class Level{
                     if (c == 0xff00ff00){
                         level.player = new Player(x,0,z);
                         level.addEntity(level.player);
+                        level.displayMessage("darkness. it is so dark in here","and where is my 04?",10);
                     }
 
                     if (c == 0xff202020)level.addEntity(new Bat(x,0.2,z,level.gl));
@@ -72,7 +75,8 @@ class Level{
 
                     if (c == 0xff003359)level.addEntity(new Pot(x,0,z,level.gl));
                     if (c == 0xff836014)level.addEntity(new ItemSprite(new Aquamarine(x,0,z,level.gl,0.3),x,0,z,LevelRender.aquamarine,level.gl));
-
+                    
+                    if (c == 0xff50ffff)level.addEntity(new ItemSprite(new Torch(x,0,z,level.gl,0.3),x,0,z,LevelRender.torch,level.gl));
                     if (c == 0xfeaaaaaa || c == 0xfdaaaaaa){
                         level.addEntity(new Bars(x,0,z,level.gl,alpha));
                         level.addTile(new Tile());
@@ -243,7 +247,7 @@ class Level{
     }
 
     getUIText(){
-        return this.text;
+        return [this.text,this.text2];
     }
 
     trigger(triggerId,source){
@@ -262,8 +266,9 @@ class Level{
         });
     }
 
-    displayMessage(text,timeToShow){
+    displayMessage(text,text2,timeToShow){
         this.text = text;
+        this.text2 = text2;
         this.displayMessageCounter = timeToShow;
     }
 
@@ -282,6 +287,7 @@ class Level{
 
         if (this.displayMessageCounter <= 0){
             this.text = "";
+            this.text2 = "";
         }
         let level = this;
         this.entities.sort(function (a, b) {

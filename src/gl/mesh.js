@@ -1,5 +1,6 @@
 import * as matrix4 from "./matrix4.js";
 import * as quaternion from "./quaternion.js";
+import LevelRender from "../level/levelrender.js";
 
 class Mesh{
     constructor(gl, x,y,z){
@@ -25,6 +26,7 @@ class Mesh{
         this.lightBuffer = gl.createBuffer();
         this.uvBuffer = gl.createBuffer();
         this.indiciesBuffer = gl.createBuffer();
+        this.darknessBuffer = gl.createBuffer();
     }
 
     addVerticies(verticies, colors, uvs,lights){
@@ -151,7 +153,7 @@ class Mesh{
         this.gl.bufferData(this.ab, this.lightArrayBuffer32, this.dd);
     }
 
-    render(gl, shaderProgram, projectionMatrix, texture, uvs, colors){
+    render(gl, shaderProgram, projectionMatrix, texture,darkness, uvs, colors){
         if (this.dirty) return;
         if (uvs != null){
             this.uvs = [];
@@ -193,7 +195,7 @@ class Mesh{
         gl.activeTexture(gl.TEXTURE0);
         gl.bindTexture(gl.TEXTURE_2D, texture.tex);
         gl.uniform1i(shaderProgram.locations.uniformLocations.uSampler, 0);
-
+        gl.uniform1f(shaderProgram.locations.uniformLocations.darkness, darkness);
         gl.uniformMatrix4fv(shaderProgram.locations.uniformLocations.projectionMatrix, false, projectionMatrix);
         gl.uniformMatrix4fv(shaderProgram.locations.uniformLocations.modelViewMatrix, false, this.modelViewMatrix);
 

@@ -27,8 +27,8 @@ class Player extends Entity{
     
             if (inputHandler.isKeyDown(65))LevelRender.camera.rotate(3 * deltaTime);
             if (inputHandler.isKeyDown(68))LevelRender.camera.rotate(-3* deltaTime);
-            if (inputHandler.isKeyDown(87))v.z = -4;
-            if (inputHandler.isKeyDown(83))v.z = 4;
+            if (inputHandler.isKeyDown(87))v.z = -2.5;
+            if (inputHandler.isKeyDown(83))v.z = 2.5;
             if (inputHandler.isKeyDown(32)){
                 this.isAttacking = true;
                 this.attack(level);
@@ -64,6 +64,7 @@ class Player extends Entity{
 
     dropCurrentItem(level){
         if (this.item != null){
+            if (this.item.name == "torch") LevelRender.darkness = 5;
             let itemSprite = new ItemSprite(this.item,this.position.x-LevelRender.camera.getDirection().x/2,-0.2,this.position.z-LevelRender.camera.getDirection().z/2,this.item.texture,level.gl);
             itemSprite.knockback(LevelRender.camera.getDirection().x,LevelRender.camera.getDirection().z);
             level.addEntity(itemSprite); 
@@ -72,6 +73,7 @@ class Player extends Entity{
     }
 
     pickup(item){
+        if (item.name == "torch") LevelRender.darkness = 15;
         this.inventory.addItemToFirstAvailableSlot(item);
     }
 
