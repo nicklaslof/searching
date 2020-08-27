@@ -8,11 +8,13 @@ class Item{
         this.rotation = {x,y,z};
         this.name = name;
         this.color = [1,1,1,1];
+        this.light = [0,0,0,1];
         
         let s = 0.5;
         let v = [];
         let c = [];
-        let u = [];        
+        let u = [];
+        let l = [];      
 
         this.texture.getUVs().forEach(uv => { u.push(uv); });
         v.push(
@@ -21,9 +23,10 @@ class Item{
             0.75+s,0+s,0+s,
             0.75-s,0+s,0+s);
         c.push(this.color,this.color,this.color,this.color);
+        l.push(this.light,this.light,this.light,this.light);
 
         this.mesh = new Mesh(gl,x,y,z);
-        this.mesh.addVerticies(v,c,u);
+        this.mesh.addVerticies(v,c,u,l);
         this.mesh.updateMesh();
     }
 
@@ -31,13 +34,13 @@ class Item{
 
     }
     renderPlayerAttack(pos,scale){     
-        this.setPosition(pos.x,pos.y+0.08,pos.z);
+        this.setPosition(pos.x,pos.y+0.22,pos.z);
         this.setRotations(-0.8,-0.4,0.1)
         this.mesh.setScale(scale);
     }
 
     renderPlayerHolding(pos,scale){
-        this.setPosition(pos.x,pos.y+0.05,pos.z);
+        this.setPosition(pos.x,pos.y+0.15,pos.z);
         this.setRotations(-0.1,-0,0.3);
         this.mesh.setScale(scale);
     }

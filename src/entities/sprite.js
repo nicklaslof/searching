@@ -8,7 +8,6 @@ class Sprite extends Entity{
             this.numberOfFrames = texture.length;
             this.texture = texture[0];
             this.textureAnimation = texture;
-            console.log(this.numberOfFrames);
             this.currentFrame = 0;
             this.frameCounter = 0;
 
@@ -19,13 +18,15 @@ class Sprite extends Entity{
         }
 
         this.color = [1,1,1,1];
+        this.light = [0,0,0,1];
         this.hitColorCountDown = 0;
         this.changeBackColorAfterHit = false;
         
         let s = 0.5;
         let v = [];
         let c = [];
-        let u = [];        
+        let u = [];
+        let l = [];        
 
         this.texture.getUVs().forEach(uv => { u.push(uv); });
         v.push(
@@ -34,9 +35,9 @@ class Sprite extends Entity{
             0+s,0+s,0+s,
             0-s,0+s,0+s);
         c.push(this.color, this.color, this.color, this.color);
-
+        l.push(this.light,this.light,this.light,this.light);
         this.mesh = new Mesh(gl,x,y,z);
-        this.mesh.addVerticies(v,c,u);
+        this.mesh.addVerticies(v,c,u,l);
         this.mesh.updateMesh();
     }
 

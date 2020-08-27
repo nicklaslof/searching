@@ -59,7 +59,7 @@ class Player extends Entity{
                 this.item.renderPlayerAttack(itemPos,0.10);
             }
         }
-        LevelRender.camera.setPos(this.position.x, +0.2, this.position.z);
+        LevelRender.camera.setPos(this.position.x, +0.3, this.position.z);
     }
 
     dropCurrentItem(level){

@@ -137,7 +137,7 @@ class Mesh{
         this.lights = [];
         //if (lights != null){
             lights.forEach(light => { light.forEach(l => {this.lights.push(l);})});
-        //}
+       // }
     }
 
     uploadColors(){
