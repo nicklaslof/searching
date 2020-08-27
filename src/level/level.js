@@ -283,6 +283,18 @@ class Level{
         if (this.displayMessageCounter <= 0){
             this.text = "";
         }
+        let level = this;
+        this.entities.sort(function (a, b) {
+            let aDest = level.distance(a.position,level.player.position);
+            let bDest = level.distance(b.position,level.player.position);
+            if (aDest > bDest) {
+                return -1;
+            }
+            if (bDest > aDest) {
+                return 1;
+            }
+            return 0;
+        });
 
         this.entities.forEach(entity => {
             entity.tick(deltaTime,this);
