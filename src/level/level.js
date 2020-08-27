@@ -56,42 +56,35 @@ class Level{
                 for (let z = 0; z < 64; z++) {
                     var c = new Uint32Array(context.getImageData(x, z, 1, 1).data.buffer);
                     var alpha = (c >> 24 )& 0xff;
-                    if (c == 0xffffffff)level.addTile(x,y,z,Tiles.walltile);
-                    if (c == 0xff333324)level.addTile(x,y,z,Tiles.stoneWallTile);
-                    if (c == 0xff444424)level.addTile(x,y,z,Tiles.grassyStoneWallTile);
+                    if (c == 0xffffffff)level.addTile(x,z,Tiles.walltile);
+                    if (c == 0xff333324)level.addTile(x,z,Tiles.stoneWallTile);
+                    if (c == 0xff444424)level.addTile(x,z,Tiles.grassyStoneWallTile);
 
-                    if (c == 0xff00a0ff){level.addTile(x,y,z,Tiles.light);
+                    if (c == 0xff00a0ff)level.addTile(x,z,Tiles.light);
                     if (c == 0xff00ff00){
                         level.player = new Player(x,0,z);
                         level.addEntity(level.player);
                     }
-                   if (c == 0xff00aa00){
-                        if (Math.random()< 0.5) level.addEntity(new Billboardsprite("grass", x,Math.random()/0.95,z,LevelRender.roofGrass,level.gl));
-                        else level.addEntity(new Billboardsprite("grass",x,Math.min(0,-0.1+Math.random()/0.95),z,LevelRender.floorGrass,level.gl));
-                        
-                    }
-                    
+
                     if (c == 0xff202020)level.addEntity(new Bat(x,0.2,z,level.gl));
 
-                    if (c == 0xff808080)level.addEntity(new ItemSprite(new Dagger(x,0,z,level.gl,0.3),x,-0.2,z,LevelRender.dagger,level.gl));
+                    if (c == 0xff808080)level.addEntity(new ItemSprite(new Dagger(x,0,z,level.gl,0.3),x,0,z,LevelRender.dagger,level.gl));
 
                     if (c == 0xff003359)level.addEntity(new Pot(x,0,z,level.gl));
                     if (c == 0xff836014)level.addEntity(new ItemSprite(new Aquamarine(x,0,z,level.gl,0.3),x,0,z,LevelRender.aquamarine,level.gl));
 
                     if (c == 0xfeaaaaaa || c == 0xfdaaaaaa){
-                        addEntity(new Bars(x,0,z,level.gl,alpha));
-                        level.addTile(x,y,z,new Tile());
+                        level.addEntity(new Bars(x,0,z,level.gl,alpha));
+                        level.addTile(new Tile());
                     }
-
                     if (c == 0xfeffffff || c == 0xfdffffff){
-                        level.entities.push(new FloorTrigger(x,0,z,level.gl,alpha));
+                        level.addEntity(new FloorTrigger(x,0,z,level.gl,alpha));
                     }
                 }
             }
             done();
         }
     }
-}
 
     addEntity(entity){
         this.entities.push(entity);
@@ -109,7 +102,7 @@ class Level{
                     for (let zc = -baseradius; zc < baseradius; zc++) {
                         for (let xc = -radius; xc <= radius; ++xc) {
                             let dst = {x:x-xc,z:z-zc};
-                            let v = 7-this.distance(src,dst) * 0.30;
+                            let v = (7-this.distance(src,dst))*0.30;
                             let light = Math.min(2,0.8*v);
                             this.setLight(x+xc,z+zc,x,z,light);
                         }
@@ -139,7 +132,6 @@ class Level{
                     } 
                 }
             }
-
             if (!blockingLight){
                 this.lightmap[x + (z * 64)] = light;
             }
@@ -193,7 +185,9 @@ class Level{
         let z = v1.z - v2.z;
         return Math.hypot(x, z);
     }
-    
+
+
+
     parse(){
         this.buildLight();
         let wr = this.levelrender.start();
@@ -204,21 +198,10 @@ class Level{
                 var tile = this.tiles[x + (z * 64)];
                 
                 if (tile == Tiles.walltile || tile == Tiles.stoneWallTile || tile == Tiles.grassyStoneWallTile){
-                    let f = !this.getTile(x,z+1).c(tile);
-                    let b = !this.getTile(x,z-1).c(tile);
-                    let l = !this.getTile(x-1,z).c(tile);
-                    let r = !this.getTile(x+1,z).c(tile);
-                    let leftLight = this.getLight(x-1,z);
-                    let rightLight = this.getLight(x+1,z);
-                    let frontLight = this.getLight(x,z+1);
-                    let backLight = this.getLight(x,z-1);
-
-
-                    if (l) this.levelrender.left(tile,wr,x,0,z,leftLight);
-                    if (r) this.levelrender.right(tile,wr,x,0,z,rightLight);
-                    if (f) this.levelrender.front(tile,wr,x,0,z,frontLight);
-                    if (b) this.levelrender.back(tile,wr,x,0,z,backLight);
-                    
+                    if (!this.getTile(x-1,z).c(tile)) this.levelrender.left(tile,wr,x,0,z,this.getLight(x-1,z));
+                    if (!this.getTile(x+1,z).c(tile)) this.levelrender.right(tile,wr,x,0,z,this.getLight(x+1,z));
+                    if (!this.getTile(x,z+1).c(tile)) this.levelrender.front(tile,wr,x,0,z,this.getLight(x,z+1));
+                    if (!this.getTile(x,z-1).c(tile)) this.levelrender.back(tile,wr,x,0,z,this.getLight(x,z-1));
                 }else{
                     var light = this.getLight(x,z);
                     if (x < 16 && z < 16){
@@ -228,8 +211,6 @@ class Level{
                         this.levelrender.floor(LevelRender.floor, fr,x,-1,z,light);
                         this.levelrender.roof(LevelRender.dirt,rr,x,2,z,light);
                     }
-                    
-
                 }
             }
         }
@@ -313,6 +294,8 @@ class Level{
     }
     render(){
         this.levelrender.render();
+        this.gl.enable(this.gl.BLEND);
+        this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE_MINUS_SRC_ALPHA);
         this.entities.forEach(entity => {
             this.levelrender.renderEntity(entity);
         });

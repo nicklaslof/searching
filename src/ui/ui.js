@@ -1,4 +1,3 @@
-import LevelRender from "../level/levelrender.js";
 class UI{
     constructor(canvas) {
         this.canvas = canvas;

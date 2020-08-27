@@ -135,9 +135,7 @@ class Mesh{
     }
     updateLights(lights){
         this.lights = [];
-        //if (lights != null){
-            lights.forEach(light => { light.forEach(l => {this.lights.push(l);})});
-       // }
+        lights.forEach(light => { light.forEach(l => {this.lights.push(l);})});
     }
 
     uploadColors(){
@@ -153,7 +151,7 @@ class Mesh{
         this.gl.bufferData(this.ab, this.lightArrayBuffer32, this.dd);
     }
 
-    render(gl, shaderProgram, projectionMatrix, viewMatrix, texture, uvs, colors){
+    render(gl, shaderProgram, projectionMatrix, texture, uvs, colors){
         if (this.dirty) return;
         if (uvs != null){
             this.uvs = [];

@@ -194,23 +194,23 @@ class LevelRender{
     }
     render(){
         this.wallmeshes.forEach(mesh =>{
-            mesh.render(this.gl,this.shaderprogram,LevelRender.camera.pm, LevelRender.camera.vm, this.atlas);
+            mesh.render(this.gl,this.shaderprogram,LevelRender.camera.pm, this.atlas);
         });
         this.roofMeshes.forEach(mesh =>{
-            mesh.render(this.gl,this.shaderprogram,LevelRender.camera.pm, LevelRender.camera.vm,this.atlas);
+            mesh.render(this.gl,this.shaderprogram,LevelRender.camera.pm,this.atlas);
         });
         this.floorMeshes.forEach(mesh =>{
-            mesh.render(this.gl,this.shaderprogram,LevelRender.camera.pm, LevelRender.camera.vm,this.atlas);
+            mesh.render(this.gl,this.shaderprogram,LevelRender.camera.pm,this.atlas);
         });
         
     }
 
     renderEntity(entity){
-        entity.render(this.gl, this.shaderprogram, LevelRender.camera.pm, LevelRender.camera.vm, this.floorTexture);
+        entity.render(this.gl, this.shaderprogram, LevelRender.camera.pm, this.floorTexture);
     }
 
     renderItem(item){
-        item.render(this.gl, this.shaderprogram, LevelRender.camera.pm, LevelRender.camera.vm, this.floorTexture,true);
+        item.render(this.gl, this.shaderprogram, LevelRender.camera.pm,this.floorTexture,true);
     }
 }
 export default LevelRender

@@ -85,17 +85,17 @@ class Sprite extends Entity{
 
     }
 
-    render(gl,shaderprogram,pm,vm){
+    render(gl,shaderprogram,pm){
         let c = null;
         if (this.colorChanged){
             c = [this.color, this.color, this.color, this.color];
             this.colorChanged = false;
         }
         if (this.frameChanged){
-            this.mesh.render(gl,shaderprogram,pm,vm,this.texture.texture, this.texture.getUVs(),c);
+            this.mesh.render(gl,shaderprogram,pm,this.texture.texture, this.texture.getUVs(),c);
             this.frameChanged = false;
         }else{
-            this.mesh.render(gl,shaderprogram,pm,vm,this.texture.texture,null,c);
+            this.mesh.render(gl,shaderprogram,pm,this.texture.texture,null,c);
         }
     }
 }

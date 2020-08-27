@@ -59,9 +59,9 @@ class Item{
         this.mesh.setQuaternion(q);
     }
 
-    render(gl,shaderprogram,pm,vm){
+    render(gl,shaderprogram,pm){
 
-        this.mesh.render(gl,shaderprogram,pm,vm,this.texture.texture);
+        this.mesh.render(gl,shaderprogram,pm,this.texture.texture);
     }
 }
 export default Item
