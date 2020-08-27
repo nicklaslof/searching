@@ -1,5 +1,5 @@
 import LevelRender from "../level/levelrender.js";
-import Mesh from "../gl/mesh.js";
+import MeshBuilder from "../gl/meshbuilder.js";
 import * as quaternion from "../gl/quaternion.js";
 class Item{
     constructor(name, x,y,z,texture,gl) {
@@ -8,30 +8,11 @@ class Item{
         this.rotation = {x,y,z};
         this.name = name;
         this.color = [1,1,1,1];
-        this.light = [0,0,0,1];
+        this.light = 0.5;
         
-        let s = 0.5;
-        let v = [];
-        let c = [];
-        let u = [];
-        let l = [];      
-
-        this.texture.getUVs().forEach(uv => { u.push(uv); });
-        v.push(
-            0.75-s,0-s,0+s,
-            0.75+s,0-s,0+s,
-            0.75+s,0+s,0+s,
-            0.75-s,0+s,0+s);
-        c.push(this.color,this.color,this.color,this.color);
-        l.push(this.light,this.light,this.light,this.light);
-
-        this.mesh = new Mesh(gl,x,y,z);
-        this.mesh.addVerticies(v,c,u,l);
-        this.mesh.updateMesh();
-    }
-
-    tick(deltaTime, level){
-
+        let r = MeshBuilder.start(gl,x,y,z);
+        MeshBuilder.front(this.texture.getUVs(),r,0.75,0,0,this.light,1);
+        this.mesh = MeshBuilder.build(r);
     }
     renderPlayerAttack(pos,scale){     
         this.setPosition(pos.x,pos.y+0.22,pos.z);

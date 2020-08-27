@@ -1,5 +1,6 @@
 import Entity from "./entity.js";
 import Mesh from "../gl/mesh.js";
+import MeshBuilder from "../gl/meshbuilder.js";
 class Sprite extends Entity{
     constructor(name, x,y,z,texture,gl, health, triggerId){
         super(name, x,y,z, health, triggerId);
@@ -18,27 +19,12 @@ class Sprite extends Entity{
         }
 
         this.color = [1,1,1,1];
-        this.light = [0,0,0,1];
+        this.light = 0.5;
         this.hitColorCountDown = 0;
         this.changeBackColorAfterHit = false;
-        
-        let s = 0.5;
-        let v = [];
-        let c = [];
-        let u = [];
-        let l = [];        
-
-        this.texture.getUVs().forEach(uv => { u.push(uv); });
-        v.push(
-            0-s,0-s,0+s,
-            0+s,0-s,0+s,
-            0+s,0+s,0+s,
-            0-s,0+s,0+s);
-        c.push(this.color, this.color, this.color, this.color);
-        l.push(this.light,this.light,this.light,this.light);
-        this.mesh = new Mesh(gl,x,y,z);
-        this.mesh.addVerticies(v,c,u,l);
-        this.mesh.updateMesh();
+        let r = MeshBuilder.start(gl,x,y,z);
+        MeshBuilder.front(this.texture.getUVs(),r,0,0,0,this.light,1);
+        this.mesh = MeshBuilder.build(r);
     }
 
     setColor(color){

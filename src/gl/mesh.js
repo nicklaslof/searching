@@ -1,6 +1,5 @@
 import * as matrix4 from "./matrix4.js";
 import * as quaternion from "./quaternion.js";
-import LevelRender from "../level/levelrender.js";
 
 class Mesh{
     constructor(gl, x,y,z){

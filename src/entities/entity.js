@@ -116,7 +116,7 @@ class Entity{
         this.normalize(this.knockBack);
     }
 
-    render(gl,shaderprogram,pm,vm,darkess){
+    render(gl,shaderprogram,pm,darkess){
         
     }
 

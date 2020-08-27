@@ -12,6 +12,8 @@ import FloorTrigger from "../entities/floortrigger.js";
 import Pot from "../entities/pot.js";
 import Aquamarine from "../entities/aquamarine.js";
 import Torch from "../entities/torch.js";
+import Box from "../entities/box.js";
+import MeshBuilder from "../gl/meshbuilder.js";
 
 class Level{
     constructor(gl,shaderprogram,levelname) {
@@ -70,12 +72,10 @@ class Level{
                     }
 
                     if (c == 0xff202020)level.addEntity(new Bat(x,0.2,z,level.gl));
-
                     if (c == 0xff808080)level.addEntity(new ItemSprite(new Dagger(x,0,z,level.gl,0.3),x,0,z,LevelRender.dagger,level.gl));
-
                     if (c == 0xff003359)level.addEntity(new Pot(x,0,z,level.gl));
+                    if (c == 0xff3f3f7f)level.addEntity(new Box(x,0,z,level.gl,alpha));
                     if (c == 0xff836014)level.addEntity(new ItemSprite(new Aquamarine(x,0,z,level.gl,0.3),x,0,z,LevelRender.aquamarine,level.gl));
-                    
                     if (c == 0xff50ffff)level.addEntity(new ItemSprite(new Torch(x,0,z,level.gl,0.3),x,0,z,LevelRender.torch,level.gl));
                     if (c == 0xfeaaaaaa || c == 0xfdaaaaaa){
                         level.addEntity(new Bars(x,0,z,level.gl,alpha));
@@ -190,37 +190,35 @@ class Level{
         return Math.hypot(x, z);
     }
 
-
-
     parse(){
         this.buildLight();
-        let wr = this.levelrender.start();
-        let fr = this.levelrender.start();   
-        let rr = this.levelrender.start();       
+        let wr = MeshBuilder.start(this.gl);
+        let fr = MeshBuilder.start(this.gl);   
+        let rr = MeshBuilder.start(this.gl);       
         for (let x = 0; x < 64; x++) {
             for (let z = 0; z < 64; z++) {
                 var tile = this.tiles[x + (z * 64)];
-                
                 if (tile == Tiles.walltile || tile == Tiles.stoneWallTile || tile == Tiles.grassyStoneWallTile){
-                    if (!this.getTile(x-1,z).c(tile)) this.levelrender.left(tile,wr,x,0,z,this.getLight(x-1,z));
-                    if (!this.getTile(x+1,z).c(tile)) this.levelrender.right(tile,wr,x,0,z,this.getLight(x+1,z));
-                    if (!this.getTile(x,z+1).c(tile)) this.levelrender.front(tile,wr,x,0,z,this.getLight(x,z+1));
-                    if (!this.getTile(x,z-1).c(tile)) this.levelrender.back(tile,wr,x,0,z,this.getLight(x,z-1));
+                    if (!this.getTile(x-1,z).c(tile)) MeshBuilder.left(tile.getUVs(),wr,x,0,z,this.getLight(x-1,z),2);
+                    if (!this.getTile(x+1,z).c(tile)) MeshBuilder.right(tile.getUVs(),wr,x,0,z,this.getLight(x+1,z),2);
+                    if (!this.getTile(x,z+1).c(tile)) MeshBuilder.front(tile.getUVs(),wr,x,0,z,this.getLight(x,z+1),2);
+                    if (!this.getTile(x,z-1).c(tile)) MeshBuilder.back(tile.getUVs(),wr,x,0,z,this.getLight(x,z-1),2);
                 }else{
                     var light = this.getLight(x,z);
                     if (x < 16 && z < 16){
-                        this.levelrender.floor(LevelRender.grassGround, fr,x,-1,z,light);
-                        this.levelrender.roof(LevelRender.dirt,rr,x,2,z,light);
+                        MeshBuilder.bottom(LevelRender.grassGround.getUVs(), fr,x,-1,z,light);
+                        MeshBuilder.top(LevelRender.dirt.getUVs(),rr,x,2,z,light);
                     }else{
-                        this.levelrender.floor(LevelRender.floor, fr,x,-1,z,light);
-                        this.levelrender.roof(LevelRender.dirt,rr,x,2,z,light);
+                        MeshBuilder.bottom(LevelRender.floor.getUVs(), fr,x,-1,z,light);
+                        MeshBuilder.top(LevelRender.dirt.getUVs(),rr,x,2,z,light);
                     }
                 }
             }
         }
-        this.levelrender.endWall(wr);
-        this.levelrender.endRoof(rr);
-        this.levelrender.endFloor(fr);
+
+        this.levelrender.wallmeshes.push(MeshBuilder.build(wr));
+        this.levelrender.roofMeshes.push(MeshBuilder.build(rr));
+        this.levelrender.floorMeshes.push(MeshBuilder.build(fr));
     }
 
     getTile(x,z){

@@ -11,7 +11,6 @@ constructor(item,x,y,z,tex, gl) {
     this.mesh.setScale(item.onGroundScale);
 }
 
-
 collidedBy(entity, level){
     if (this.dispose) return;
     if (entity.name == "player"){
@@ -20,11 +19,10 @@ collidedBy(entity, level){
             if (!this.nospace){
                 level.displayMessage("Press shift to pickup "+this.name,"",1);
             }
-            
             if (Game.inputHandler.wasKeyJustPressed(16)){
                 if (entity.hasSpace()){
                     entity.pickup(this.item);
-                    level.displayMessage("Woho! I found a "+this.name,"", 2);
+                    level.displayMessage("You picked up "+this.name,"", 2);
                     this.removeThisEntity(level);
                 }else{
                     level.displayMessage("I don't have enough space!","",2);
