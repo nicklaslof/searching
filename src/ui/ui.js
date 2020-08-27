@@ -51,7 +51,7 @@ class UI{
     }
 
     renderItems(level){
-        for(let slot=0; slot < 8; slot++){
+        for(let slot=0; slot < 9; slot++){
             let item = level.player.inventory.getItemInSlot(slot);
             if (item != null){
                 let x = ((this.sizeOfSlot*slot)+this.centerX-((this.numberOfSlots/2)+2)*this.sizeOfSlot)+(slot*5);

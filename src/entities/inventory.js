@@ -14,7 +14,7 @@ class Inventory{
     }
 
     hasSpace(){
-        return this.slotWithItems < 7
+        return this.slotWithItems < 8
     }
 
     addItemToFirstAvailableSlot(itemToAdd){

@@ -35,6 +35,7 @@ class Player extends Entity{
             }else{
                 this.isAttacking = false;
             }
+            if (inputHandler.wasKeyJustPressed(69))this.useItem(level);
 
             if (inputHandler.wasKeyJustPressed(81)) this.dropCurrentItem(level);
             
@@ -72,9 +73,16 @@ class Player extends Entity{
         }
     }
 
+    removeCurrentItem(){
+        this.inventory.removeItemFromSlot(this.inventory.selectedSlot);
+    }
+
     pickup(item){
         if (item.name == "torch") LevelRender.darkness = 15;
         this.inventory.addItemToFirstAvailableSlot(item);
+    }
+    useItem(level){
+        if (this.item != null) this.item.use(level,this);
     }
 
     hasSpace(){

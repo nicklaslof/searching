@@ -39,6 +39,9 @@ class Item{
         quaternion.rotateX(q,q,x);
         this.mesh.setQuaternion(q);
     }
+    use(level, entity){
+
+    }
 
     render(gl,shaderprogram,pm,darkness){
 

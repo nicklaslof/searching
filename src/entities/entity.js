@@ -22,6 +22,9 @@ class Entity{
 
     }
 
+    heal(amount){
+        this.currentHealth += amount;
+    }
     hit(hitByEntity, amount){
             if (this.hitCounter>= 0.3){
                 let dirX = hitByEntity.position.x - this.position.x;

@@ -20,6 +20,7 @@ class LevelRender{
     static floorTriggerNoActive;
     static pot;
     static aquamarine;
+    static apple;
     static torch;
 
     constructor(gl,shaderprogram) {
@@ -39,6 +40,7 @@ class LevelRender{
         LevelRender.floorTriggerActive = this.newAtlasTexture(55,20,6,6);
         LevelRender.pot = this.newAtlasTexture(32,32,16,16);
         LevelRender.aquamarine = this.newAtlasTexture(104,32,8,16);
+        LevelRender.apple = this.newAtlasTexture(72,38,8,10);
         LevelRender.torch = this.newAtlasTexture(84,32,8,16);
 
         LevelRender.dagger = this.newAtlasTexture(96,32,8,16);
@@ -58,7 +60,7 @@ class LevelRender{
     newAtlasTexture(x,y,w,h){
         return new Texture(this.atlas,x,y,w,h);
     }
-    
+
     render(){
         this.wallmeshes.forEach(mesh =>{
             mesh.render(this.gl,this.shaderprogram,LevelRender.camera.pm, this.atlas,LevelRender.darkness);
