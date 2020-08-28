@@ -26,7 +26,7 @@ class Entity{
         this.currentHealth += amount;
     }
     hit(hitByEntity, amount){
-            if (this.hitCounter>= 0.3){
+            if (this.hitCounter>= 0.5){
                 let dirX = hitByEntity.position.x - this.position.x;
                 let dirZ = hitByEntity.position.z - this.position.z;
                 this.hitCounter = 0;
@@ -97,11 +97,11 @@ class Entity{
 
     trigger(level, source){
         if (source == this) return;
-        console.log("Triggered! "+this);
+        //("Triggered! "+this);
     }
     untrigger(level, source){
         if (source == this) return;
-        console.log("unTriggered! "+this);
+        //console.log("unTriggered! "+this);
     }
 
     addToCollision(level,x,z){

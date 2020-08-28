@@ -28,8 +28,9 @@ class MeshBuilder{
         return r.m;
     }
 
-    static left(uvs,render,x,y,z,light,height){
+    static left(uvs,render,x,y,z,light,height,yOffset){
         if (height == null) height = 1;
+        if (yOffset!=null) y += yOffset;
         //render.u.push([0,1],[1,1],[1,0],[0,0]);
         //render.u.push(tile.getUVs());
 
@@ -48,8 +49,9 @@ class MeshBuilder{
         }
        
     }
-    static right(uvs,render,x,y,z,light,height){
+    static right(uvs,render,x,y,z,light,height,yOffset){
         if (height == null) height = 1;
+        if (yOffset!=null) y += yOffset;
         for(let i = 0; i < height; i++){
             MeshBuilder.ac(render.c);
             MeshBuilder.al(render.l,light);
@@ -64,8 +66,9 @@ class MeshBuilder{
             );
         }
     }
-    static front(uvs,render,x,y,z,light,height){
+    static front(uvs,render,x,y,z,light,height,yOffset){
         if (height == null) height = 1;
+        if (yOffset!=null) y += yOffset;
         for(let i = 0; i < height; i++){
             MeshBuilder.ac(render.c);
             MeshBuilder.al(render.l,light);
@@ -80,8 +83,9 @@ class MeshBuilder{
             );
         }
     }
-    static back(uvs,render,x,y,z,light,height){
+    static back(uvs,render,x,y,z,light,height,yOffset){
         if (height == null) height = 1;
+        if (yOffset!=null) y += yOffset;
         for(let i = 0; i < height; i++){
             MeshBuilder.ac(render.c);
             MeshBuilder.al(render.l,light);
@@ -98,7 +102,8 @@ class MeshBuilder{
     }
 
     
-    static top(uvs,render,x,y,z,light){
+    static top(uvs,render,x,y,z,light,yOffset){
+        if (yOffset!=null) y += yOffset;
         MeshBuilder.ac(render.c);
         MeshBuilder.al(render.l,light);
         //render.u.push([0,0],[1,0],[1,1],[0,1]);
@@ -110,7 +115,8 @@ class MeshBuilder{
             x-s,y-s,z+s
         );
     }
-    static bottom(uvs,render,x,y,z,light){
+    static bottom(uvs,render,x,y,z,light,yOffset){
+        if (yOffset!=null) y += yOffset;
         MeshBuilder.ac(render.c);
         MeshBuilder.al(render.l,light);
         //render.u.push([1,0],[0,0],[0,1],[1,1]);

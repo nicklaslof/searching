@@ -11,7 +11,7 @@ class FloorTrigger extends Sprite{
     tick(deltatime,level){
         super.tick(deltatime,level);
         if (!this.collisionActive && this.triggered){
-            console.log("unsetting triggered");
+            //console.log("unsetting triggered");
             this.triggered = false;
             this.frameChanged = true;
             this.texture = LevelRender.floorTriggerNoActive;

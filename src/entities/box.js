@@ -35,11 +35,11 @@ class Box extends Entity{
             let dirX = entity.position.x - this.position.x;
             let dirZ = entity.position.z - this.position.z;
             let d = this.distanceToOtherEntity(entity);
-            if(d < 2){
-                if (this.hitCounter>= 0.3){
-                    this.hitCounter = 0;
+            if(d < 1){
+                //if (this.hitCounter>= 0.3){
+               //     this.hitCounter = 0;
                     super.knockback(dirX/3, dirZ/3);
-                }
+               // }
             }
         }
     }

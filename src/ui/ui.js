@@ -27,8 +27,8 @@ class UI{
     render(level){
         this.canvas.clearRect(0, 0, this.canvas.canvas.width, this.canvas.canvas.height);
         let text = level.getUIText();
-        this.drawText(text[0],150);
-        this.drawText(text[1],190);
+        this.drawText(text[0],250);
+        this.drawText(text[1],270);
         if (level.player != null){
             this.renderItemBar(level);
             this.renderHealth(level);
@@ -80,14 +80,14 @@ class UI{
     }
 
     drawText(text,y){
-        this.drawTextAt(text,this.centerX - (text.length * 8)+this.fontWidth,y);
+        this.drawTextAt(text,this.centerX - (text.length * 4)+this.fontWidth,y);
     }
 
     drawTextAt(text,x,y){
-        this.canvas.globalAlpha = 0.7;
+        this.canvas.globalAlpha = 0.9;
         for (let i = 0; i < text.length; i++) {
-            this.canvas.drawImage(this.font,this.characters.indexOf(text[i].toUpperCase())*this.fontWidth,0,this.fontWidth,this.fontHeight,x,y,10,10);
-            x += 16;
+            this.canvas.drawImage(this.font,this.characters.indexOf(text[i].toUpperCase())*this.fontWidth,0,this.fontWidth,this.fontHeight,x,y,6,8);
+            x += 8;
         }
         this.canvas.globalAlpha = 1;
     }

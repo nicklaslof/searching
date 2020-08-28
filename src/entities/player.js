@@ -3,6 +3,7 @@ import LevelRender from "../level/levelrender.js";
 import Entity from "./entity.js";
 import Inventory from "./inventory.js";
 import ItemSprite from "./itemsprite.js";
+import Tiles from "../tiles/tiles.js";
 
 class Player extends Entity{
     constructor(x,y,z) {
@@ -10,6 +11,7 @@ class Player extends Entity{
         this.speed = 3;
         this.isAttacking = false;
         this.inventory = new Inventory();
+        this.onAppareingfloor = false;
     }
 
     tick(deltaTime, level){
@@ -60,7 +62,9 @@ class Player extends Entity{
                 this.item.renderPlayerAttack(itemPos,0.10);
             }
         }
-        LevelRender.camera.setPos(this.position.x, +0.3, this.position.z);
+        LevelRender.camera.setPos(this.position.x, this.onAppareingfloor?+0:+0.3, this.position.z);
+
+        this.onAppareingfloor=false;
     }
 
     dropCurrentItem(level){
@@ -78,7 +82,7 @@ class Player extends Entity{
     }
 
     pickup(item){
-        if (item.name == "torch") LevelRender.darkness = 15;
+        if (item.name == "torch") LevelRender.darkness = 20;
         this.inventory.addItemToFirstAvailableSlot(item);
     }
     useItem(level){
@@ -91,14 +95,21 @@ class Player extends Entity{
 
     collidedBy(entity, level){
         super.collidedBy(entity,level);
+        let d = this.distanceToOtherEntity(entity);
+        if (entity.name == "appareingfloor"){
+            if (d < 1 && entity.visble){
+                this.onAppareingfloor = true;
+            }
+        } 
         if (entity.name == "bat"){
             let dirX = entity.position.x - this.position.x;
             let dirZ = entity.position.z - this.position.z;
-            let d = this.distanceToOtherEntity(entity);
+            
             if(d < 1){
-                if (this.hitCounter>= 0.3){
-                    this.hitCounter = 0;
-                    super.knockback(dirX, dirZ);
+                if (this.hitCounter>= 0.5){
+                    //this.hitCounter = 0;
+                    super.knockback(dirX*2, dirZ*2);
+                    this.hit(entity,1);
                 }
             }
         }

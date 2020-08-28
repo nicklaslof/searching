@@ -14,6 +14,7 @@ import Aquamarine from "../entities/aquamarine.js";
 import Torch from "../entities/torch.js";
 import Box from "../entities/box.js";
 import MeshBuilder from "../gl/meshbuilder.js";
+import AppareringFloor from "../entities/appareringfloor.js";
 
 class Level{
     constructor(gl,shaderprogram,levelname) {
@@ -64,6 +65,7 @@ class Level{
                     if (c == 0x333324)level.addTile(x,z,Tiles.stoneWallTile);
                     if (c == 0x444424)level.addTile(x,z,Tiles.grassyStoneWallTile);
                     if (c == 0x00a0ff)level.addTile(x,z,Tiles.light);
+                    if (c == 0x0050ff)level.addTile(x,z,Tiles.lava);
                     if (c == 0x00ff00){
                         level.player = new Player(x,0,z);
                         level.addEntity(level.player);
@@ -73,11 +75,15 @@ class Level{
                     if (c == 0x808080)level.addEntity(new ItemSprite(new Dagger(x,0,z,level.gl,0.3),x,0,z,LevelRender.dagger,level.gl));
                     if (c == 0x003359)level.addEntity(new Pot(x,0,z,level.gl));
                     if (c == 0x3f3f7f)level.addEntity(new Box(x,0,z,level.gl,alpha));
+                    if (c == 0xffff99){
+                        level.addEntity(new AppareringFloor(x,0,z,level.gl,alpha));
+                        level.addTile(x,z,Tiles.appareringFloor);
+                    };
                     if (c == 0x836014)level.addEntity(new ItemSprite(new Aquamarine(x,0,z,level.gl,0.3),x,0,z,LevelRender.aquamarine,level.gl));
                     if (c == 0x50ffff)level.addEntity(new ItemSprite(new Torch(x,0,z,level.gl,0.3),x,0,z,LevelRender.torch,level.gl));
                     if (c == 0xaaaaaa){
                         level.addEntity(new Bars(x,0,z,level.gl,alpha));
-                        level.addTile(new Tile());
+                        level.addTile(x,z,new Tile().setBlocksLight(false));
                     }
                     if (c == 0xffffff){
                         level.addEntity(new FloorTrigger(x,0,z,level.gl,alpha));
@@ -96,7 +102,7 @@ class Level{
         for (let x = 0; x < 64; x++) {
             for (let z = 0; z < 64; z++) {
                 var tile = this.tiles[x + (z * 64)];
-                if (tile == Tiles.light){
+                if (tile == Tiles.light || tile == Tiles.lava){
                     let baseradius = 15;
                     let radius = 0;
                     let negativepass = true;
@@ -128,7 +134,7 @@ class Level{
 
                 }else{
                     let tile = this.tiles[v.x + (v.y * 64)];
-                    if (tile != Tiles.airtile){
+                    if (tile.blocksLight){
                         blockingLight = true;
                         break;
                     } 
@@ -197,18 +203,23 @@ class Level{
             for (let z = 0; z < 64; z++) {
                 var tile = this.tiles[x + (z * 64)];
                 if (tile == Tiles.walltile || tile == Tiles.stoneWallTile || tile == Tiles.grassyStoneWallTile){
-                    if (!this.getTile(x-1,z).c(tile)) MeshBuilder.left(tile.getUVs(),wr,x,0,z,this.getLight(x-1,z),2);
-                    if (!this.getTile(x+1,z).c(tile)) MeshBuilder.right(tile.getUVs(),wr,x,0,z,this.getLight(x+1,z),2);
-                    if (!this.getTile(x,z+1).c(tile)) MeshBuilder.front(tile.getUVs(),wr,x,0,z,this.getLight(x,z+1),2);
-                    if (!this.getTile(x,z-1).c(tile)) MeshBuilder.back(tile.getUVs(),wr,x,0,z,this.getLight(x,z-1),2);
+                    if (!this.getTile(x-1,z).c(tile)) MeshBuilder.left(tile.getUVs(),wr,x,0,z,this.getLight(x-1,z),tile.height,tile.YOffset);
+                    if (!this.getTile(x+1,z).c(tile)) MeshBuilder.right(tile.getUVs(),wr,x,0,z,this.getLight(x+1,z),tile.height,tile.YOffset);
+                    if (!this.getTile(x,z+1).c(tile)) MeshBuilder.front(tile.getUVs(),wr,x,0,z,this.getLight(x,z+1),tile.height,tile.YOffset);
+                    if (!this.getTile(x,z-1).c(tile)) MeshBuilder.back(tile.getUVs(),wr,x,0,z,this.getLight(x,z-1),tile.height,tile.YOffset);
+                }else if (tile == Tiles.lava || tile == Tiles.appareringFloor){
+                    var light = this.getLight(x,z);
+                    MeshBuilder.bottom(tile.getUVs(), fr,x,-0.5,z,light,tile.YOffset);
+                    MeshBuilder.top(LevelRender.dirt.getUVs(),rr,x,2.9,z,light, tile.YOffset);
                 }else{
+                    
                     var light = this.getLight(x,z);
                     if (x < 16 && z < 16){
-                        MeshBuilder.bottom(LevelRender.grassGround.getUVs(), fr,x,-1,z,light);
-                        MeshBuilder.top(LevelRender.dirt.getUVs(),rr,x,2,z,light);
+                        MeshBuilder.bottom(LevelRender.grassGround.getUVs(), fr,x,-1,z,light,tile.YOffset);
+                        MeshBuilder.top(LevelRender.dirt.getUVs(),rr,x,2,z,light, tile.YOffset);
                     }else{
-                        MeshBuilder.bottom(LevelRender.floor.getUVs(), fr,x,-1,z,light);
-                        MeshBuilder.top(LevelRender.dirt.getUVs(),rr,x,2,z,light);
+                        MeshBuilder.bottom(LevelRender.floor.getUVs(), fr,x,-1,z,light, tile.YOffset);
+                        MeshBuilder.top(LevelRender.dirt.getUVs(),rr,x,2,z,light, tile.YOffset);
                     }
                 }
             }
@@ -234,7 +245,7 @@ class Level{
     }
 
     removeTile(x,z){
-        console.log("Removing "+x+" "+z);
+        //console.log("Removing "+x+" "+z);
         this.tiles[x + (z*64)] = Tiles.airtile;
     }
 

@@ -22,6 +22,7 @@ class LevelRender{
     static aquamarine;
     static apple;
     static torch;
+    static lava;
 
     constructor(gl,shaderprogram) {
         this.shaderprogram = shaderprogram;
@@ -41,7 +42,8 @@ class LevelRender{
         LevelRender.pot = this.newAtlasTexture(32,32,16,16);
         LevelRender.aquamarine = this.newAtlasTexture(104,32,8,16);
         LevelRender.apple = this.newAtlasTexture(72,38,8,10);
-        LevelRender.torch = this.newAtlasTexture(84,32,8,16);
+        LevelRender.torch = this.newAtlasTexture(84,33,8,16);
+        LevelRender.lava = this.newAtlasTexture(64,16,1,1);
 
         LevelRender.dagger = this.newAtlasTexture(96,32,8,16);
 
