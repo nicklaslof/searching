@@ -17,10 +17,10 @@ class Box extends Entity{
         MeshBuilder.top(uvs,r,0,0,0,1);
         MeshBuilder.bottom(uvs,r,0,0,0,1);
         this.mesh = MeshBuilder.build(r);
-        this.mesh.setScale(0.7);
+        this.mesh.setS(0.7);
     }
     render(gl,shaderprogram,pm,darkness){
-        this.mesh.setPosition(this.position.x, this.position.y-0.1, this.position.z);
+        this.mesh.setPos(this.p.x, this.p.y-0.1, this.p.z);
         this.mesh.render(gl,shaderprogram,pm,this.texture.texture,darkness);    
     }
     knockback(x,z){
@@ -31,9 +31,9 @@ class Box extends Entity{
 
     collidedBy(entity, level){
         super.collidedBy(entity,level);
-        if (entity.name == "player"){
-            let dirX = entity.position.x - this.position.x;
-            let dirZ = entity.position.z - this.position.z;
+        if (entity.n == "player"){
+            let dirX = entity.p.x - this.p.x;
+            let dirZ = entity.p.z - this.p.z;
             let d = this.distanceToOtherEntity(entity);
             if(d < 1){
                 //if (this.hitCounter>= 0.3){

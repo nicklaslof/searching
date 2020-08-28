@@ -4,7 +4,7 @@ import Tile from "../tiles/tile.js";
 class Bars extends Sprite{
     constructor(x,y,z,gl, triggerId) {
         super("bars", x+0.5,y,z,LevelRender.bars,gl,0,triggerId);
-        console.log("bars at "+x+" "+z);
+        //console.log("bars at "+x+" "+z);
         this.mesh.setRotationY(270);
         this.triggered = false;
     }
@@ -13,8 +13,8 @@ class Bars extends Sprite{
         super.trigger(level,source);
         if (source == this) return;
         if (!this.triggered){
-            this.mesh.translate(0,1,0);
-            level.removeTile(this.position.x-0.5, this.position.z);
+            this.mesh.t(0,1,0);
+            level.removeTile(this.p.x-0.5, this.p.z);
             this.triggered = true;
         }
     }
@@ -24,8 +24,8 @@ class Bars extends Sprite{
         if (source == this) return;
         if (this.triggered){
             if (this.triggerId == 253) return;
-            this.mesh.translate(0,0,0);
-            level.addTile(this.position.x-0.5, this.position.z, new Tile());
+            this.mesh.t(0,0,0);
+            level.addTile(this.p.x-0.5, this.p.z, new Tile());
             this.triggered = false;
         }
     }

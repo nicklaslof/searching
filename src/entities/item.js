@@ -2,11 +2,11 @@ import LevelRender from "../level/levelrender.js";
 import MeshBuilder from "../gl/meshbuilder.js";
 import * as quaternion from "../gl/quaternion.js";
 class Item{
-    constructor(name, x,y,z,texture,gl) {
+    constructor(n, x,y,z,texture,gl) {
         this.texture = texture;
-        this.position = {x,y,z};
+        this.p = {x,y,z};
         this.rotation = {x,y,z};
-        this.name = name;
+        this.n = n;
         this.color = [1,1,1,1];
         this.light = 0.5;
         
@@ -15,21 +15,21 @@ class Item{
         this.mesh = MeshBuilder.build(r);
     }
     renderPlayerAttack(pos,scale){     
-        this.setPosition(pos.x,pos.y+0.22,pos.z);
+        this.setPos(pos.x,pos.y+0.22,pos.z);
         this.setRotations(-0.8,-0.4,0.1)
-        this.mesh.setScale(scale);
+        this.mesh.setS(scale);
     }
 
     renderPlayerHolding(pos,scale){
-        this.setPosition(pos.x,pos.y+0.15,pos.z);
+        this.setPos(pos.x,pos.y+0.15,pos.z);
         this.setRotations(-0.1,-0,0.3);
-        this.mesh.setScale(scale);
+        this.mesh.setS(scale);
     }
 
-    setPosition(x,y,z){
-        this.mesh.position.x = x;
-        this.mesh.position.y = y;
-        this.mesh.position.z = z;
+    setPos(x,y,z){
+        this.mesh.p.x = x;
+        this.mesh.p.y = y;
+        this.mesh.p.z = z;
     }
     setRotations(x,y,z){
         let cq = LevelRender.camera.getQuaternion();

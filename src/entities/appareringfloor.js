@@ -15,7 +15,7 @@ class AppareringFloor extends Sprite{
         if (source == this) return;
         this.neededTrigger++;
         if (this.neededTrigger ==this.neededTriggers){
-            level.removeTile(this.position.x, this.position.z);
+            level.removeTile(this.p.x, this.p.z);
             this.visble = true;
 
         }

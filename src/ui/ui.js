@@ -1,8 +1,8 @@
 class UI{
-    constructor(canvas) {
-        this.canvas = canvas;
-        this.canvas.imageSmoothingEnabled = false;
-        this.centerX = this.canvas.canvas.width/2;
+    constructor(c) {
+        this.c = c;
+        this.c.imageSmoothingEnabled = false;
+        this.centerX = this.c.canvas.width/2;
         this.font = new Image();
         this.font.onload  = () =>{
         };
@@ -25,7 +25,7 @@ class UI{
     }
 
     render(level){
-        this.canvas.clearRect(0, 0, this.canvas.canvas.width, this.canvas.canvas.height);
+        this.c.clearRect(0, 0, this.c.canvas.width, this.c.canvas.height);
         let text = level.getUIText();
         this.drawText(text[0],250);
         this.drawText(text[1],270);
@@ -49,34 +49,34 @@ class UI{
             
 
         for (let slot = 1; slot < this.numberOfSlots+1; slot++){
-            if (slot == selectedSlot) this.canvas.strokeStyle ="#ffffff"; else this.canvas.strokeStyle ="#444444";
-            this.drawBox(this.canvas,((this.sizeOfSlot*slot)+this.centerX-((this.numberOfSlots/2)+2)*this.sizeOfSlot)+(slot*5),10,this.sizeOfSlot);
+            if (slot == selectedSlot) this.c.strokeStyle ="#ffffff"; else this.c.strokeStyle ="#444444";
+            this.drawBox(this.c,((this.sizeOfSlot*slot)+this.centerX-((this.numberOfSlots/2)+2)*this.sizeOfSlot)+(slot*5),10,this.sizeOfSlot);
         }
 
     }
 
     renderItems(level){
         for(let slot=0; slot < 9; slot++){
-            let item = level.player.inventory.getItemInSlot(slot);
-            if (item != null){
+            let i = level.player.inventory.getItemInSlot(slot);
+            if (i != null){
                 let x = ((this.sizeOfSlot*slot)+this.centerX-((this.numberOfSlots/2)+2)*this.sizeOfSlot)+(slot*5);
-                this.canvas.drawImage(this.atlas, item.texture.x, item.texture.y,item.texture.width,item.texture.height,x+4,8,item.texture.width*2, item.texture.height*2);
+                this.c.drawImage(this.atlas, i.texture.x, i.texture.y,i.texture.width,i.texture.height,x+4,8,i.texture.width*2, i.texture.height*2);
             }
         }
     }
 
-    drawBox(canvas,x,y,size){
-        this.canvas.beginPath();
-        canvas.moveTo(x,y);
-        canvas.lineTo(x+size,y);
-        canvas.lineTo(x+size,y+size);
-        canvas.lineTo(x,y+size);
-        canvas.lineTo(x,y);
+    drawBox(c,x,y,size){
+        this.c.beginPath();
+        c.moveTo(x,y);
+        c.lineTo(x+size,y);
+        c.lineTo(x+size,y+size);
+        c.lineTo(x,y+size);
+        c.lineTo(x,y);
         
-        this.canvas.closePath();
-        this.canvas.stroke();
-        this.canvas.fillStyle = "#22222299";
-        this.canvas.fill();
+        this.c.closePath();
+        this.c.stroke();
+        this.c.fillStyle = "#22222299";
+        this.c.fill();
     }
 
     drawText(text,y){
@@ -84,12 +84,12 @@ class UI{
     }
 
     drawTextAt(text,x,y){
-        this.canvas.globalAlpha = 0.9;
+        this.c.globalAlpha = 0.9;
         for (let i = 0; i < text.length; i++) {
-            this.canvas.drawImage(this.font,this.characters.indexOf(text[i].toUpperCase())*this.fontWidth,0,this.fontWidth,this.fontHeight,x,y,6,8);
+            this.c.drawImage(this.font,this.characters.indexOf(text[i].toUpperCase())*this.fontWidth,0,this.fontWidth,this.fontHeight,x,y,6,8);
             x += 8;
         }
-        this.canvas.globalAlpha = 1;
+        this.c.globalAlpha = 1;
     }
 }
 

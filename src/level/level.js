@@ -1,7 +1,6 @@
 import LevelRender from "./levelrender.js";
 import Tiles from "../tiles/tiles.js";
 import Player from "../entities/player.js";
-import Billboardsprite from "../entities/billboardsprite.js";
 import Bat from "../entities/bat.js";
 import Bars from "../entities/bars.js";
 import Tile from "../tiles/tile.js";
@@ -17,7 +16,7 @@ import MeshBuilder from "../gl/meshbuilder.js";
 import AppareringFloor from "../entities/appareringfloor.js";
 
 class Level{
-    constructor(gl,shaderprogram,levelname) {
+    constructor(gl,shaderprogram) {
         this.levelrender = new LevelRender(gl,shaderprogram);
         new Tiles();
         this.gl = gl;
@@ -33,34 +32,34 @@ class Level{
         this.lightmap = new Array(64*64);
         this.lightmap.fill(0);
 
-        this.entities = new Array();
-        this.items = new Array();
-        this.read(levelname,() => {
+        this.e = new Array();
+        this.i = new Array();
+        this.read(() => {
             this.parse();
         });
 
-        this.text = "";
-        this.text2 = "";
+        this.t = "";
+        this.t2 = "";
         this.player = null;
         this.displayMessageCounter = 0.1;
     }
 
-    read(levelname,done){
-        var canvas = document.createElement( 'canvas' );
-        canvas.width = 64;
-        canvas.height = 64;
+    read(done){
+        let c = document.createElement( 'canvas' );
+        c.width = 64;
+        c.height = 64;
 
-        var context = canvas.getContext( '2d' );
-        var img = new Image();
-        img.src="assets/"+levelname+".png";
+        let context = c.getContext( '2d' );
+        let img = new Image();
+        img.src="assets/level1.png";
 
-        var level = this;
+        let level = this;
         img.onload = function() {
             context.drawImage(img,0,0);
             for (let x = 0; x < 64; x++) {
                 for (let z = 0; z < 64; z++) {
-                    var c = new Uint32Array(context.getImageData(x, z, 1, 1).data.buffer);
-                    var alpha = (c >>> 24 );
+                    let c = new Uint32Array(context.getImageData(x, z, 1, 1).data.buffer);
+                    let alpha = (c >>> 24 );
                     c = (c & 0x0FFFFFF);
                     if (c == 0x333324)level.addTile(x,z,Tiles.stoneWallTile);
                     if (c == 0x444424)level.addTile(x,z,Tiles.grassyStoneWallTile);
@@ -95,13 +94,13 @@ class Level{
     }
 
     addEntity(entity){
-        this.entities.push(entity);
+        this.e.push(entity);
     }
 
     buildLight(){
         for (let x = 0; x < 64; x++) {
             for (let z = 0; z < 64; z++) {
-                var tile = this.tiles[x + (z * 64)];
+                let tile = this.tiles[x + (z * 64)];
                 if (tile == Tiles.light || tile == Tiles.lava){
                     let baseradius = 15;
                     let radius = 0;
@@ -201,19 +200,19 @@ class Level{
         let rr = MeshBuilder.start(this.gl);       
         for (let x = 0; x < 64; x++) {
             for (let z = 0; z < 64; z++) {
-                var tile = this.tiles[x + (z * 64)];
+                let tile = this.tiles[x + (z * 64)];
                 if (tile == Tiles.walltile || tile == Tiles.stoneWallTile || tile == Tiles.grassyStoneWallTile){
                     if (!this.getTile(x-1,z).c(tile)) MeshBuilder.left(tile.getUVs(),wr,x,0,z,this.getLight(x-1,z),tile.height,tile.YOffset);
                     if (!this.getTile(x+1,z).c(tile)) MeshBuilder.right(tile.getUVs(),wr,x,0,z,this.getLight(x+1,z),tile.height,tile.YOffset);
                     if (!this.getTile(x,z+1).c(tile)) MeshBuilder.front(tile.getUVs(),wr,x,0,z,this.getLight(x,z+1),tile.height,tile.YOffset);
                     if (!this.getTile(x,z-1).c(tile)) MeshBuilder.back(tile.getUVs(),wr,x,0,z,this.getLight(x,z-1),tile.height,tile.YOffset);
                 }else if (tile == Tiles.lava || tile == Tiles.appareringFloor){
-                    var light = this.getLight(x,z);
+                    let light = this.getLight(x,z);
                     MeshBuilder.bottom(tile.getUVs(), fr,x,-0.5,z,light,tile.YOffset);
                     MeshBuilder.top(LevelRender.dirt.getUVs(),rr,x,2.9,z,light, tile.YOffset);
                 }else{
                     
-                    var light = this.getLight(x,z);
+                    let light = this.getLight(x,z);
                     if (x < 16 && z < 16){
                         MeshBuilder.bottom(LevelRender.grassGround.getUVs(), fr,x,-1,z,light,tile.YOffset);
                         MeshBuilder.top(LevelRender.dirt.getUVs(),rr,x,2,z,light, tile.YOffset);
@@ -231,7 +230,7 @@ class Level{
     }
 
     getTile(x,z){
-        var tile = this.tiles[x + (z*64)];
+        let tile = this.tiles[x + (z*64)];
         if (tile == null) return Tiles.airtile;
         return tile;
     }
@@ -254,11 +253,11 @@ class Level{
     }
 
     getUIText(){
-        return [this.text,this.text2];
+        return [this.t,this.t2];
     }
 
     trigger(triggerId,source){
-        this.entities.forEach(entity => {
+        this.e.forEach(entity => {
             if (entity.triggerId !=null && entity.triggerId == triggerId){
                 entity.trigger(this, source);
             }
@@ -266,7 +265,7 @@ class Level{
     }
 
     untrigger(triggerId,source){
-        this.entities.forEach(entity => {
+        this.e.forEach(entity => {
             if (entity.triggerId !=null && entity.triggerId == triggerId){
                 entity.untrigger(this, source);
             }
@@ -274,15 +273,15 @@ class Level{
     }
 
     displayMessage(text,text2,timeToShow){
-        this.text = text;
-        this.text2 = text2;
+        this.t = text;
+        this.t2 = text2;
         this.displayMessageCounter = timeToShow;
     }
 
     removeEntity(entity){
-        for(var i = this.entities.length - 1; i >= 0; i--) {
-            if(this.entities[i] === entity) {
-                this.entities.splice(i, 1);
+        for(let i = this.e.length - 1; i >= 0; i--) {
+            if(this.e[i] === entity) {
+                this.e.splice(i, 1);
             }
         }
     }
@@ -293,13 +292,13 @@ class Level{
         }
 
         if (this.displayMessageCounter <= 0){
-            this.text = "";
-            this.text2 = "";
+            this.t = "";
+            this.t2 = "";
         }
         let level = this;
-        this.entities.sort(function (a, b) {
-            let aDest = level.distance(a.position,level.player.position);
-            let bDest = level.distance(b.position,level.player.position);
+        this.e.sort(function (a, b) {
+            let aDest = level.distance(a.p,level.player.p);
+            let bDest = level.distance(b.p,level.player.p);
             if (aDest > bDest) {
                 return -1;
             }
@@ -309,27 +308,27 @@ class Level{
             return 0;
         });
 
-        this.entities.forEach(entity => {
-            entity.tick(deltaTime,this);
+        this.e.forEach(e => {
+            e.tick(deltaTime,this);
         });
 
-        this.items.forEach(item => {
-            item.tick(deltaTime,this,true);
+        this.i.forEach(i => {
+            i.tick(deltaTime,this,true);
         });
     }
     render(){
         this.levelrender.render();
         this.gl.enable(this.gl.BLEND);
         this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE_MINUS_SRC_ALPHA);
-        this.entities.forEach(entity => {
+        this.e.forEach(entity => {
             this.levelrender.renderEntity(entity);
         });
-        this.items.forEach(item => {
-            this.levelrender.renderItem(item);
+        this.i.forEach(i => {
+            this.levelrender.renderItem(i);
         });
 
-        if (this.player != null && this.player.item != null){
-            this.levelrender.renderEntity(this.player.item);
+        if (this.player != null && this.player.i != null){
+            this.levelrender.renderEntity(this.player.i);
         }
     }
 }

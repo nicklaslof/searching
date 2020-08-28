@@ -2,11 +2,11 @@
 import Level from "../level/level.js"
 import UI from "../ui/ui.js";
 class GameScreen{
-    constructor(gl, uicanvas, shaderprogram) {
+    constructor(gl, uic, shaderprogram) {
         this.gl = gl;
         this.shaderprogram = shaderprogram;
-        this.level = new Level(this.gl, this.shaderprogram,"level1");
-        this.ui = new UI(uicanvas);
+        this.level = new Level(this.gl, this.shaderprogram);
+        this.ui = new UI(uic);
     }
 
     tick(deltaTime){

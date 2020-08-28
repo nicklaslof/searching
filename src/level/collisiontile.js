@@ -2,23 +2,23 @@ class CollisionTile{
     constructor(x,z) {
         this.x = x;
         this.z = z;
-        this.entities = []
+        this.e = []
     }
     
     addEntityToTile(entity){
-        this.entities.push(entity);
+        this.e.push(entity);
     }
 
     removeEntityFromTile(entity){
-        for(var i = this.entities.length - 1; i >= 0; i--) {
-            if(this.entities[i] === entity) {
-                this.entities.splice(i, 1);
+        for(let i = this.e.length - 1; i >= 0; i--) {
+            if(this.e[i] === entity) {
+                this.e.splice(i, 1);
             }
         }
     }
 
     getEntities(){
-        return this.entities;
+        return this.e;
     }
 }
 export default CollisionTile

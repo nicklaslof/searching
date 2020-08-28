@@ -9,7 +9,7 @@ class Mesh{
         this.uvs = [];
         this.lights = [];
         this.modelViewMatrix = matrix4.create();
-        this.position = {x,y,z};
+        this.p = {x,y,z};
         this.scale = [1,1,1];
         this.gl = gl;
         this.quaternion = quaternion.create();
@@ -20,7 +20,7 @@ class Mesh{
         this.eab = gl.ELEMENT_ARRAY_BUFFER;
         this.float = gl.FLOAT;
 
-        this.positionBuffer = gl.createBuffer();
+        this.pBuffer = gl.createBuffer();
         this.colorBuffer = gl.createBuffer();
         this.lightBuffer = gl.createBuffer();
         this.uvBuffer = gl.createBuffer();
@@ -65,7 +65,7 @@ class Mesh{
 
         this.numberOfIndicies = counter;
 
-        gl.bindBuffer(this.ab, this.positionBuffer);
+        gl.bindBuffer(this.ab, this.pBuffer);
         gl.bufferData(this.ab, this.verticiesBuffer32, this.dd);
 
         this.uploadColors();
@@ -80,21 +80,21 @@ class Mesh{
         this.dirty = false;
     }
 
-    translate(x, y, z){
-        this.position.x += x;
-        this.position.y += y;
-        this.position.z += z;
+    t(x, y, z){
+        this.p.x += x;
+        this.p.y += y;
+        this.p.z += z;
         this.updateMatrix();
     }
 
-    setPosition(x, y, z){
-        this.position.x = x;
-        this.position.y = y;
-        this.position.z = z;
+    setPos(x, y, z){
+        this.p.x = x;
+        this.p.y = y;
+        this.p.z = z;
         this.updateMatrix();
     }
 
-    setScale(s){
+    setS(s){
         this.scale[0]=s;
         this.scale[1]=s;
         this.scale[2]=s;
@@ -127,7 +127,7 @@ class Mesh{
         this.updateMatrix();
     }
     updateMatrix(){
-        matrix4.fromRotationTranslationScale(this.modelViewMatrix, this.quaternion, [this.position.x, this.position.y, this.position.z],this.scale);
+        matrix4.fromRotationTranslationScale(this.modelViewMatrix, this.quaternion, [this.p.x, this.p.y, this.p.z],this.scale);
     }
 
     updateColors(colors){
@@ -173,7 +173,7 @@ class Mesh{
             this.uploadColors();
         }
 
-        gl.bindBuffer(this.ab, this.positionBuffer);
+        gl.bindBuffer(this.ab, this.pBuffer);
         gl.vertexAttribPointer(shaderProgram.locations.attribLocations.vertexPosition, 3, this.float, false, 0, 0);
         gl.enableVertexAttribArray(shaderProgram.locations.attribLocations.vertexPosition);
 

@@ -17,11 +17,11 @@ class Player extends Entity{
     tick(deltaTime, level){
         super.tick(deltaTime,level);
         this.inventory.tick(deltaTime,level);
-        this.item = this.inventory.getItemInSlot(this.inventory.selectedSlot);
+        this.i = this.inventory.getItemInSlot(this.inventory.selectedSlot);
 
         if (this.knockBack.x == 0 || this.knockBack.z == 0){
             let tv = this.tempVector;
-            let pos = this.position;
+            let pos = this.p;
             let inputHandler = Game.inputHandler;
             this.counter += deltaTime;
             let v = {x:0,y:0,z:0};
@@ -54,23 +54,23 @@ class Player extends Entity{
             }
         }
         
-        if (this.item != null){
-            let itemPos = {x:this.position.x - LevelRender.camera.getDirection().x/4,y:0,z:this.position.z - LevelRender.camera.getDirection().z/4};
+        if (this.i != null){
+            let itemPos = {x:this.p.x - LevelRender.camera.getDirection().x/4,y:0,z:this.p.z - LevelRender.camera.getDirection().z/4};
             if (!this.isAttacking){
-             this.item.renderPlayerHolding(itemPos,0.11);
+             this.i.renderPlayerHolding(itemPos,0.11);
             }else{
-                this.item.renderPlayerAttack(itemPos,0.10);
+                this.i.renderPlayerAttack(itemPos,0.10);
             }
         }
-        LevelRender.camera.setPos(this.position.x, this.onAppareingfloor?+0:+0.3, this.position.z);
+        LevelRender.camera.setPos(this.p.x, this.onAppareingfloor?+0:+0.3, this.p.z);
 
         this.onAppareingfloor=false;
     }
 
     dropCurrentItem(level){
-        if (this.item != null){
-            if (this.item.name == "torch") LevelRender.darkness = 5;
-            let itemSprite = new ItemSprite(this.item,this.position.x-LevelRender.camera.getDirection().x/2,-0.2,this.position.z-LevelRender.camera.getDirection().z/2,this.item.texture,level.gl);
+        if (this.i != null){
+            if (this.i.n == "torch") LevelRender.darkness = 5;
+            let itemSprite = new ItemSprite(this.i,this.p.x-LevelRender.camera.getDirection().x/2,-0.2,this.p.z-LevelRender.camera.getDirection().z/2,this.i.texture,level.gl);
             itemSprite.knockback(LevelRender.camera.getDirection().x,LevelRender.camera.getDirection().z);
             level.addEntity(itemSprite); 
             this.inventory.removeItemFromSlot(this.inventory.selectedSlot);
@@ -81,12 +81,12 @@ class Player extends Entity{
         this.inventory.removeItemFromSlot(this.inventory.selectedSlot);
     }
 
-    pickup(item){
-        if (item.name == "torch") LevelRender.darkness = 20;
-        this.inventory.addItemToFirstAvailableSlot(item);
+    pickup(i){
+        if (i.n == "torch") LevelRender.darkness = 20;
+        this.inventory.addItemToFirstAvailableSlot(i);
     }
     useItem(level){
-        if (this.item != null) this.item.use(level,this);
+        if (this.i != null) this.i.use(level,this);
     }
 
     hasSpace(){
@@ -96,14 +96,14 @@ class Player extends Entity{
     collidedBy(entity, level){
         super.collidedBy(entity,level);
         let d = this.distanceToOtherEntity(entity);
-        if (entity.name == "appareingfloor"){
+        if (entity.n == "appareingfloor"){
             if (d < 1 && entity.visble){
                 this.onAppareingfloor = true;
             }
         } 
-        if (entity.name == "bat"){
-            let dirX = entity.position.x - this.position.x;
-            let dirZ = entity.position.z - this.position.z;
+        if (entity.n == "bat"){
+            let dirX = entity.p.x - this.p.x;
+            let dirZ = entity.p.z - this.p.z;
             
             if(d < 1){
                 if (this.hitCounter>= 0.5){
@@ -116,16 +116,16 @@ class Player extends Entity{
     }
 
     attack(level){
-        if (this.item == null) return;
+        if (this.i == null) return;
         let cameraDirection = LevelRender.camera.getDirection();
-        if (!this.findEnemyAndAttack(level.getCollisionTile(Math.round(this.position.x - cameraDirection.x), Math.round(this.position.z - cameraDirection.z)))){
-            this.findEnemyAndAttack(level.getCollisionTile(Math.round(this.position.x - cameraDirection.x*1.5), Math.round(this.position.z - cameraDirection.z*1.5)));
+        if (!this.findEnemyAndAttack(level.getCollisionTile(Math.round(this.p.x - cameraDirection.x), Math.round(this.p.z - cameraDirection.z)))){
+            this.findEnemyAndAttack(level.getCollisionTile(Math.round(this.p.x - cameraDirection.x*1.5), Math.round(this.p.z - cameraDirection.z*1.5)));
         }
     }
     findEnemyAndAttack(ct){
         ct.getEntities().forEach(e => {
             if (e == this) return;
-            if (e.name == "bat" || e.name == "pot"){
+            if (e.n == "bat" || e.n == "pot"){
                 e.hit(this,1);
                 return true;
             }

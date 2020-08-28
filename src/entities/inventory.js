@@ -1,7 +1,7 @@
 import Game from "../game.js";
 class Inventory{
     constructor() {
-        this.items = new Array(8);
+        this.is = new Array(8);
         this.selectedSlot = 1;
         this.slotWithItems = 0;
     }
@@ -18,10 +18,10 @@ class Inventory{
     }
 
     addItemToFirstAvailableSlot(itemToAdd){
-        for (let index = 0; index < this.items.length; index++) {
-            let item = this.items[index];
-            if (item == null){ 
-                this.items[index] = itemToAdd;
+        for (let index = 0; index < this.is.length; index++) {
+            let i = this.is[index];
+            if (i == null){ 
+                this.is[index] = itemToAdd;
                 this.slotWithItems++;
                 return;
             }
@@ -29,12 +29,12 @@ class Inventory{
     }
 
     removeItemFromSlot(slot){
-        this.items[slot-1] = null;
+        this.is[slot-1] = null;
         this.slotWithItems--;
     }
     
     getItemInSlot(index){
-        return this.items[index-1];
+        return this.is[index-1];
     }
 }
 

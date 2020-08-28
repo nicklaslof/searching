@@ -2,8 +2,8 @@ import Entity from "./entity.js";
 import Mesh from "../gl/mesh.js";
 import MeshBuilder from "../gl/meshbuilder.js";
 class Sprite extends Entity{
-    constructor(name, x,y,z,texture,gl, health, triggerId){
-        super(name, x,y,z, health, triggerId);
+    constructor(n, x,y,z,texture,gl, health, triggerId){
+        super(n, x,y,z, health, triggerId);
         if (texture instanceof Array){
             this.animated = true;
             this.numberOfFrames = texture.length;
@@ -32,8 +32,8 @@ class Sprite extends Entity{
         this.colorChanged = true;
     }
 
-    setScale(scale){
-        this.mesh.setScale(scale);
+    setS(scale){
+        this.mesh.setS(scale);
         return this;
     }
 
@@ -55,9 +55,9 @@ class Sprite extends Entity{
                 this.changeBackColorAfterHit = false;
             }
 
-        this.mesh.position.x = this.position.x;
-        this.mesh.position.y = this.position.y;
-        this.mesh.position.z = this.position.z;
+        this.mesh.p.x = this.p.x;
+        this.mesh.p.y = this.p.y;
+        this.mesh.p.z = this.p.z;
         if (this.animated){
             this.frameCounter += deltatime;
             if (this.frameCounter >= 0.016*15){

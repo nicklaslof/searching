@@ -1,13 +1,13 @@
 class Entity{
-    constructor(name,x,y,z,health, triggerId) {
-        this.name = name;
-        this.position = {x,y,z};
+    constructor(n,x,y,z,health, triggerId) {
+        this.n = n;
+        this.p = {x,y,z};
         this.tempVector = {x:0,y:0,z:0};
         this.movement = {x:0,y:0,z:0};
         this.knockBack = {x:0,z:0};
         this.radius = 0.4;
-        this.currentTileX = Math.round(this.position.x);
-        this.currentTileZ = Math.round(this.position.z);
+        this.currentTileX = Math.round(this.p.x);
+        this.currentTileZ = Math.round(this.p.z);
         this.hitCounter = 0;
         this.notAddedToCollider = true;
         this.dispose = false;
@@ -27,8 +27,8 @@ class Entity{
     }
     hit(hitByEntity, amount){
             if (this.hitCounter>= 0.5){
-                let dirX = hitByEntity.position.x - this.position.x;
-                let dirZ = hitByEntity.position.z - this.position.z;
+                let dirX = hitByEntity.p.x - this.p.x;
+                let dirZ = hitByEntity.p.z - this.p.z;
                 this.hitCounter = 0;
                 this.knockback(dirX, dirZ);
                 this.currentHealth -= amount;
@@ -36,7 +36,7 @@ class Entity{
     }
 
     getPosition(){
-        return this.position;
+        return this.p;
     }
 
     removeThisEntity(level){
@@ -57,17 +57,17 @@ class Entity{
         if (this.knockBack.x > -0.2 && this.knockBack.x < 0.2) this.knockBack.x = 0;
         if (this.knockBack.z > -0.2 && this.knockBack.z < 0.2) this.knockBack.z = 0;
         if (this.knockBack.x !=0 || this.knockBack.z !=0){
-            let knockX = this.position.x - this.knockBack.x * 5 * deltaTime;
-            let knockZ = this.position.z - this.knockBack.z * 5 *deltaTime;
-            if (this.canMove(level, knockX, this.position.z))this.position.x = knockX;
-            if (this.canMove(level, this.position.x, knockZ))this.position.z = knockZ;
+            let knockX = this.p.x - this.knockBack.x * 5 * deltaTime;
+            let knockZ = this.p.z - this.knockBack.z * 5 *deltaTime;
+            if (this.canMove(level, knockX, this.p.z))this.p.x = knockX;
+            if (this.canMove(level, this.p.x, knockZ))this.p.z = knockZ;
             this.knockBack.x /= 65*deltaTime;
             this.knockBack.z /= 65*deltaTime;
         }
         
         this.hitCounter +=deltaTime;
-        let tileX = Math.round(this.position.x);
-        let tileZ = Math.round(this.position.z);
+        let tileX = Math.round(this.p.x);
+        let tileZ = Math.round(this.p.z);
         if (this.currentTileX != tileX){
             this.removeFromCollision(level,this.currentTileX, this.currentTileZ);
             this.currentTileX = tileX;
@@ -124,10 +124,10 @@ class Entity{
     }
 
     canMove(level,x,z){
-        var x1 = Math.round(x + this.radius);
-        var z1 = Math.round(z + this.radius);
-		var x2 = Math.round(x - this.radius);
-        var z2 = Math.round(z - this.radius);
+        let x1 = Math.round(x + this.radius);
+        let z1 = Math.round(z + this.radius);
+		let x2 = Math.round(x - this.radius);
+        let z2 = Math.round(z - this.radius);
         if (level.getTile(x1, z1).b(this)) return false;
         if (level.getTile(x2, z1).b(this)) return false;
         if (level.getTile(x1, z2).b(this)) return false;
@@ -150,8 +150,8 @@ class Entity{
     }
 
       distanceToOtherEntity(entity){
-        let myPos = {x:this.position.x,z:this.position.z}
-        let ePos = {x:entity.position.x,z:entity.position.z}
+        let myPos = {x:this.p.x,z:this.p.z}
+        let ePos = {x:entity.p.x,z:entity.p.z}
         let d = this.distance(myPos, ePos);
         return d;
       }
