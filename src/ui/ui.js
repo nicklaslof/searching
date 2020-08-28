@@ -17,7 +17,7 @@ class UI{
         this.fontWidth = 6;
         this.fontHeight = 8;
         this.numberOfSlots = 8;
-        this.sizeOfSlot = 24;
+        this.sizeOfSlot = 32;
     }
 
     tick(deltatime){
@@ -31,12 +31,17 @@ class UI{
         this.drawText(text[1],190);
         if (level.player != null){
             this.renderItemBar(level);
+            this.renderHealth(level);
         }
     }
 
     renderItemBar(level){
         this.drawInventorySlots(level)
         this.renderItems(level);
+    }
+
+    renderHealth(level){
+        this.drawTextAt("health: "+level.player.currentHealth+" of "+level.player.maxHealth,50,450);
     }
 
     drawInventorySlots(level){
@@ -55,7 +60,7 @@ class UI{
             let item = level.player.inventory.getItemInSlot(slot);
             if (item != null){
                 let x = ((this.sizeOfSlot*slot)+this.centerX-((this.numberOfSlots/2)+2)*this.sizeOfSlot)+(slot*5);
-                this.canvas.drawImage(this.atlas, item.texture.x, item.texture.y,item.texture.width,item.texture.height,x+4,8,item.texture.width*1.7, item.texture.height*1.7);
+                this.canvas.drawImage(this.atlas, item.texture.x, item.texture.y,item.texture.width,item.texture.height,x+4,8,item.texture.width*2, item.texture.height*2);
             }
         }
     }

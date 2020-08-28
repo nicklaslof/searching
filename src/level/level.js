@@ -59,29 +59,27 @@ class Level{
             for (let x = 0; x < 64; x++) {
                 for (let z = 0; z < 64; z++) {
                     var c = new Uint32Array(context.getImageData(x, z, 1, 1).data.buffer);
-                    var alpha = (c >> 24 )& 0xff;
-                    if (c == 0xffffffff)level.addTile(x,z,Tiles.walltile);
-                    if (c == 0xff333324)level.addTile(x,z,Tiles.stoneWallTile);
-                    if (c == 0xff444424)level.addTile(x,z,Tiles.grassyStoneWallTile);
-
-                    if (c == 0xff00a0ff)level.addTile(x,z,Tiles.light);
-                    if (c == 0xff00ff00){
+                    var alpha = (c >>> 24 );
+                    c = (c & 0x0FFFFFF);
+                    if (c == 0x333324)level.addTile(x,z,Tiles.stoneWallTile);
+                    if (c == 0x444424)level.addTile(x,z,Tiles.grassyStoneWallTile);
+                    if (c == 0x00a0ff)level.addTile(x,z,Tiles.light);
+                    if (c == 0x00ff00){
                         level.player = new Player(x,0,z);
                         level.addEntity(level.player);
                         level.displayMessage("darkness. it is so dark in here","and where is my 04?",10);
                     }
-
-                    if (c == 0xff202020)level.addEntity(new Bat(x,0.2,z,level.gl));
-                    if (c == 0xff808080)level.addEntity(new ItemSprite(new Dagger(x,0,z,level.gl,0.3),x,0,z,LevelRender.dagger,level.gl));
-                    if (c == 0xff003359)level.addEntity(new Pot(x,0,z,level.gl));
-                    if (c == 0xff3f3f7f)level.addEntity(new Box(x,0,z,level.gl,alpha));
-                    if (c == 0xff836014)level.addEntity(new ItemSprite(new Aquamarine(x,0,z,level.gl,0.3),x,0,z,LevelRender.aquamarine,level.gl));
-                    if (c == 0xff50ffff)level.addEntity(new ItemSprite(new Torch(x,0,z,level.gl,0.3),x,0,z,LevelRender.torch,level.gl));
-                    if (c == 0xfeaaaaaa || c == 0xfdaaaaaa){
+                    if (c == 0x202020)level.addEntity(new Bat(x,0.2,z,level.gl));
+                    if (c == 0x808080)level.addEntity(new ItemSprite(new Dagger(x,0,z,level.gl,0.3),x,0,z,LevelRender.dagger,level.gl));
+                    if (c == 0x003359)level.addEntity(new Pot(x,0,z,level.gl));
+                    if (c == 0x3f3f7f)level.addEntity(new Box(x,0,z,level.gl,alpha));
+                    if (c == 0x836014)level.addEntity(new ItemSprite(new Aquamarine(x,0,z,level.gl,0.3),x,0,z,LevelRender.aquamarine,level.gl));
+                    if (c == 0x50ffff)level.addEntity(new ItemSprite(new Torch(x,0,z,level.gl,0.3),x,0,z,LevelRender.torch,level.gl));
+                    if (c == 0xaaaaaa){
                         level.addEntity(new Bars(x,0,z,level.gl,alpha));
                         level.addTile(new Tile());
                     }
-                    if (c == 0xfeffffff || c == 0xfdffffff){
+                    if (c == 0xffffff){
                         level.addEntity(new FloorTrigger(x,0,z,level.gl,alpha));
                     }
                 }

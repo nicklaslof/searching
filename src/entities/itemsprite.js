@@ -17,7 +17,7 @@ collidedBy(entity, level){
         let d = this.distanceToOtherEntity(entity);
         if(d < 1){
             if (!this.nospace){
-                level.displayMessage("Press shift to pickup "+this.name,"",1);
+                level.displayMessage("Press shift to pickup "+this.name,"",0.1);
             }
             if (Game.inputHandler.wasKeyJustPressed(16)){
                 if (entity.hasSpace()){
