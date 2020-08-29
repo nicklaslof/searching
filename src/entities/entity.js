@@ -25,7 +25,7 @@ class Entity{
     heal(amount){
         this.currentHealth += amount;
     }
-    hit(hitByEntity, amount){
+    hit(level, hitByEntity, amount){
             if (this.hitCounter>= 0.5){
                 let dirX = hitByEntity.p.x - this.p.x;
                 let dirZ = hitByEntity.p.z - this.p.z;
@@ -149,12 +149,16 @@ class Entity{
         return Math.hypot(x, z);
     }
 
-      distanceToOtherEntity(entity){
+    distanceToOtherEntity(entity){
         let myPos = {x:this.p.x,z:this.p.z}
         let ePos = {x:entity.p.x,z:entity.p.z}
         let d = this.distance(myPos, ePos);
         return d;
-      }
+    }
+
+    getRand(){
+        return Math.random();
+    }
     
 }
 

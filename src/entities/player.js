@@ -109,7 +109,7 @@ class Player extends Entity{
                 if (this.hitCounter>= 0.5){
                     //this.hitCounter = 0;
                     super.knockback(dirX*2, dirZ*2);
-                    this.hit(entity,1);
+                    this.hit(level,entity,1);
                 }
             }
         }
@@ -118,15 +118,15 @@ class Player extends Entity{
     attack(level){
         if (this.i == null) return;
         let cameraDirection = LevelRender.camera.getDirection();
-        if (!this.findEnemyAndAttack(level.getCollisionTile(Math.round(this.p.x - cameraDirection.x), Math.round(this.p.z - cameraDirection.z)))){
-            this.findEnemyAndAttack(level.getCollisionTile(Math.round(this.p.x - cameraDirection.x*1.5), Math.round(this.p.z - cameraDirection.z*1.5)));
+        if (!this.findEnemyAndAttack(level,level.getCollisionTile(Math.round(this.p.x - cameraDirection.x), Math.round(this.p.z - cameraDirection.z)))){
+            this.findEnemyAndAttack(level,level.getCollisionTile(Math.round(this.p.x - cameraDirection.x*1.5), Math.round(this.p.z - cameraDirection.z*1.5)));
         }
     }
-    findEnemyAndAttack(ct){
+    findEnemyAndAttack(level,ct){
         ct.getEntities().forEach(e => {
             if (e == this) return;
             if (e.n == "bat" || e.n == "pot"){
-                e.hit(this,1);
+                e.hit(level,this,1);
                 return true;
             }
         });

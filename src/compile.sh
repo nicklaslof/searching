@@ -1,5 +1,5 @@
 #!/bin/sh
-cp -av assets ../dist/
+cp -av *.png ../dist/
 cp index.html index.css ../dist/
 rollup mainloop.js --format cjs --file ../dist/bundle.js
 cd ../dist

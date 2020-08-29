@@ -37,14 +37,14 @@ class Sprite extends Entity{
         return this;
     }
 
-    hit(hitByEntity, amount){
+    hit(level,hitByEntity, amount){
         if (this.hitCounter>= 0.3){
             this.setColor([1,0,0,1]);
             this.hitColorCountDown = 0.5;
             this.changeBackColorAfterHit = true;
 
         }
-        super.hit(hitByEntity,amount);
+        super.hit(level,hitByEntity,amount);
     }
 
     tick(deltatime,level){
