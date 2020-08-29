@@ -44,6 +44,7 @@ class Entity{
         this.removeFromCollision(level,this.currentTileX, this.currentTileZ);
         level.removeEntity(this);
     }
+    
 
     tick(deltaTime,level){
         if (this.notAddedToCollider){

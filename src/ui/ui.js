@@ -13,7 +13,7 @@ class UI{
         };
         this.atlas.src="a.png";
 
-        this.characters = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ!/";
+        this.characters = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ!/?";
         this.fontWidth = 5;
         this.fontHeight = 5;
         this.numberOfSlots = 8;

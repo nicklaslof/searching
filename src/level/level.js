@@ -9,8 +9,7 @@ import Dagger from "../entities/dagger.js";
 import ItemSprite from "../entities/itemsprite.js";
 import FloorTrigger from "../entities/floortrigger.js";
 import Pot from "../entities/pot.js";
-import Aquamarine from "../entities/aquamarine.js";
-import Torch from "../entities/torch.js";
+import Apple from "../entities/apple.js";
 import Box from "../entities/box.js";
 import MeshBuilder from "../gl/meshbuilder.js";
 import AppareringFloor from "../entities/appareringfloor.js";
@@ -69,7 +68,7 @@ class Level{
                     if (c == 0x00ff00){
                         level.player = new Player(x,0,z);
                         level.addEntity(level.player);
-                        level.displayMessage("darkness. it is so dark in here","and where is my 04?",10);
+                        level.displayMessage("where am i? i cant find my things!!","and where is my 04?",10);
                     }
                     if (c == 0x202020)level.addEntity(new Bat(x,0.2,z,level.gl));
                     if (c == 0x808080)level.addEntity(new ItemSprite(new Dagger(x,0,z,level.gl,0.3),x,0,z,LevelRender.dagger,level.gl));
@@ -79,8 +78,7 @@ class Level{
                         level.addEntity(new AppareringFloor(x,0,z,level.gl,alpha));
                         level.addTile(x,z,Tiles.appareringFloor);
                     };
-                    if (c == 0x836014)level.addEntity(new ItemSprite(new Aquamarine(x,0,z,level.gl,0.3),x,0,z,LevelRender.aquamarine,level.gl));
-                    if (c == 0x50ffff)level.addEntity(new ItemSprite(new Torch(x,0,z,level.gl,0.3),x,0,z,LevelRender.torch,level.gl));
+                    if (c == 0x0000ff)level.addEntity(new ItemSprite(new Apple(x,0,z,level.gl,0.3),x,0,z,LevelRender.apple,level.gl));
                     if (c == 0xaaaaaa){
                         level.addEntity(new Bars(x,0,z,level.gl,alpha));
                         level.addTile(x,z,new Tile().setBlocksLight(false));

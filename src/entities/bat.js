@@ -9,6 +9,7 @@ class Bat extends Billboardsprite{
         this.counter = 0;
         this.random = this.getRand();
         this.radius = 0.2;
+        this.frameCounter = Math.round(this.random);
     }
 
     tick(deltaTime,level){

@@ -1,6 +1,5 @@
 import Camera from "../gl/camera.js"
 import GLTexture from "../gl/gltexture.js"
-import Mesh from "../gl/mesh.js"
 import Texture from "../gl/texture.js";
 const s = 0.5;
 class LevelRender{
@@ -19,9 +18,7 @@ class LevelRender{
     static floorTriggerActive;
     static floorTriggerNoActive;
     static pot;
-    static aquamarine;
     static apple;
-    static torch;
     static lava;
 
     constructor(gl,shaderprogram) {
@@ -40,9 +37,7 @@ class LevelRender{
         LevelRender.floorTriggerNoActive = this.newAtlasTexture(48,20,6,6);
         LevelRender.floorTriggerActive = this.newAtlasTexture(55,20,6,6);
         LevelRender.pot = this.newAtlasTexture(32,32,16,16);
-        LevelRender.aquamarine = this.newAtlasTexture(104,32,8,16);
         LevelRender.apple = this.newAtlasTexture(72,38,8,10);
-        LevelRender.torch = this.newAtlasTexture(84,33,8,16);
         LevelRender.lava = this.newAtlasTexture(64,16,1,1);
 
         LevelRender.dagger = this.newAtlasTexture(96,32,8,16);
@@ -56,7 +51,7 @@ class LevelRender{
         this.wallmeshes = [];
         this.roofMeshes = [];
         this.floorMeshes = [];
-        LevelRender.darkness = 7;
+        LevelRender.darkness = 18;
     }
 
     newAtlasTexture(x,y,w,h){

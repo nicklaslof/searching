@@ -3,7 +3,6 @@ import LevelRender from "../level/levelrender.js";
 import Entity from "./entity.js";
 import Inventory from "./inventory.js";
 import ItemSprite from "./itemsprite.js";
-import Tiles from "../tiles/tiles.js";
 
 class Player extends Entity{
     constructor(x,y,z) {
@@ -107,7 +106,6 @@ class Player extends Entity{
             
             if(d < 1){
                 if (this.hitCounter>= 0.5){
-                    //this.hitCounter = 0;
                     super.knockback(dirX*2, dirZ*2);
                     this.hit(level,entity,1);
                 }

@@ -5,7 +5,7 @@ import Entity from "./entity.js"
 
 class Box extends Entity{
     constructor(x,y,z,gl,triggerId) {
-        super("box",x,y,z,0,triggerId);
+        super("box",x,y-0.2,z,0,triggerId);
         let r = MeshBuilder.start(gl, x,y,z);
         this.texture = LevelRender.dirt;
         let uvs = this.texture.getUVs();
@@ -17,7 +17,7 @@ class Box extends Entity{
         MeshBuilder.top(uvs,r,0,0,0,1);
         MeshBuilder.bottom(uvs,r,0,0,0,1);
         this.mesh = MeshBuilder.build(r);
-        this.mesh.setS(0.7);
+        this.mesh.setS(0.5);
     }
     render(gl,shaderprogram,pm,darkness){
         this.mesh.setPos(this.p.x, this.p.y-0.1, this.p.z);
