@@ -52,7 +52,7 @@ class Level{
 
         let context = c.getContext( '2d' );
         let img = new Image();
-        img.src="assets/level1.png";
+        img.src="l.png";
 
         let level = this;
         img.onload = function() {

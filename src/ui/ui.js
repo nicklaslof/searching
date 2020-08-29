@@ -6,16 +6,16 @@ class UI{
         this.font = new Image();
         this.font.onload  = () =>{
         };
-        this.font.src="./assets/font.png";
+        this.font.src="f.png";
 
         this.atlas = new Image();
         this.atlas.onload  = () =>{
         };
-        this.atlas.src="./assets/atlas.png";
+        this.atlas.src="a.png";
 
-        this.characters = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ!+:";
-        this.fontWidth = 6;
-        this.fontHeight = 8;
+        this.characters = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ!/";
+        this.fontWidth = 5;
+        this.fontHeight = 5;
         this.numberOfSlots = 8;
         this.sizeOfSlot = 32;
     }
@@ -41,7 +41,7 @@ class UI{
     }
 
     renderHealth(level){
-        this.drawTextAt("health: "+level.player.currentHealth+" of "+level.player.maxHealth,50,450);
+        this.drawTextAt("health: "+level.player.currentHealth+"/"+level.player.maxHealth,50,450);
     }
 
     drawInventorySlots(level){

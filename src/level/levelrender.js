@@ -29,7 +29,7 @@ class LevelRender{
         this.gl = gl;
         LevelRender.camera = new Camera(gl, 0,-0.2,0);
         LevelRender.camera.setRotation(180);
-        this.atlas = new GLTexture(gl, "./assets/atlas.png");
+        this.atlas = new GLTexture(gl, "a.png");
         LevelRender.stoneWall = this.newAtlasTexture(16,64,16,16);
         LevelRender.grassyStoneWall = this.newAtlasTexture(16,96,16,16);
         LevelRender.bricks = this.newAtlasTexture(80,0,16,16);
