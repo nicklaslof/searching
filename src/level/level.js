@@ -15,6 +15,7 @@ import Box from "../entities/box.js";
 import MeshBuilder from "../gl/meshbuilder.js";
 import AppareringFloor from "../entities/appareringfloor.js";
 
+const maxLight = 2;
 class Level{
     constructor(gl,shaderprogram) {
         this.levelrender = new LevelRender(gl,shaderprogram);
@@ -98,93 +99,42 @@ class Level{
     }
 
     buildLight(){
-        for (let x = 0; x < 64; x++) {
-            for (let z = 0; z < 64; z++) {
-                let tile = this.tiles[x + (z * 64)];
-                if (tile == Tiles.light || tile == Tiles.lava){
-                    let baseradius = 15;
-                    let radius = 0;
-                    let negativepass = true;
-                    let src = {x:x,z:z};
-                    for (let zc = -baseradius; zc < baseradius; zc++) {
-                        for (let xc = -radius; xc <= radius; ++xc) {
-                            let dst = {x:x-xc,z:z-zc};
-                            let v = (7-this.distance(src,dst))*0.30;
-                            let light = Math.min(2,0.8*v);
-                            this.setLight(x+xc,z+zc,x,z,light);
-                        }
-                        if (negativepass) radius++;
-                        else radius--;
-                        if (radius == baseradius) negativepass = false;
+        let lightLoop = true;
+        while(lightLoop){
+            lightLoop = false;
+            for (let x = 0; x < 64; x++) {
+                for (let z = 0; z < 64; z++) {
+                    let light = this.calculateLight(x,z);
+                    if (light != this.getLight(x,z)){
+                        lightLoop = this.setLight(x,z,light);
                     }
                 }
             }
         }
     }
 
-    setLight(x,z,sourceX, sourceZ, light){
-        if (this.lightmap[x + (z * 64)] < light){
-            let blockingLight = false;
-            let b = this.bresenham(sourceX, sourceZ, x,z);
-
-            for(let i = 0; i < b.length; i++){
-                let v = b[i];
-                if(sourceX == v.x && sourceZ == v.y){
-
-                }else{
-                    let tile = this.tiles[v.x + (v.y * 64)];
-                    if (tile.blocksLight){
-                        blockingLight = true;
-                        break;
-                    } 
-                }
-            }
-            if (!blockingLight){
-                this.lightmap[x + (z * 64)] = light;
-            }
+    calculateLight(x,z){
+        let tile = this.tiles[x + (z * 64)];
+        if (tile == Tiles.light || tile == Tiles.lava){
+            return maxLight;
         }
-    }
 
-    bresenham(startX,startY,endX,endY){
-        let output = [];
-        let w = endX - startX;
-		let h = endY - startY;
-		let dx1 = 0, dy1 = 0, dx2 = 0, dy2 = 0;
-		if (w < 0) {
-			dx1 = -1;
-			dx2 = -1;
-		} else if (w > 0) {
-			dx1 = 1;
-			dx2 = 1;
-		}
-		if (h < 0)
-			dy1 = -1;
-		else if (h > 0) dy1 = 1;
-		let longest = Math.abs(w);
-		let shortest = Math.abs(h);
-		if (longest <= shortest) {
-			longest = Math.abs(h);
-			shortest = Math.abs(w);
-			if (h < 0)
-				dy2 = -1;
-			else if (h > 0) dy2 = 1;
-			dx2 = 0;
-		}
-		let numerator = longest >> 1;
-		for (let i = 0; i <= longest; i++) {
-			let point = {x:startX, y:startY};
-			output.push(point);
-			numerator += shortest;
-			if (numerator > longest) {
-				numerator -= longest;
-				startX += dx1;
-				startY += dy1;
-			} else {
-				startX += dx2;
-				startY += dy2;
-			}
-		}
-		return output;
+        let falloff = 0.2;
+        if (tile.blocksLight) falloff = 2;
+
+        let l = this.getLight(x-1,z);
+        let r = this.getLight(x+1,z);
+        let f = this.getLight(x,z+1);
+        let b = this.getLight(x,z-1);
+
+        let finalLight = 0;
+
+        if (l > finalLight) finalLight = l - falloff;
+        if (r > finalLight) finalLight = r - falloff;
+        if (f > finalLight) finalLight = f - falloff;
+        if (b > finalLight) finalLight = b - falloff;
+
+        return finalLight>2?2:finalLight<0?0:finalLight;
     }
 
     distance(v1, v2) {
@@ -237,6 +187,15 @@ class Level{
 
     getLight(x,z){
         return this.lightmap[x + (z*64)];
+    }
+    setLight(x,z,light){
+        let existingLight = this.lightmap[x + (z*64)];
+        if (existingLight != light){
+            this.lightmap[x + (z*64)] = light
+            //console.log(x+" "+z+" "+existingLight+" "+light +" returning true");
+            return true;
+        }
+        return false;
     }
 
     addTile(x,z, tile){

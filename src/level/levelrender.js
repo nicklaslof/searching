@@ -50,7 +50,7 @@ class LevelRender{
         LevelRender.bat = new Array();
 
         for (let i = 0; i < 2; i++) {
-            LevelRender.bat.push(new Texture(this.atlas,16*i,32,16,16));
+            LevelRender.bat.push(new Texture(this.atlas,16*i,32,16,16,128,128));
         }
 
         this.wallmeshes = [];
@@ -60,7 +60,7 @@ class LevelRender{
     }
 
     newAtlasTexture(x,y,w,h){
-        return new Texture(this.atlas,x,y,w,h);
+        return new Texture(this.atlas,x,y,w,h,128,128);
     }
 
     render(){
