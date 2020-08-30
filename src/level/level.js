@@ -71,10 +71,9 @@ class Level{
                         if (c == 'p'){
                             level.player = new Player(x,0,z);
                             level.addEntity(level.player);
-                           // level.displayMessage("where am i? i cant find my things!!","and where is my 04?",10);
+                            level.displayMessage("where am i? i cant find my things!!","and where is my 04?",10);
                         }
                         if (c == 'l')level.addTile(x,z,Tiles.lava);
-                        if (c == 'n')level.addTile(x,z,Tiles.noFloor);
                         if (c == 'b')level.addEntity(new Bat(x,0.2,z,level.gl));
                         if (c == 'd')level.addEntity(new ItemSprite(new Dagger(x,0,z,level.gl,0.3),x,0,z,LevelRender.dagger,level.gl));
                         if (c == 'j')level.addEntity(new Pot(x,0,z,level.gl));
@@ -157,42 +156,23 @@ class Level{
             for (let z = 0; z < levelsize; z++) {
                 let tile = this.tiles[x + (z * levelsize)];
                 if (tile == Tiles.walltile || tile == Tiles.stoneWallTile || tile == Tiles.grassyStoneWallTile){
-                    if ((x >11 && x < 33) && (z > 37 && z < 61)){
-                        this.addWall(tile,wr,x,z,4);
-                    }else{
-                        this.addWall(tile,wr,x,z);
-                    }
+                    if (!this.getTile(x-1,z).c(tile)) MeshBuilder.left(tile.getUVs(),wr,x,0,z,this.getLight(x-1,z),tile.height,tile.YOffset);
+                    if (!this.getTile(x+1,z).c(tile)) MeshBuilder.right(tile.getUVs(),wr,x,0,z,this.getLight(x+1,z),tile.height,tile.YOffset);
+                    if (!this.getTile(x,z+1).c(tile)) MeshBuilder.front(tile.getUVs(),wr,x,0,z,this.getLight(x,z+1),tile.height,tile.YOffset);
+                    if (!this.getTile(x,z-1).c(tile)) MeshBuilder.back(tile.getUVs(),wr,x,0,z,this.getLight(x,z-1),tile.height,tile.YOffset);
                 }else if (tile == Tiles.lava || tile == Tiles.appareringFloor){
                     let light = this.getLight(x,z);
                     MeshBuilder.bottom(tile.getUVs(), fr,x,-0.5,z,light,tile.YOffset);
-                    if (!(x >12 && x < 32) && (z > 38 && z < 60)){
-                        MeshBuilder.top(LevelRender.dirt.getUVs(),rr,x,2.9,z,light, tile.YOffset,[0.4,0.4,0.45,1]);
-                    }
-                } if (tile == Tiles.noFloor){
-                    let light = this.getLight(x,z);
-                    MeshBuilder.top(LevelRender.dirt.getUVs(),rr,x,2,z,light, tile.YOffset, [0.4,0.4,0.45,1]);
-                    continue;
-                
+                    MeshBuilder.top(LevelRender.dirt.getUVs(),rr,x,2.9,z,light, tile.YOffset,[0.4,0.4,0.45,1]);
                 }else{
                     
                     let light = this.getLight(x,z);
                     if ((x < 16 && z < 16) || ((x >32 && x < 66) && (z > 19 && z < 38))){
                         MeshBuilder.bottom(LevelRender.grassGround.getUVs(), fr,x,-1,z,light,tile.YOffset);
                         MeshBuilder.top(LevelRender.dirt.getUVs(),rr,x,2,z,light, tile.YOffset,[0.9,0.5,0,1]);
-                    }else if ((x >12 && x < 32) && (z > 38 && z < 60)){
-                        MeshBuilder.bottom(LevelRender.floor.getUVs(), fr,x,-1,z,light, tile.YOffset);
-                        if (tile == Tiles.lava)MeshBuilder.top(LevelRender.dirt.getUVs(),rr,x,2,z,light, tile.YOffset+2.9, [0.4,0.4,0.45,1]);
-                        else
-                        MeshBuilder.top(LevelRender.dirt.getUVs(),rr,x,2,z,light, tile.YOffset+2, [0.4,0.4,0.45,1]);
-                    
                     }else{
                         MeshBuilder.bottom(LevelRender.floor.getUVs(), fr,x,-1,z,light, tile.YOffset);
-                        if (tile == Tiles.lava || tile == Tiles.appareringFloor){
-                            MeshBuilder.top(LevelRender.dirt.getUVs(),rr,x,2,z,light, tile.YOffset+0.9, [0.4,0.4,0.45,1]);
-                        }else{
-                            MeshBuilder.top(LevelRender.dirt.getUVs(),rr,x,2,z,light, tile.YOffset, [0.4,0.4,0.45,1]);
-                        }
-                        
+                        MeshBuilder.top(LevelRender.dirt.getUVs(),rr,x,2,z,light, tile.YOffset, [0.4,0.4,0.45,1]);
                     }
                 }
             }
@@ -201,13 +181,6 @@ class Level{
         this.levelrender.wallmeshes.push(MeshBuilder.build(wr));
         this.levelrender.roofMeshes.push(MeshBuilder.build(rr));
         this.levelrender.floorMeshes.push(MeshBuilder.build(fr));
-    }
-    addWall(tile,wr,x,z,height){
-        if (height == null) height = 0;
-        if (!this.getTile(x-1,z).c(tile)) MeshBuilder.left(tile.getUVs(),wr,x,0,z,this.getLight(x-1,z),tile.height+height,tile.YOffset);
-        if (!this.getTile(x+1,z).c(tile)) MeshBuilder.right(tile.getUVs(),wr,x,0,z,this.getLight(x+1,z),tile.height+height,tile.YOffset);
-        if (!this.getTile(x,z+1).c(tile)) MeshBuilder.front(tile.getUVs(),wr,x,0,z,this.getLight(x,z+1),tile.height+height,tile.YOffset);
-        if (!this.getTile(x,z-1).c(tile)) MeshBuilder.back(tile.getUVs(),wr,x,0,z,this.getLight(x,z-1),tile.height+height,tile.YOffset);
     }
 
     getTile(x,z){

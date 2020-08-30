@@ -9,7 +9,7 @@ class LavaTile extends Tile{
     }
 
     b(entity){
-        if (entity.n == "projectile") return false;
+        if (entity.n == "projectile" || entity.n == "bat") return false;
         return true;
     }
     

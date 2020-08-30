@@ -2,10 +2,10 @@ import Bat from "./bat.js";
 import Projectile from "./projectile.js";
 class Endboss extends Bat{
     constructor(x,y,z,gl){
-        super(x,y+1,z,gl);
+        super(x,y,z,gl);
         this.maxHealth = 20;
         this.currentHealth = 20;
-        this.mesh.setS(4.0);
+        this.mesh.setS(3.0);
         this.setColor([0.3,0.3,1,1]);
         this.shootCounter = 0;
     }

@@ -14,9 +14,9 @@ class Tiles{
     static appareringFloor;
     static noFloor;
     constructor() {
-        Tiles.walltile = new WallTile(LevelRender.bricks).setHeight(3).setYOffset(-1);
-        Tiles.stoneWallTile = new WallTile(LevelRender.stoneWall).setHeight(3).setYOffset(-1);
-        Tiles.grassyStoneWallTile = new WallTile(LevelRender.grassyStoneWall).setHeight(3).setYOffset(-1);
+        Tiles.walltile = new WallTile(LevelRender.bricks).setHeight(3).setYOffset(0);
+        Tiles.stoneWallTile = new WallTile(LevelRender.stoneWall).setHeight(3).setYOffset(0);
+        Tiles.grassyStoneWallTile = new WallTile(LevelRender.grassyStoneWall).setHeight(3).setYOffset(0);
         Tiles.airtile = new AirTile().setBlocksLight(false);
         Tiles.light = new AirTile();
         Tiles.lava = new LavaTile();
