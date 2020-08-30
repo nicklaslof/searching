@@ -33,7 +33,7 @@ class Bat extends Billboardsprite{
     }
 
     removeThisEntity(level){
-       this.addParticles(level,0.08,-0.2);
+       this.addParticles(level,0.12,-0.8);
        super.removeThisEntity(level);
     }
 
@@ -46,7 +46,7 @@ class Bat extends Billboardsprite{
 
     addParticles(level,s,dirY){
         for(let i = 0; i < 5;i++){
-            level.addEntity(new Particle(this.p.x+this.getRand()/4,0.2,this.p.z+this.getRand()/4,LevelRender.lava,level.gl,0.8,0,dirY,0,s));
+            level.addEntity(new Particle(this.p.x-0.2+this.getRand()/3,0.2,this.p.z-0.2+this.getRand()/3,LevelRender.lava,level.gl,0.8,0,dirY,0,s));
         }
     }
 }

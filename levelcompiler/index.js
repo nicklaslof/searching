@@ -15,15 +15,15 @@ loadImage("level.png").then((image) => {
     ctx.drawImage(image, 0, 0);
         for (let x = 0; x < 64; x++) {
             for (let z = 0; z < 64; z++) {
+
                 let c = new Uint32Array(ctx.getImageData(x, z, 1, 1).data.buffer);
                 let alpha = (c >>> 24 );
                 if (alpha != 0 && alpha < 255){
                     addToLevel(metaData,x,z,String.fromCharCode(126-(255-alpha)));
                     let b = 126-(255-alpha);
-                    if (x == 6 && z == 11) console.log(alpha+ " "+ b);
                 }
                 c = (c & 0x0FFFFFF);
-                if (x == 7 && z == 8) console.log(c);
+                if (x == 29 && z == 3) console.log(c);
                 if (c == 0x333324) addToLevel(level,x,z,"s"); // Stonewall 
                 if (c == 0x444424) addToLevel(level,x,z,"g"); // Grassy Stonewall
                 if (c == 0x0050ff) addToLevel(level,x,z,"l"); // Lava
@@ -35,7 +35,7 @@ loadImage("level.png").then((image) => {
                 if (c == 0xffff99) addToLevel(level,x,z,"f"); // Appaering floor
                 if (c == 0x0000ff) addToLevel(level,x,z,"a"); // Apple
                 if (c == 0xaaaaaa || c == 0xa9a9a9) addToLevel(level,x,z,"e"); // Bars
-                if (c == 0xffffff) addToLevel(level,x,z,"t"); // Floortrigger
+                if (c == 0xffffff || c == 0xfefefe) addToLevel(level,x,z,"t"); // Floortrigger
             }
         }
     
@@ -52,7 +52,7 @@ function saveLevel(filename, data){
 }
 
 function addToLevel(level,x,z,data){
-    if (x == 7 && z == 8) console.log(data);
+    if (x == 33 && z == 3) console.log(x+" "+ z +" " +data);
     level[x + (z*64)] = data;
 }
 

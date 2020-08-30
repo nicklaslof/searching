@@ -28,8 +28,8 @@ class Player extends Entity{
     
             if (inputHandler.isKeyDown(65))LevelRender.camera.rotate(3 * deltaTime);
             if (inputHandler.isKeyDown(68))LevelRender.camera.rotate(-3* deltaTime);
-            if (inputHandler.isKeyDown(87))v.z = -5.5;
-            if (inputHandler.isKeyDown(83))v.z = 5.5;
+            if (inputHandler.isKeyDown(87))v.z = -2.5;
+            if (inputHandler.isKeyDown(83))v.z = 2.5;
             if (inputHandler.isKeyDown(32)){
                 this.isAttacking = true;
                 this.attack(level);

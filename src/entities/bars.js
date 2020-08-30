@@ -7,7 +7,7 @@ class Bars extends Sprite{
         console.log("bars at "+x+" "+z);
         this.mesh.setRotationY(270);
         this.neededTriggers = 1;
-        if (triggerId == 199) this.neededTriggers = 2;
+        if (triggerId == 199 || triggerId == 197) this.neededTriggers = 2;
         this.neededTrigger = 0;
         this.triggered = false;
     }
