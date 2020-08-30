@@ -23,7 +23,19 @@ class UI{
     tick(deltatime){
 
     }
+    renderIntro(){
+        this.drawText("searching for 04",100);
+        this.drawText("a classic dungeon crawler",150);
+        this.drawText("created for JS13k 2020",175);
+        this.drawText("by nicklas lof",200);
+        this.drawText("graphics by nicklas lof",240);
+        this.drawText("and Elthen www.patreon.com/elthen/",260);
+        this.drawText("font by killedbyapixel",280);
+        this.drawText("hit 1 to play roguelike",320);
+        this.drawText("hit 2 to play with checkpoints",340);
+        
 
+    }
     render(level){
         this.c.clearRect(0, 0, this.c.canvas.width, this.c.canvas.height);
         let text = level.getUIText();

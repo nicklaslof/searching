@@ -19,7 +19,8 @@ import Endboss from "../entities/endboss.js";
 const maxLight = 2;
 const levelsize = 64;
 class Level{
-    constructor(gl,shaderprogram) {
+    constructor(gl,shaderprogram,type) {
+        this.type = type;
         this.levelrender = new LevelRender(gl,shaderprogram);
         new Tiles();
         this.gl = gl;
@@ -47,6 +48,8 @@ class Level{
         this.t2 = "";
         this.player = null;
         this.displayMessageCounter = 0.1;
+        this.hintsShown = false;
+        this.hintsShown2 = false;
     }
 
     read(done){
@@ -72,6 +75,7 @@ class Level{
                             level.player = new Player(x,0,z);
                             level.addEntity(level.player);
                             level.displayMessage("where am i? i cant find my things!!","and where is my 04?",10);
+                            this.showHints = 10;
                         }
                         if (c == 'l')level.addTile(x,z,Tiles.lava);
                         if (c == 'b')level.addEntity(new Bat(x,0.2,z,level.gl));
@@ -252,6 +256,20 @@ class Level{
     tick(deltaTime){
         if (this.displayMessageCounter > 0){
             this.displayMessageCounter -=deltaTime;
+        }
+
+        if (this.showHints > 0 && (!this.hintsShown || !this.hintsShown2)){
+            this.showHints -= deltaTime;
+        }
+
+        if (this.showHints<=0 && !this.hintsShown){
+            this.displayMessage("move with WASD. fight with space","drop things with q and use with e",12);
+            this.hintsShown = true;
+            this.showHints = 12;
+        }
+        if (this.showHints<=0 && !this.hintsShown2){
+            this.displayMessage("browse inventory with number keys","pick up items with shift",12);
+            this.hintsShown2 = true;
         }
 
         if (this.displayMessageCounter <= 0){
