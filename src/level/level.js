@@ -15,21 +15,24 @@ import MeshBuilder from "../gl/meshbuilder.js";
 import AppareringFloor from "../entities/appareringfloor.js";
 
 const maxLight = 2;
+const levelsize = 64;
 class Level{
     constructor(gl,shaderprogram) {
         this.levelrender = new LevelRender(gl,shaderprogram);
         new Tiles();
         this.gl = gl;
-        this.tiles = new Array(64*64);
+        this.tiles = new Array(levelsize*levelsize);
         this.tiles.fill(Tiles.airtile);
 
-        this.collisionTiles = new Array(64*64);
-        for (let x = 0; x < 64; x++){
-            for (let z = 0; z < 64; z++){
-                this.collisionTiles[x + (z*64)] = new CollisionTile(x,z);
+        this.metadata = new Array(levelsize*levelsize);
+
+        this.collisionTiles = new Array(levelsize*levelsize);
+        for (let x = 0; x < levelsize; x++){
+            for (let z = 0; z < levelsize; z++){
+                this.collisionTiles[x + (z*levelsize)] = new CollisionTile(x,z);
             }
         }
-        this.lightmap = new Array(64*64);
+        this.lightmap = new Array(levelsize*levelsize);
         this.lightmap.fill(0);
 
         this.e = new Array();
@@ -45,51 +48,52 @@ class Level{
     }
 
     read(done){
-        let c = document.createElement( 'canvas' );
-        c.width = 64;
-        c.height = 64;
-
-        let context = c.getContext( '2d' );
-        let img = new Image();
-        img.src="l.png";
-
         let level = this;
-        img.onload = function() {
-            context.drawImage(img,0,0);
-            for (let x = 0; x < 64; x++) {
-                for (let z = 0; z < 64; z++) {
-                    let c = new Uint32Array(context.getImageData(x, z, 1, 1).data.buffer);
-                    let alpha = (c >>> 24 );
-                    c = (c & 0x0FFFFFF);
-                    if (c == 0x333324)level.addTile(x,z,Tiles.stoneWallTile);
-                    if (c == 0x444424)level.addTile(x,z,Tiles.grassyStoneWallTile);
-                    if (c == 0x00a0ff)level.addTile(x,z,Tiles.light);
-                    if (c == 0x0050ff)level.addTile(x,z,Tiles.lava);
-                    if (c == 0x00ff00){
-                        level.player = new Player(x,0,z);
-                        level.addEntity(level.player);
-                        level.displayMessage("where am i? i cant find my things!!","and where is my 04?",10);
-                    }
-                    if (c == 0x202020)level.addEntity(new Bat(x,0.2,z,level.gl));
-                    if (c == 0x808080)level.addEntity(new ItemSprite(new Dagger(x,0,z,level.gl,0.3),x,0,z,LevelRender.dagger,level.gl));
-                    if (c == 0x003359)level.addEntity(new Pot(x,0,z,level.gl));
-                    if (c == 0x3f3f7f)level.addEntity(new Box(x,0,z,level.gl,alpha));
-                    if (c == 0xffff99){
-                        level.addEntity(new AppareringFloor(x,0,z,level.gl,alpha));
-                        level.addTile(x,z,Tiles.appareringFloor);
-                    };
-                    if (c == 0x0000ff)level.addEntity(new ItemSprite(new Apple(x,0,z,level.gl,0.3),x,0,z,LevelRender.apple,level.gl));
-                    if (c == 0xaaaaaa){
-                        level.addEntity(new Bars(x,0,z,level.gl,alpha));
-                        level.addTile(x,z,new Tile().setBlocksLight(false));
-                    }
-                    if (c == 0xffffff){
-                        level.addEntity(new FloorTrigger(x,0,z,level.gl,alpha));
+        fetch('m.txt')
+            .then(response => response.text())
+            .then(data => {
+                for (let x = 0; x < levelsize; x++) {
+                    for (let z = 0; z < levelsize; z++) {
+                        level.metadata[x + (z*levelsize)] = Math.abs(126-(255+data.charCodeAt(x + (z*levelsize))));
                     }
                 }
-            }
-            done();
-        }
+                fetch('l.txt')
+                .then(response => response.text())
+            .then(data => {
+                for (let x = 0; x < levelsize; x++) {
+                    for (let z = 0; z < levelsize; z++) {
+                        let c = data.charAt(x + (z*levelsize));
+                        let alpha = level.metadata[x + (z*levelsize)];
+                        if (c == 's')level.addTile(x,z,Tiles.stoneWallTile);
+                        if (c == 'g')level.addTile(x,z,Tiles.grassyStoneWallTile);
+                        if (c == 'p'){
+                            level.player = new Player(x,0,z);
+                            level.addEntity(level.player);
+                            level.displayMessage("where am i? i cant find my things!!","and where is my 04?",10);
+                        }
+                        if (c == 'l')level.addTile(x,z,Tiles.lava);
+                        if (c == 'b')level.addEntity(new Bat(x,0.2,z,level.gl));
+                        if (c == 'd')level.addEntity(new ItemSprite(new Dagger(x,0,z,level.gl,0.3),x,0,z,LevelRender.dagger,level.gl));
+                        if (c == 'j')level.addEntity(new Pot(x,0,z,level.gl));
+                        if (c == 'c')level.addEntity(new Box(x,0,z,level.gl,alpha));
+                        if (c == 'f'){
+                            level.addEntity(new AppareringFloor(x,0,z,level.gl,alpha));
+                            level.addTile(x,z,Tiles.appareringFloor);
+                        };
+                        if (c == 'a')level.addEntity(new ItemSprite(new Apple(x,0,z,level.gl,0.3),x,0,z,LevelRender.apple,level.gl));
+                        if (c == 'e'){
+                            level.addEntity(new Bars(x,0,z,level.gl,alpha));
+                            level.addTile(x,z,new Tile().setBlocksLight(false));
+                        }
+                        if (c == 't'){
+                            level.addEntity(new FloorTrigger(x,0,z,level.gl,alpha));
+                        }
+
+                    }
+                }
+                done();
+            });
+         });
     }
 
     addEntity(entity){
@@ -100,8 +104,8 @@ class Level{
         let lightLoop = true;
         while(lightLoop){
             lightLoop = false;
-            for (let x = 0; x < 64; x++) {
-                for (let z = 0; z < 64; z++) {
+            for (let x = 0; x < levelsize; x++) {
+                for (let z = 0; z < levelsize; z++) {
                     let light = this.calculateLight(x,z);
                     if (light != this.getLight(x,z)){
                         lightLoop = this.setLight(x,z,light);
@@ -112,7 +116,7 @@ class Level{
     }
 
     calculateLight(x,z){
-        let tile = this.tiles[x + (z * 64)];
+        let tile = this.tiles[x + (z * levelsize)];
         if (tile == Tiles.light || tile == Tiles.lava){
             return maxLight;
         }
@@ -146,9 +150,9 @@ class Level{
         let wr = MeshBuilder.start(this.gl);
         let fr = MeshBuilder.start(this.gl);   
         let rr = MeshBuilder.start(this.gl);       
-        for (let x = 0; x < 64; x++) {
-            for (let z = 0; z < 64; z++) {
-                let tile = this.tiles[x + (z * 64)];
+        for (let x = 0; x < levelsize; x++) {
+            for (let z = 0; z < levelsize; z++) {
+                let tile = this.tiles[x + (z * levelsize)];
                 if (tile == Tiles.walltile || tile == Tiles.stoneWallTile || tile == Tiles.grassyStoneWallTile){
                     if (!this.getTile(x-1,z).c(tile)) MeshBuilder.left(tile.getUVs(),wr,x,0,z,this.getLight(x-1,z),tile.height,tile.YOffset);
                     if (!this.getTile(x+1,z).c(tile)) MeshBuilder.right(tile.getUVs(),wr,x,0,z,this.getLight(x+1,z),tile.height,tile.YOffset);
@@ -178,18 +182,18 @@ class Level{
     }
 
     getTile(x,z){
-        let tile = this.tiles[x + (z*64)];
+        let tile = this.tiles[x + (z*levelsize)];
         if (tile == null) return Tiles.airtile;
         return tile;
     }
 
     getLight(x,z){
-        return this.lightmap[x + (z*64)];
+        return this.lightmap[x + (z*levelsize)];
     }
     setLight(x,z,light){
-        let existingLight = this.lightmap[x + (z*64)];
+        let existingLight = this.lightmap[x + (z*levelsize)];
         if (existingLight != light){
-            this.lightmap[x + (z*64)] = light
+            this.lightmap[x + (z*levelsize)] = light
             //console.log(x+" "+z+" "+existingLight+" "+light +" returning true");
             return true;
         }
@@ -197,16 +201,16 @@ class Level{
     }
 
     addTile(x,z, tile){
-        this.tiles[x + (z*64)] = tile;
+        this.tiles[x + (z*levelsize)] = tile;
     }
 
     removeTile(x,z){
         //console.log("Removing "+x+" "+z);
-        this.tiles[x + (z*64)] = Tiles.airtile;
+        this.tiles[x + (z*levelsize)] = Tiles.airtile;
     }
 
     getCollisionTile(x,z){
-        return this.collisionTiles[x + (z*64)];
+        return this.collisionTiles[x + (z*levelsize)];
     }
 
     getUIText(){

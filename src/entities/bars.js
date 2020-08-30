@@ -4,7 +4,7 @@ import Tile from "../tiles/tile.js";
 class Bars extends Sprite{
     constructor(x,y,z,gl, triggerId) {
         super("bars", x+0.5,y,z,LevelRender.bars,gl,0,triggerId);
-        //console.log("bars at "+x+" "+z);
+        console.log("bars at "+x+" "+z);
         this.mesh.setRotationY(270);
         this.neededTriggers = 1;
         if (triggerId == 199) this.neededTriggers = 2;

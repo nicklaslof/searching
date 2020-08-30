@@ -2,6 +2,7 @@ import LevelRender from "../level/levelrender.js";
 import Sprite from "./sprite.js"
 class FloorTrigger extends Sprite{
     constructor(x,y,z,gl,triggerId) {
+        console.log("floor trigger at "+x+" "+z);
         super("floortrigger",x,y-0.98,z,LevelRender.floorTriggerNoActive,gl,0,triggerId);
         this.mesh.setRotationX(-90);
         this.counter = 0;
