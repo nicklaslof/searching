@@ -7,6 +7,7 @@ class AppareringFloor extends Sprite{
         super("appareingfloor", x,y-1.2,z,LevelRender.floor,gl, 0, triggerId);
         this.neededTrigger = 0;
         if (triggerId == 200) this.neededTriggers = 2;
+        if (triggerId == 196) this.neededTriggers = 4;
         this.mesh.setRotationX(-90);
         this.visble = false;
         
@@ -14,11 +15,18 @@ class AppareringFloor extends Sprite{
     trigger(level, source){
         if (source == this) return;
         this.neededTrigger++;
+        
+        console.log("triggered floor "+this.neededTrigger);
         if (this.neededTrigger ==this.neededTriggers){
             level.removeTile(this.p.x, this.p.z);
             this.visble = true;
 
         }
+    }
+
+    untrigger(level, source){
+        if (source == this) return;
+        this.neededTrigger--;
     }
     render(gl,shaderprogram,pm,darkness){
         if (!this.visble) return;

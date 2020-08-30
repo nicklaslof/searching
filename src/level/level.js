@@ -165,7 +165,7 @@ class Level{
                 }else{
                     
                     let light = this.getLight(x,z);
-                    if (x < 16 && z < 16){
+                    if ((x < 16 && z < 16) || ((x >32 && x < 66) && (z > 19 && z < 38))){
                         MeshBuilder.bottom(LevelRender.grassGround.getUVs(), fr,x,-1,z,light,tile.YOffset);
                         MeshBuilder.top(LevelRender.dirt.getUVs(),rr,x,2,z,light, tile.YOffset);
                     }else{
