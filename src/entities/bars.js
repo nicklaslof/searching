@@ -4,9 +4,8 @@ import Tile from "../tiles/tile.js";
 class Bars extends Sprite{
     constructor(x,y,z,gl, triggerId) {
         super("bars", x+0.5,y,z,LevelRender.bars,gl,0,triggerId);
-        console.log("bars at "+x+" "+z);
         this.mesh.setRotationY(270);
-        if (triggerId == 196){
+        if (triggerId == 196 || triggerId == 194){
             this.mesh.setRotationY(180);
             this.p.x -= 0.5;
             this.p.z += 0.5;
@@ -25,7 +24,7 @@ class Bars extends Sprite{
         this.neededTrigger++;
         if (!this.triggered && this.neededTrigger == this.neededTriggers){
             this.mesh.t(0,1,0);
-            if (this.triggerId == 196) level.removeTile(this.p.x, this.p.z-0.5);
+            if (this.triggerId == 196 || this.triggerId == 194) level.removeTile(this.p.x, this.p.z-0.5);
             else level.removeTile(this.p.x-0.5, this.p.z);
             this.triggered = true;
         }

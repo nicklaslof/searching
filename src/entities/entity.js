@@ -129,6 +129,7 @@ class Entity{
         let z1 = Math.round(z + this.radius);
 		let x2 = Math.round(x - this.radius);
         let z2 = Math.round(z - this.radius);
+        //console.log(x1+" "+z1+ " "+x2+ " "+z2);
         if (level.getTile(x1, z1).b(this)) return false;
         if (level.getTile(x2, z1).b(this)) return false;
         if (level.getTile(x1, z2).b(this)) return false;

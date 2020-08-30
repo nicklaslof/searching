@@ -3,6 +3,7 @@ import LevelRender from "../level/levelrender.js";
 import Entity from "./entity.js";
 import Inventory from "./inventory.js";
 import ItemSprite from "./itemsprite.js";
+import Projectile from "./projectile.js";
 
 class Player extends Entity{
     constructor(x,y,z) {
@@ -100,11 +101,11 @@ class Player extends Entity{
                 this.onAppareingfloor = true;
             }
         } 
-        if (entity.n == "bat"){
+        if (entity.n == "bat" || entity.n == "projectile"){
             let dirX = entity.p.x - this.p.x;
             let dirZ = entity.p.z - this.p.z;
             
-            if(d < 1){
+            if(d < 0.4){
                 if (this.hitCounter>= 0.5){
                     super.knockback(dirX*2, dirZ*2);
                     this.hit(level,entity,1);
@@ -114,6 +115,8 @@ class Player extends Entity{
     }
 
     attack(level){
+        //let cameraDirection = LevelRender.camera.getDirection();
+       // level.addEntity(new Projectile(this.p.x - cameraDirection.x, 0.3, this.p.z - cameraDirection.z,level.gl, -cameraDirection.x*5, -cameraDirection.z*5));
         if (this.i == null) return;
         let cameraDirection = LevelRender.camera.getDirection();
         if (!this.findEnemyAndAttack(level,level.getCollisionTile(Math.round(this.p.x - cameraDirection.x), Math.round(this.p.z - cameraDirection.z)))){
