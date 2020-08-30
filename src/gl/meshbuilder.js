@@ -1,5 +1,6 @@
 import Mesh from "../gl/mesh.js";
 const s = 0.5;
+const white = [1,1,1,1];
 class MeshBuilder{
 
 
@@ -12,8 +13,9 @@ class MeshBuilder{
         return {m,v,c,u,l};
     }
 
-    static ac(colors){
-            colors.push([1,1,1,1],[1,1,1,1],[1,1,1,1],[1,1,1,1]);
+    static ac(colors,c){
+        if (c == null) c = white;
+            colors.push(c,c,c,c);
     }
 
     static al(lights,light){
@@ -28,7 +30,7 @@ class MeshBuilder{
         return r.m;
     }
 
-    static left(uvs,render,x,y,z,light,height,yOffset){
+    static left(uvs,render,x,y,z,light,height,yOffset,c){
         if (height == null) height = 1;
         if (yOffset!=null) y += yOffset;
         //render.u.push([0,1],[1,1],[1,0],[0,0]);
@@ -37,7 +39,7 @@ class MeshBuilder{
         
         //console.log(tile.getUVs());
         for(let i = 0; i < height; i++){
-            MeshBuilder.ac(render.c);
+            MeshBuilder.ac(render.c,c);
             MeshBuilder.al(render.l,light);
             uvs.forEach(uv => { render.u.push(uv); });
             render.v.push(
@@ -49,11 +51,11 @@ class MeshBuilder{
         }
        
     }
-    static right(uvs,render,x,y,z,light,height,yOffset){
+    static right(uvs,render,x,y,z,light,height,yOffset,c){
         if (height == null) height = 1;
         if (yOffset!=null) y += yOffset;
         for(let i = 0; i < height; i++){
-            MeshBuilder.ac(render.c);
+            MeshBuilder.ac(render.c,c);
             MeshBuilder.al(render.l,light);
             //render.u.push([1,1],[1,0],[0,0],[0,1]);
             //render.u.push(tile.getUVs());
@@ -66,11 +68,11 @@ class MeshBuilder{
             );
         }
     }
-    static front(uvs,render,x,y,z,light,height,yOffset){
+    static front(uvs,render,x,y,z,light,height,yOffset,c){
         if (height == null) height = 1;
         if (yOffset!=null) y += yOffset;
         for(let i = 0; i < height; i++){
-            MeshBuilder.ac(render.c);
+            MeshBuilder.ac(render.c,c);
             MeshBuilder.al(render.l,light);
             //render.u.push([1,1],[0,1],[0,0],[1,0]);
             //render.u.push(tile.getUVs());
@@ -83,11 +85,11 @@ class MeshBuilder{
             );
         }
     }
-    static back(uvs,render,x,y,z,light,height,yOffset){
+    static back(uvs,render,x,y,z,light,height,yOffset,c){
         if (height == null) height = 1;
         if (yOffset!=null) y += yOffset;
         for(let i = 0; i < height; i++){
-            MeshBuilder.ac(render.c);
+            MeshBuilder.ac(render.c,c);
             MeshBuilder.al(render.l,light);
             //render.u.push([1,1],[1,0],[0,0],[0,1]);
             //render.u.push(tile.getUVs());
@@ -102,9 +104,9 @@ class MeshBuilder{
     }
 
     
-    static top(uvs,render,x,y,z,light,yOffset){
+    static top(uvs,render,x,y,z,light,yOffset, c){
         if (yOffset!=null) y += yOffset;
-        MeshBuilder.ac(render.c);
+        MeshBuilder.ac(render.c,c);
         MeshBuilder.al(render.l,light);
         //render.u.push([0,0],[1,0],[1,1],[0,1]);
         uvs.forEach(uv => { render.u.push(uv); });
@@ -115,9 +117,9 @@ class MeshBuilder{
             x-s,y-s,z+s
         );
     }
-    static bottom(uvs,render,x,y,z,light,yOffset){
+    static bottom(uvs,render,x,y,z,light,yOffset, c){
         if (yOffset!=null) y += yOffset;
-        MeshBuilder.ac(render.c);
+        MeshBuilder.ac(render.c,c);
         MeshBuilder.al(render.l,light);
         //render.u.push([1,0],[0,0],[0,1],[1,1]);
         uvs.forEach(uv => { render.u.push(uv); });

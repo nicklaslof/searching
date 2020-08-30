@@ -72,7 +72,7 @@ class Level{
                             level.displayMessage("where am i? i cant find my things!!","and where is my 04?",10);
                         }
                         if (c == 'l')level.addTile(x,z,Tiles.lava);
-                        if (c == 'b')level.addEntity(new Bat(x,0.2,z,level.gl));
+                       // if (c == 'b')level.addEntity(new Bat(x,0.2,z,level.gl));
                         if (c == 'd')level.addEntity(new ItemSprite(new Dagger(x,0,z,level.gl,0.3),x,0,z,LevelRender.dagger,level.gl));
                         if (c == 'j')level.addEntity(new Pot(x,0,z,level.gl));
                         if (c == 'c')level.addEntity(new Box(x,0,z,level.gl,alpha));
@@ -161,16 +161,16 @@ class Level{
                 }else if (tile == Tiles.lava || tile == Tiles.appareringFloor){
                     let light = this.getLight(x,z);
                     MeshBuilder.bottom(tile.getUVs(), fr,x,-0.5,z,light,tile.YOffset);
-                    MeshBuilder.top(LevelRender.dirt.getUVs(),rr,x,2.9,z,light, tile.YOffset);
+                    MeshBuilder.top(LevelRender.dirt.getUVs(),rr,x,2.9,z,light, tile.YOffset,[0.4,0.4,0.45,1]);
                 }else{
                     
                     let light = this.getLight(x,z);
                     if ((x < 16 && z < 16) || ((x >32 && x < 66) && (z > 19 && z < 38))){
                         MeshBuilder.bottom(LevelRender.grassGround.getUVs(), fr,x,-1,z,light,tile.YOffset);
-                        MeshBuilder.top(LevelRender.dirt.getUVs(),rr,x,2,z,light, tile.YOffset);
+                        MeshBuilder.top(LevelRender.dirt.getUVs(),rr,x,2,z,light, tile.YOffset,[0.9,0.5,0,1]);
                     }else{
                         MeshBuilder.bottom(LevelRender.floor.getUVs(), fr,x,-1,z,light, tile.YOffset);
-                        MeshBuilder.top(LevelRender.dirt.getUVs(),rr,x,2,z,light, tile.YOffset);
+                        MeshBuilder.top(LevelRender.dirt.getUVs(),rr,x,2,z,light, tile.YOffset, [0.4,0.4,0.45,1]);
                     }
                 }
             }
