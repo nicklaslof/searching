@@ -27,26 +27,26 @@ class LevelRender{
         LevelRender.camera = new Camera(gl, 0,-0.2,0);
         LevelRender.camera.setRotation(180);
         this.atlas = new GLTexture(gl, "a.png");
-        LevelRender.stoneWall = this.newAtlasTexture(16,64,16,16);
-        LevelRender.grassyStoneWall = this.newAtlasTexture(16,96,16,16);
+        LevelRender.stoneWall = this.newAtlasTexture(16,16,16,16);
+        LevelRender.grassyStoneWall = this.newAtlasTexture(16,48,16,16);
         LevelRender.bricks = this.newAtlasTexture(80,0,16,16);
-        LevelRender.dirt = this.newAtlasTexture(80,64,16,16);
-        LevelRender.grassGround = this.newAtlasTexture(48,64,16,16);
+        LevelRender.dirt = this.newAtlasTexture(80,48,16,16);
+        LevelRender.grassGround = this.newAtlasTexture(48,48,16,16);
         LevelRender.floor = this.newAtlasTexture(96,0,16,16);
         LevelRender.bars = this.newAtlasTexture(80,16,16,16);
         LevelRender.floorTriggerNoActive = this.newAtlasTexture(48,20,6,6);
         LevelRender.floorTriggerActive = this.newAtlasTexture(55,20,6,6);
-        LevelRender.pot = this.newAtlasTexture(32,32,16,16);
-        LevelRender.apple = this.newAtlasTexture(72,38,8,10);
+        LevelRender.pot = this.newAtlasTexture(32,0,16,16);
+        LevelRender.apple = this.newAtlasTexture(64,0,5,6);
         LevelRender.lava = this.newAtlasTexture(64,16,1,1);
         LevelRender.projectile = this.newAtlasTexture(64,24,5,5);
 
-        LevelRender.dagger = this.newAtlasTexture(96,32,8,16);
+        LevelRender.dagger = this.newAtlasTexture(72,0,8,16);
 
         LevelRender.bat = new Array();
 
         for (let i = 0; i < 2; i++) {
-            LevelRender.bat.push(new Texture(this.atlas,16*i,32,16,16,128,128));
+            LevelRender.bat.push(new Texture(this.atlas,16*i,0,16,14,112,66));
         }
 
         this.wallmeshes = [];
@@ -56,7 +56,7 @@ class LevelRender{
     }
 
     newAtlasTexture(x,y,w,h){
-        return new Texture(this.atlas,x,y,w,h,128,128);
+        return new Texture(this.atlas,x,y,w,h,112,66);
     }
 
     render(){
