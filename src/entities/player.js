@@ -127,7 +127,7 @@ class Player extends Entity{
         ct.getEntities().forEach(e => {
             if (e == this) return;
             if (e.n == "bat" || e.n == "pot" || e.n == "box"){
-                e.hit(level,this,1);
+                e.hit(level,this,this.i.getDamage());
                 return true;
             }
         });

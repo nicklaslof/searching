@@ -1,23 +1,35 @@
 import LevelRender from "../level/levelrender.js";
 import MeshBuilder from "../gl/meshbuilder.js";
+import ItemSprite from "./itemsprite.js";
 import * as quaternion from "../gl/quaternion.js";
+
+const lev1col = [1,1,1,1];
+const lev2col = [0,1,1,1];
+const lev3col = [0.5,0.3,0.5,1];
 class Item{
-    constructor(n, x,y,z,texture,gl) {
+    constructor(n, x,y,z,texture,gl,level) {
         this.texture = texture;
         this.p = {x,y,z};
         this.rotation = {x,y,z};
         this.n = n;
-        this.c = [1,1,1,1];
+        this.c = level==1?lev1col:level==2?lev2col:lev3col;
         this.light = 0.5;
+        this.level = level==null?1:level;
+        this.modifier = 1;
         
         let r = MeshBuilder.start(gl,x,y,z);
-        MeshBuilder.front(this.texture.getUVs(),r,0.75,0,0,this.light,1);
+        //console.log(level==1?lev1col:level==2?lev2col:lev3col);
+        MeshBuilder.front(this.texture.getUVs(),r,0.75,0,0,this.light,1,null,this.c);
         this.mesh = MeshBuilder.build(r);
     }
     renderPlayerAttack(pos,scale){     
         this.setPos(pos.x,pos.y+0.22,pos.z);
         this.setRotations(-0.8,-0.4,0.1)
         this.mesh.setS(scale);
+    }
+
+    getDamage(){
+        return this.level * this.modifier;
     }
 
     renderPlayerHolding(pos,scale){
