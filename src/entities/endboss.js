@@ -6,7 +6,7 @@ class Endboss extends Bat{
         this.maxHealth = 20;
         this.currentHealth = 20;
         this.mesh.setS(3.0);
-        this.setColor([0.3,0.3,1,1]);
+        this.setC([0.3,0.3,1,1]);
         this.shootCounter = 0;
     }
     tick(deltaTime,level){

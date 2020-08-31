@@ -13,9 +13,9 @@ class MeshBuilder{
         return {m,v,c,u,l};
     }
 
-    static ac(colors,c){
+    static ac(cc,c){
         if (c == null) c = white;
-            colors.push(c,c,c,c);
+            cc.push(c,c,c,c);
     }
 
     static al(lights,light){
@@ -33,11 +33,6 @@ class MeshBuilder{
     static left(uvs,render,x,y,z,light,height,yOffset,c){
         if (height == null) height = 1;
         if (yOffset!=null) y += yOffset;
-        //render.u.push([0,1],[1,1],[1,0],[0,0]);
-        //render.u.push(tile.getUVs());
-
-        
-        //console.log(tile.getUVs());
         for(let i = 0; i < height; i++){
             MeshBuilder.ac(render.c,c);
             MeshBuilder.al(render.l,light);
@@ -57,8 +52,6 @@ class MeshBuilder{
         for(let i = 0; i < height; i++){
             MeshBuilder.ac(render.c,c);
             MeshBuilder.al(render.l,light);
-            //render.u.push([1,1],[1,0],[0,0],[0,1]);
-            //render.u.push(tile.getUVs());
             uvs.forEach(uv => { render.u.push(uv); });
             render.v.push(
                 x+s,y+i-s,z-s,
@@ -74,8 +67,6 @@ class MeshBuilder{
         for(let i = 0; i < height; i++){
             MeshBuilder.ac(render.c,c);
             MeshBuilder.al(render.l,light);
-            //render.u.push([1,1],[0,1],[0,0],[1,0]);
-            //render.u.push(tile.getUVs());
             uvs.forEach(uv => { render.u.push(uv); });
             render.v.push(
                 x-s,y+i-s,z+s,
@@ -91,8 +82,6 @@ class MeshBuilder{
         for(let i = 0; i < height; i++){
             MeshBuilder.ac(render.c,c);
             MeshBuilder.al(render.l,light);
-            //render.u.push([1,1],[1,0],[0,0],[0,1]);
-            //render.u.push(tile.getUVs());
             uvs.forEach(uv => { render.u.push(uv); });
             render.v.push(
                 x-s,y+i-s,z-s,
@@ -108,7 +97,6 @@ class MeshBuilder{
         if (yOffset!=null) y += yOffset;
         MeshBuilder.ac(render.c,c);
         MeshBuilder.al(render.l,light);
-        //render.u.push([0,0],[1,0],[1,1],[0,1]);
         uvs.forEach(uv => { render.u.push(uv); });
         render.v.push(
             x-s,y-s,z-s,
@@ -121,7 +109,6 @@ class MeshBuilder{
         if (yOffset!=null) y += yOffset;
         MeshBuilder.ac(render.c,c);
         MeshBuilder.al(render.l,light);
-        //render.u.push([1,0],[0,0],[0,1],[1,1]);
         uvs.forEach(uv => { render.u.push(uv); });
         render.v.push(
             x-s,y+s,z-s,

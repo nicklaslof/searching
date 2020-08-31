@@ -126,7 +126,7 @@ class Player extends Entity{
     findEnemyAndAttack(level,ct){
         ct.getEntities().forEach(e => {
             if (e == this) return;
-            if (e.n == "bat" || e.n == "pot"){
+            if (e.n == "bat" || e.n == "pot" || e.n == "box"){
                 e.hit(level,this,1);
                 return true;
             }

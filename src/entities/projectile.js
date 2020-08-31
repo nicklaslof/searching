@@ -10,7 +10,7 @@ class Projectile extends Billboardsprite{
         this.dirX = dirX;
         this.dirZ = dirZ;
         this.particleCounter = 0.2;
-        this.setColor([1,0,0,1]);
+        this.setC([1,0,0,1]);
     }
 
     tick(deltatime,level){

@@ -79,11 +79,11 @@ class Level{
                         }
                         if (c == 'l')level.addTile(x,z,Tiles.lava);
                         if (c == 'b')level.addEntity(new Bat(x,0.2,z,level.gl));
-                        if (c == 'd')level.addEntity(new ItemSprite(new Dagger(x,0,z,level.gl,0.3),x,0,z,LevelRender.dagger,level.gl));
+                        if (c == 'd')level.addEntity(new ItemSprite(new Dagger(x,0,z,level.gl,0.3),x,0,z,LevelRender.dagger,level.gl).setNotRespawn());
                         if (c == 'j')level.addEntity(new Pot(x,0,z,level.gl));
-                        if (c == 'c')level.addEntity(new Box(x,0,z,level.gl,alpha));
+                        if (c == 'c')level.addEntity(new Box(x,0,z,level.gl,alpha).setNotRespawn());
                         if (c == 'f'){
-                            level.addEntity(new AppareringFloor(x,0,z,level.gl,alpha));
+                            level.addEntity(new AppareringFloor(x,0,z,level.gl,alpha).setNotRespawn());
                             level.addTile(x,z,Tiles.appareringFloor);
                         };
                         if (c == 'a')level.addEntity(new ItemSprite(new Apple(x,0,z,level.gl,0.3),x,0,z,LevelRender.apple,level.gl));
@@ -91,9 +91,9 @@ class Level{
                             level.addEntity(new Bars(x,0,z,level.gl,alpha));
                             level.addTile(x,z,new Tile().setBlocksLight(false));
                         }
-                        if (c == 't')level.addEntity(new FloorTrigger(x,0,z,level.gl,alpha));
-                        if (c == 'o')level.addEntity(new ProjectileShooter(x,0,z,level,alpha));
-                        if (c == 'z')level.addEntity(new Endboss(x,0,z,level.gl));
+                        if (c == 't')level.addEntity(new FloorTrigger(x,0,z,level.gl,alpha).setNotRespawn());
+                        if (c == 'o')level.addEntity(new ProjectileShooter(x,0,z,level,alpha).setNotRespawn());
+                        if (c == 'z')level.addEntity(new Endboss(x,0,z,level.gl).setNotRespawn());
 
                     }
                 }
@@ -216,7 +216,8 @@ class Level{
     }
 
     getCollisionTile(x,z){
-        return this.collisionTiles[x + (z*levelsize)];
+        let c = this.collisionTiles[x + (z*levelsize)];
+        return c;
     }
 
     getUIText(){

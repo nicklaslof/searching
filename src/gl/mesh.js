@@ -5,7 +5,7 @@ class Mesh{
     constructor(gl, x,y,z){
         this.dirty = true;
         this.verticies = [];
-        this.colors = [];
+        this.cs = [];
         this.uvs = [];
         this.lights = [];
         this.modelViewMatrix = matrix4.create();
@@ -21,16 +21,16 @@ class Mesh{
         this.float = gl.FLOAT;
 
         this.pBuffer = gl.createBuffer();
-        this.colorBuffer = gl.createBuffer();
+        this.cb = gl.createBuffer();
         this.lightBuffer = gl.createBuffer();
         this.uvBuffer = gl.createBuffer();
         this.indiciesBuffer = gl.createBuffer();
         this.darknessBuffer = gl.createBuffer();
     }
 
-    addVerticies(verticies, colors, uvs,lights){
+    addVerticies(verticies, cols, uvs,lights){
         verticies.forEach(vertex => { this.verticies.push(vertex); });
-        this.updateColors(colors);  
+        this.updateCols(cols);  
         uvs.forEach(uv => { this.uvs.push(uv);});
         this.updateLights(lights);
     }
@@ -68,7 +68,7 @@ class Mesh{
         gl.bindBuffer(this.ab, this.pBuffer);
         gl.bufferData(this.ab, this.verticiesBuffer32, this.dd);
 
-        this.uploadColors();
+        this.uploadCols();
         this.uploadLights();
 
         gl.bindBuffer(this.ab, this.uvBuffer);
@@ -130,20 +130,20 @@ class Mesh{
         matrix4.fromRotationTranslationScale(this.modelViewMatrix, this.quaternion, [this.p.x, this.p.y, this.p.z],this.scale);
     }
 
-    updateColors(colors){
-        this.colors = [];
-        colors.forEach(color => { color.forEach(c => {this.colors.push(c);})});
+    updateCols(c){
+        this.cs = [];
+        c.forEach(cc => { cc.forEach(c => {this.cs.push(c);})});
     }
     updateLights(lights){
         this.lights = [];
         lights.forEach(light => { light.forEach(l => {this.lights.push(l);})});
     }
 
-    uploadColors(){
-        this.colorArrayBuffer32 = new Float32Array(this.colors.length*4);
-        this.colorArrayBuffer32.set(this.colors);
-        this.gl.bindBuffer(this.ab, this.colorBuffer);
-        this.gl.bufferData(this.ab, this.colorArrayBuffer32, this.dd);
+    uploadCols(){
+        this.cArrayBuffer32 = new Float32Array(this.cs.length*4);
+        this.cArrayBuffer32.set(this.cs);
+        this.gl.bindBuffer(this.ab, this.cb);
+        this.gl.bufferData(this.ab, this.cArrayBuffer32, this.dd);
     }
     uploadLights(){
         this.lightArrayBuffer32 = new Float32Array(this.lights.length*4);
@@ -152,7 +152,7 @@ class Mesh{
         this.gl.bufferData(this.ab, this.lightArrayBuffer32, this.dd);
     }
 
-    render(gl, shaderProgram, projectionMatrix, texture,darkness, uvs, colors){
+    render(gl, shaderProgram, projectionMatrix, texture,darkness, uvs, cols){
         if (this.dirty) return;
         if (uvs != null){
             this.uvs = [];
@@ -168,16 +168,16 @@ class Mesh{
 
         }
 
-        if (colors != null){
-            this.updateColors(colors);
-            this.uploadColors();
+        if (cols != null){
+            this.updateCols(cols);
+            this.uploadCols();
         }
 
         gl.bindBuffer(this.ab, this.pBuffer);
         gl.vertexAttribPointer(shaderProgram.locations.attribLocations.vertexPosition, 3, this.float, false, 0, 0);
         gl.enableVertexAttribArray(shaderProgram.locations.attribLocations.vertexPosition);
 
-        gl.bindBuffer(this.ab, this.colorBuffer);
+        gl.bindBuffer(this.ab, this.cb);
         gl.vertexAttribPointer(shaderProgram.locations.attribLocations.color, 4, this.float, false, 0, 0);
         gl.enableVertexAttribArray(shaderProgram.locations.attribLocations.color);
 

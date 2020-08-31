@@ -18,18 +18,18 @@ class Sprite extends Entity{
             this.animated = false;
         }
 
-        this.color = [1,1,1,1];
+        this.c = [1,1,1,1];
         this.light = 0.5;
-        this.hitColorCountDown = 0;
-        this.changeBackColorAfterHit = false;
+        this.hitCCountDown = 0;
+        this.changeBackCAfterHit = false;
         let r = MeshBuilder.start(gl,x,y,z);
         MeshBuilder.front(this.texture.getUVs(),r,0,0,0,this.light,1);
         this.mesh = MeshBuilder.build(r);
     }
 
-    setColor(color){
-        this.color = color;
-        this.colorChanged = true;
+    setC(c){
+        this.c = c;
+        this.cChanged = true;
     }
 
     setS(scale){
@@ -39,9 +39,9 @@ class Sprite extends Entity{
 
     hit(level,hitByEntity, amount){
         if (this.hitCounter>= 0.3){
-            this.setColor([1,0,0,1]);
-            this.hitColorCountDown = 0.5;
-            this.changeBackColorAfterHit = true;
+            this.setC([1,0,0,1]);
+            this.hitCCountDown = 0.5;
+            this.changeBackCAfterHit = true;
 
         }
         super.hit(level,hitByEntity,amount);
@@ -49,10 +49,10 @@ class Sprite extends Entity{
 
     tick(deltatime,level){
         super.tick(deltatime,level);
-            if (this.changeBackColorAfterHit && this.hitColorCountDown > 0) this.hitColorCountDown -= deltatime;
-            if (this.changeBackColorAfterHit && this.hitColorCountDown <= 0){
-                this.setColor([1,1,1,1]);
-                this.changeBackColorAfterHit = false;
+            if (this.changeBackCAfterHit && this.hitCCountDown > 0) this.hitCCountDown -= deltatime;
+            if (this.changeBackCAfterHit && this.hitCCountDown <= 0){
+                this.setC([1,1,1,1]);
+                this.changeBackCAfterHit = false;
             }
 
         this.mesh.p.x = this.p.x;
@@ -72,10 +72,11 @@ class Sprite extends Entity{
     }
 
     render(gl,shaderprogram,pm,darkness){
+        if (this.dispose) return;
         let c = null;
-        if (this.colorChanged){
-            c = [this.color, this.color, this.color, this.color];
-            this.colorChanged = false;
+        if (this.cChanged){
+            c = [this.c, this.c, this.c, this.c];
+            this.cChanged = false;
         }
         if (this.frameChanged){
             this.mesh.render(gl,shaderprogram,pm,this.texture.texture, darkness, this.texture.getUVs(),c);

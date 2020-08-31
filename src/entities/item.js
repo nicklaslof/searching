@@ -7,7 +7,7 @@ class Item{
         this.p = {x,y,z};
         this.rotation = {x,y,z};
         this.n = n;
-        this.color = [1,1,1,1];
+        this.c = [1,1,1,1];
         this.light = 0.5;
         
         let r = MeshBuilder.start(gl,x,y,z);

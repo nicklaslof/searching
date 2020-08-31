@@ -1,25 +1,35 @@
 class Entity{
     constructor(n,x,y,z,health, triggerId) {
         this.n = n;
-        this.p = {x,y,z};
-        this.tempVector = {x:0,y:0,z:0};
-        this.movement = {x:0,y:0,z:0};
-        this.knockBack = {x:0,z:0};
-        this.radius = 0.4;
-        this.currentTileX = Math.round(this.p.x);
-        this.currentTileZ = Math.round(this.p.z);
-        this.hitCounter = 0;
-        this.notAddedToCollider = true;
-        this.dispose = false;
-        this.triggerId = triggerId;
+        this.orginalPos = {x,y,z};
+        this.health = health;
 
-        if (health == null || health == 0){
+        this.radius = 0.4;
+
+        this.hitCounter = 0;
+
+        
+        this.triggerId = triggerId;
+        this.respawn = true;
+        this.reset();
+       
+
+    }
+    reset(){
+        this.p = {x:this.orginalPos.x,y:this.orginalPos.y,z:this.orginalPos.z};
+        if (this.health == null || this.health == 0){
             this.invinsible = true;
         }else{
-            this.currentHealth = health;
-            this.maxHealth = health;
+            this.currentHealth = this.health;
+            this.maxHealth = this.health;
         }
-
+        this.dispose = false;
+        this.notAddedToCollider = true;
+        this.knockBack = {x:0,z:0};
+        this.tempVector = {x:0,y:0,z:0};
+        this.movement = {x:0,y:0,z:0};
+        this.currentTileX = Math.round(this.p.x);
+        this.currentTileZ = Math.round(this.p.z);
     }
 
     heal(amount){
@@ -42,11 +52,29 @@ class Entity{
     removeThisEntity(level){
         this.dispose = true;
         this.removeFromCollision(level,this.currentTileX, this.currentTileZ);
-        level.removeEntity(this);
+        
+        if (!this.respawn) level.removeEntity(this);
+        else this.respawnTimer = 40 + (this.getRand()*40);
+    }
+
+    setNotRespawn(){
+        this.respawn = false;
+        return this;
     }
     
 
     tick(deltaTime,level){
+        if (this.dispose){
+            if (this.respawnTimer > 0.0){
+                this.respawnTimer -= deltaTime;
+            }else{
+                this.respawnTimer = 0.0;
+                this.reset();
+                console.log(this.orginalPos);
+            }
+            return;
+         }
+        
         if (this.notAddedToCollider){
             this.addToCollision(level,this.currentTileX, this.currentTileZ);
             this.notAddedToCollider = false;
@@ -102,7 +130,6 @@ class Entity{
     }
     untrigger(level, source){
         if (source == this) return;
-        //console.log("unTriggered! "+this);
     }
 
     addToCollision(level,x,z){

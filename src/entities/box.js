@@ -1,24 +1,29 @@
 import MeshBuilder from "../gl/meshbuilder.js";
 import LevelRender from "../level/levelrender.js";
 import Entity from "./entity.js"
-
+const c = [0.5,0.5,0.7,1]
 
 class Box extends Entity{
     constructor(x,y,z,gl,triggerId) {
-        super("box",x,y-0.2,z,0,triggerId);
+        super("box",x,y-0.2,z,1,triggerId);
         let r = MeshBuilder.start(gl, x,y,z);
         this.texture = LevelRender.dirt;
         let uvs = this.texture.getUVs();
         this.light = [0,0,0,1];
-        MeshBuilder.left(uvs,r,0,0,0,1);
-        MeshBuilder.right(uvs,r,0,0,0,1);
-        MeshBuilder.back(uvs,r,0,0,0,1);
-        MeshBuilder.front(uvs,r,0,0,0,1);
-        MeshBuilder.top(uvs,r,0,0,0,1);
-        MeshBuilder.bottom(uvs,r,0,0,0,1);
+        MeshBuilder.left(uvs,r,0,0,0,1,1,0,);
+        MeshBuilder.right(uvs,r,0,0,0,1,1,0,c);
+        MeshBuilder.back(uvs,r,0,0,0,1,1,0,c);
+        MeshBuilder.front(uvs,r,0,0,0,1,1,0,c);
+        MeshBuilder.top(uvs,r,0,0,0,1,0,c);
+        MeshBuilder.bottom(uvs,r,0,0,0,1,0,c);
         this.mesh = MeshBuilder.build(r);
         this.mesh.setS(0.5);
         this.raidus=-0.5;
+    }
+    removeThisEntity(level){
+        this.removeFromCollision(level,this.currentTileX, this.currentTileZ);
+        this.reset();
+        level.displayMessage("A new box magically appears in the orginal place","",3);
     }
     render(gl,shaderprogram,pm,darkness){
         this.mesh.setPos(this.p.x, this.p.y-0.1, this.p.z);
@@ -28,8 +33,10 @@ class Box extends Entity{
         this.knockBack.x = x;
         this.knockBack.z = z;
         this.normalize(this.knockBack);
-        this.knockBack.x *= s;
-        this.knockBack.z *= s;
+        if (s != null){
+            this.knockBack.x *= s;
+            this.knockBack.z *= s;
+        }
     }
 
     collidedBy(entity, level){
@@ -41,7 +48,6 @@ class Box extends Entity{
             let d = this.distanceToOtherEntity(entity);
             if(d < 0.6){
                 this.knockback(Math.round(dirX), Math.round(dirZ),0.75);
-                console.log(Math.round(dirX) +" "+Math.round(dirZ));
                 this.hitCounter = 0;
 
             }

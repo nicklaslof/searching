@@ -3,8 +3,8 @@ import Sprite from "./sprite.js"
 class FloorTrigger extends Sprite{
     constructor(x,y,z,gl,triggerId) {
         super("floortrigger",x,y-0.98,z,LevelRender.floorTriggerNoActive,gl,0,triggerId);
-        if (triggerId == 197) this.setColor([0.5,0.5,0.6,1]);
-        else this.setColor([0.8,0.6,0.3,1]);
+        if (triggerId == 197) this.setC([0.5,0.5,0.6,1]);
+        else this.setC([0.8,0.6,0.3,1]);
         this.mesh.setRotationX(-90);
         this.counter = 0;
         this.somethingTriggering = false;

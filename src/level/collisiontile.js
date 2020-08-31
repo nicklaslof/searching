@@ -1,5 +1,6 @@
 class CollisionTile{
     constructor(x,z) {
+      //  console.log("new");
         this.x = x;
         this.z = z;
         this.e = []

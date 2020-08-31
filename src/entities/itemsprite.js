@@ -33,6 +33,7 @@ collidedBy(entity, level){
     }
 }
 
+
 tick(deltatime,level){
     super.tick(deltatime,level);
     this.counter += deltatime;

@@ -7,7 +7,8 @@ class Particle extends Billboardsprite{
         this.velY = velY;
         this.velZ = velZ;
         this.setS(s);
-        this.setColor([1,0,0,1]);
+        this.setC([1,0,0,1]);
+        this.setNotRespawn();
     }
     tick(deltatime,level){
         this.currentHealth -= deltatime;
