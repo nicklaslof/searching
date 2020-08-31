@@ -8,7 +8,7 @@ class Pot extends Billboardsprite{
         this.mesh.setS(0.6);
     }
     removeThisEntity(level){
-        if (Math.random(1) < 0.4){
+        if (this.getRand() < 0.4){
             let itemSprite = new ItemSprite(new Apple(0,0,0,level.gl,0.3),this.p.x-LevelRender.camera.getDirection().x/2,-0.2,this.p.z-LevelRender.camera.getDirection().z/2,LevelRender.apple,level.gl).setNotRespawn();
             itemSprite.knockback(LevelRender.camera.getDirection().x,LevelRender.camera.getDirection().z);
             level.addEntity(itemSprite); 

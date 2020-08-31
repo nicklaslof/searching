@@ -3,16 +3,11 @@ import * as quaternion from "./quaternion.js";
 
 class Camera{
     constructor(gl, x,y,z){
-        this.fieldOfView = 64 * Math.PI / 180;
-        this.aspect = gl.canvas.clientWidth / gl.canvas.clientHeight;
-        this.zNear = 0.1;
-        this.zFar = 1000;
+        this.gl = gl;
         this.pm = matrix4.create();
-        this.cm = matrix4.create();
-        this.vm = matrix4.create();
         this.pos = {x,y,z};
         this.currentRot = 0;
-        matrix4.perspective(this.pm,this.fieldOfView,this.aspect,this.zNear,this.zFar);
+        this.createP();
         this.update();
         this.quaternion = quaternion.create();
     }
@@ -43,15 +38,15 @@ class Camera{
     setPos(x,y,z){
         this.pos = {x,y,z};
         this.pm = matrix4.create();
-        matrix4.perspective(this.pm,this.fieldOfView,this.aspect,this.zNear,this.zFar);
+        this.createP();
         this.update();
+    }
+    createP(){
+        return matrix4.perspective(this.pm,64 * Math.PI / 180,this.gl.canvas.clientWidth / this.gl.canvas.clientHeight,0.1,1000);
     }
 
     getDirection(){
-        let x = Math.sin(this.currentRot);
-        let y = 0;
-        let z = Math.cos(this.currentRot);
-        return {x,y,z};
+        return {x:Math.sin(this.currentRot),y:0,z:Math.cos(this.currentRot)};
     }
 
     update(){

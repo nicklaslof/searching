@@ -1,1 +1,1 @@
-#gl{position: absolute; top:0; bottom: 0; left: 0; right: 0; margin:auto; width:60%; height:70%;}#ui{position: absolute; top:0; bottom: 0; left: 0; right: 0; margin: auto; width:90%; height:90%; z-index: 10;}canvas{display: inline;}
+body{background-color: black}#ui{z-index: 10;}canvas{position: absolute; width:99%; height:99%;}

@@ -16,9 +16,7 @@ class Projectile extends Billboardsprite{
     tick(deltatime,level){
         super.tick(deltatime,level);
         this.particleCounter += deltatime;
-        let x = this.p.x + this.dirX*deltatime;
-        let z = this.p.z + this.dirZ*deltatime;
-        if (this.canMove(level,x,z)){
+        if (this.canMove(level,this.p.x + this.dirX*deltatime,this.p.z + this.dirZ*deltatime)){
                 this.p.x += this.dirX*deltatime;
                 this.p.z += this.dirZ*deltatime;
         }else{

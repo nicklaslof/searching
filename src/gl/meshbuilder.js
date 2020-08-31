@@ -23,20 +23,17 @@ class MeshBuilder{
         lights.push(l,l,l,l);
     }
 
-
     static build(r){
         r.m.addVerticies(r.v, r.c, r.u,r.l);
         r.m.updateMesh();
         return r.m;
     }
 
-    static left(uvs,render,x,y,z,light,height,yOffset,c){
-        if (height == null) height = 1;
+    static left(uvs,render,x,y,z,light,h,yOffset,c){
+        h = h == null?1:h;
         if (yOffset!=null) y += yOffset;
-        for(let i = 0; i < height; i++){
-            MeshBuilder.ac(render.c,c);
-            MeshBuilder.al(render.l,light);
-            uvs.forEach(uv => { render.u.push(uv); });
+        for(let i = 0; i < h; i++){
+            this.add(render,c,light,uvs);
             render.v.push(
                 x-s,y+i-s,z-s,
                 x-s,y+i-s,z+s,
@@ -44,15 +41,12 @@ class MeshBuilder{
                 x-s,y+i+s,z-s
             );
         }
-       
     }
-    static right(uvs,render,x,y,z,light,height,yOffset,c){
-        if (height == null) height = 1;
+    static right(uvs,render,x,y,z,light,h,yOffset,c){
+        h = h == null?1:h;
         if (yOffset!=null) y += yOffset;
-        for(let i = 0; i < height; i++){
-            MeshBuilder.ac(render.c,c);
-            MeshBuilder.al(render.l,light);
-            uvs.forEach(uv => { render.u.push(uv); });
+        for(let i = 0; i < h; i++){
+            this.add(render,c,light,uvs);
             render.v.push(
                 x+s,y+i-s,z-s,
                 x+s,y+i+s,z-s,
@@ -61,13 +55,12 @@ class MeshBuilder{
             );
         }
     }
-    static front(uvs,render,x,y,z,light,height,yOffset,c){
-        if (height == null) height = 1;
+    
+    static front(uvs,render,x,y,z,light,h,yOffset,c){
+        h = h == null?1:h;
         if (yOffset!=null) y += yOffset;
-        for(let i = 0; i < height; i++){
-            MeshBuilder.ac(render.c,c);
-            MeshBuilder.al(render.l,light);
-            uvs.forEach(uv => { render.u.push(uv); });
+        for(let i = 0; i < h; i++){
+            this.add(render,c,light,uvs);
             render.v.push(
                 x-s,y+i-s,z+s,
                 x+s,y+i-s,z+s,
@@ -76,13 +69,11 @@ class MeshBuilder{
             );
         }
     }
-    static back(uvs,render,x,y,z,light,height,yOffset,c){
-        if (height == null) height = 1;
+    static back(uvs,render,x,y,z,light,h,yOffset,c){
+        h = h == null?1:h;
         if (yOffset!=null) y += yOffset;
-        for(let i = 0; i < height; i++){
-            MeshBuilder.ac(render.c,c);
-            MeshBuilder.al(render.l,light);
-            uvs.forEach(uv => { render.u.push(uv); });
+        for(let i = 0; i < h; i++){
+            this.add(render,c,light,uvs);
             render.v.push(
                 x-s,y+i-s,z-s,
                 x-s,y+i+s,z-s,
@@ -95,9 +86,7 @@ class MeshBuilder{
     
     static top(uvs,render,x,y,z,light,yOffset, c){
         if (yOffset!=null) y += yOffset;
-        MeshBuilder.ac(render.c,c);
-        MeshBuilder.al(render.l,light);
-        uvs.forEach(uv => { render.u.push(uv); });
+        this.add(render,c,light,uvs);
         render.v.push(
             x-s,y-s,z-s,
             x+s,y-s,z-s,
@@ -107,15 +96,19 @@ class MeshBuilder{
     }
     static bottom(uvs,render,x,y,z,light,yOffset, c){
         if (yOffset!=null) y += yOffset;
-        MeshBuilder.ac(render.c,c);
-        MeshBuilder.al(render.l,light);
-        uvs.forEach(uv => { render.u.push(uv); });
+        this.add(render,c,light,uvs);
         render.v.push(
             x-s,y+s,z-s,
             x-s,y+s,z+s,
             x+s,y+s,z+s,
             x+s,y+s,z-s
         ); 
+    }
+
+    static add(render,col,l,uvs){
+        MeshBuilder.ac(render.c,col);
+        MeshBuilder.al(render.l,l);
+        uvs.forEach(uv => { render.u.push(uv); });
     }
 
 }

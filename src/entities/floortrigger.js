@@ -28,8 +28,7 @@ class FloorTrigger extends Sprite{
     collidedBy(entity, level){
         if (entity.n == "bat" || entity.n == "projectile" || entity.n == "particle") return;
         if (this.triggerId == 197 && entity.n != "box") return;
-        let d = this.distanceToOtherEntity(entity);
-        if (d < 0.8){
+        if (this.distanceToOtherEntity(entity) < 0.8){
             this.somethingTriggering = true;
             this.untriggerCounter = 0;
             if(!this.triggered){

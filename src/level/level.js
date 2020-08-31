@@ -79,7 +79,7 @@ class Level{
                         }
                         if (c == 'l')level.addTile(x,z,Tiles.lava);
                         if (c == 'b')level.addEntity(new Bat(x,0.2,z,level.gl));
-                        if (c == 'd')level.addEntity(new ItemSprite(new Dagger(x,0,z,level.gl,0.3,3),x,0,z,LevelRender.dagger,level.gl).setNotRespawn());
+                        if (c == 'd')level.addEntity(new ItemSprite(new Dagger(x,0,z,level.gl,0.3,1),x,0,z,LevelRender.dagger,level.gl).setNotRespawn());
                         if (c == 'j')level.addEntity(new Pot(x,0,z,level.gl));
                         if (c == 'c')level.addEntity(new Box(x,0,z,level.gl,alpha).setNotRespawn());
                         if (c == 'f'){
@@ -200,7 +200,6 @@ class Level{
         let existingLight = this.lightmap[x + (z*levelsize)];
         if (existingLight != light){
             this.lightmap[x + (z*levelsize)] = light
-            //console.log(x+" "+z+" "+existingLight+" "+light +" returning true");
             return true;
         }
         return false;
@@ -211,7 +210,6 @@ class Level{
     }
 
     removeTile(x,z){
-        //console.log("Removing "+x+" "+z);
         this.tiles[x + (z*levelsize)] = Tiles.airtile;
     }
 

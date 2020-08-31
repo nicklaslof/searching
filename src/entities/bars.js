@@ -1,15 +1,24 @@
 import Sprite from "./sprite.js"
 import LevelRender from "../level/levelrender.js";
 import Tile from "../tiles/tile.js";
+import MeshBuilder from "../gl/meshbuilder.js";
 class Bars extends Sprite{
     constructor(x,y,z,gl, triggerId) {
         super("bars", x+0.5,y,z,LevelRender.bars,gl,0,triggerId);
+        let r = MeshBuilder.start(gl,x,y+1,z);
+        for(let x = 0; x < 4;x++){
+            for (let y = 0; y < 8; y++){
+                MeshBuilder.front(this.texture.getUVs(),r,(0.24*x),(-0.24*y),0,this.light,1);
+            }
+        }
+        
+        this.mesh = MeshBuilder.build(r);
+
         this.mesh.setRotationY(270);
         if (triggerId == 196 || triggerId == 194){
             this.mesh.setRotationY(180);
-            this.p.x -= 0.5;
             this.p.z += 0.5;
-            this.mesh.t(-0.5,0,0.5);
+            this.mesh.t(0.0,0,0.5);
         } 
         this.neededTriggers = 1;
         if (triggerId == 199 || triggerId == 197) this.neededTriggers = 2;
@@ -23,7 +32,7 @@ class Bars extends Sprite{
         if (source == this) return;
         this.neededTrigger++;
         if (!this.triggered && this.neededTrigger == this.neededTriggers){
-            this.mesh.t(0,1,0);
+            this.mesh.t(0,2,0);
             if (this.triggerId == 196 || this.triggerId == 194) level.removeTile(this.p.x, this.p.z-0.5);
             else level.removeTile(this.p.x-0.5, this.p.z);
             this.triggered = true;
@@ -36,7 +45,7 @@ class Bars extends Sprite{
         this.neededTrigger--;
         if (this.triggered){
             if (this.triggerId == 253) return;
-            this.mesh.t(0,0,0);
+            this.mesh.t(0,1,0);
             level.addTile(this.p.x-0.5, this.p.z, new Tile());
             this.triggered = false;
         }

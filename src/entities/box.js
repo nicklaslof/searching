@@ -10,7 +10,7 @@ class Box extends Entity{
         this.texture = LevelRender.dirt;
         let uvs = this.texture.getUVs();
         this.light = [0,0,0,1];
-        MeshBuilder.left(uvs,r,0,0,0,1,1,0,);
+        MeshBuilder.left(uvs,r,0,0,0,1,1,0,c);
         MeshBuilder.right(uvs,r,0,0,0,1,1,0,c);
         MeshBuilder.back(uvs,r,0,0,0,1,1,0,c);
         MeshBuilder.front(uvs,r,0,0,0,1,1,0,c);

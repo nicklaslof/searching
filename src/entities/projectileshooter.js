@@ -14,7 +14,7 @@ class ProjectileShooter extends Sprite{
 
     setDirectionAndRotation(r,d,xOffset,zOffset){
         this.mesh.setRotationY(r);
-        this.direction = d;
+        this.dir = d;
         this.p.x += xOffset;
         this.p.z += zOffset;
         this.mesh.t(xOffset,0,zOffset);
@@ -37,7 +37,7 @@ class ProjectileShooter extends Sprite{
         this.counter += deltatime;
 
         if (this.counter >= 3.5){
-            level.addEntity(new Projectile(this.p.x+(this.direction.x/10) , 0.3, this.p.z+(this.direction.z/10), level.gl, this.direction.x, this.direction.z));
+            level.addEntity(new Projectile(this.p.x+(this.dir.x/10) , 0.3, this.p.z+(this.dir.z/10), level.gl, this.dir.x, this.dir.z));
             this.counter = 0;
         }
     }
