@@ -10,8 +10,7 @@ class Sprite extends Entity{
             this.texture = texture[0];
             this.textureAnimation = texture;
             this.currentFrame = 0;
-            this.frameCounter = 0;
-            
+            this.frameCounter = 0;         
         }else{
             this.texture = texture;
             this.animated = false;

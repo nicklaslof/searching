@@ -4,7 +4,6 @@ import LevelRender from "../level/levelrender.js";
 import Tile from "./tile.js";
 import LavaTile from "./lava.js";
 class Tiles{
-    static walltile;
     static airtile;
     static grassWallTile;
     static stoneWallTile;
@@ -12,7 +11,6 @@ class Tiles{
     static lava;
     static appareringFloor;
     constructor() {
-        Tiles.walltile = new WallTile(LevelRender.bricks).setHeight(3).setYOffset(0);
         Tiles.stoneWallTile = new WallTile(LevelRender.stoneWall).setHeight(3).setYOffset(0);
         Tiles.grassyStoneWallTile = new WallTile(LevelRender.grassyStoneWall).setHeight(3).setYOffset(0);
         Tiles.airtile = new AirTile().setBlocksLight(false);

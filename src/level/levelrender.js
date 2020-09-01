@@ -8,7 +8,6 @@ class LevelRender{
 
     static stoneWall;
     static grassyStoneWall;
-    static bricks;
     static dirt;
     static grassGround;
     static bat;
@@ -29,7 +28,6 @@ class LevelRender{
         this.atlas = new GLTexture(gl, "a.png");
         LevelRender.stoneWall = this.newAtlasTexture(16,16,16,16);
         LevelRender.grassyStoneWall = this.newAtlasTexture(16,48,16,16);
-        LevelRender.bricks = this.newAtlasTexture(80,0,16,16);
         LevelRender.dirt = this.newAtlasTexture(80,48,16,16);
         LevelRender.grassGround = this.newAtlasTexture(48,48,16,16);
         LevelRender.floor = this.newAtlasTexture(96,0,16,16);

@@ -39,9 +39,9 @@ constructor() {
     startRoguelike(){
         this.gamescreen = new GameScreen(this.gl, this.uc.getContext("2d"), this.shaderProgram,1);
     }
-    startCheckpoints(){
-        this.gamescreen = new GameScreen(this.gl, this.uc.getContext("2d"), this.shaderProgram,2);
-    }
+   // startCheckpoints(){
+  //      this.gamescreen = new GameScreen(this.gl, this.uc.getContext("2d"), this.shaderProgram,2);
+   // }
 }
 
 export default Game;

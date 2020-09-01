@@ -1,14 +1,1 @@
-<script type="module" src="mainloop.js"></script><link rel="stylesheet" href="index.css"><button onclick="cap(this);">Start game</button><canvas id="gl"></canvas><canvas id="ui"></canvas>
-
-
-<script>
-    var c = document.querySelectorAll("canvas");
-    function cap(b) {
-        c.forEach(ca => {
-            ca.requestPointerLock();
-            ca.style.visibility='visible';
-
-        });
-        b.style.visibility="hidden";
-    }
-</script>
+<script type="module" src="mainloop.js"></script><link rel="stylesheet" href="index.css"><button onclick="cap(this);">Start game</button><canvas id="gl"></canvas><canvas id="ui"></canvas><script>var c=document.querySelectorAll("canvas");function cap(i){c.forEach(i=>{i.requestPointerLock(),i.style.visibility="visible"}),i.style.visibility="hidden"}</script>
