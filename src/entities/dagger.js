@@ -6,6 +6,7 @@ class Dagger extends Item{
         super("dagger",x,y,z,LevelRender.dagger,gl,level);
         this.onGroundScale = onGroundScale;
         this.modifier = (level == 1?1:2);
+        console.log("modifier "+this.level +" "+this.modifier);
     }
 
    

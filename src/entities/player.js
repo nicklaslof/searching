@@ -112,15 +112,14 @@ class Player extends Entity{
     }
 
     attack(level){
-        let cameraDirection = LevelRender.camera.getDirection();
-        level.addEntity(new Projectile(this.p.x - cameraDirection.x, 0.3, this.p.z - cameraDirection.z,level.gl, -cameraDirection.x*5, -cameraDirection.z*5));
+        //let cameraDirection = LevelRender.camera.getDirection();
+       // level.addEntity(new Projectile(this.p.x - cameraDirection.x, 0.3, this.p.z - cameraDirection.z,level.gl, -cameraDirection.x*5, -cameraDirection.z*5));
         if (this.i == null) return;
-         cameraDirection = LevelRender.camera.getDirection();
+        let cameraDirection = LevelRender.camera.getDirection();
         if (!this.findEnemyAndAttack(level,level.getCollisionTile(Math.round(this.p.x - cameraDirection.x), Math.round(this.p.z - cameraDirection.z)))){
             this.findEnemyAndAttack(level,level.getCollisionTile(Math.round(this.p.x - cameraDirection.x*1.5), Math.round(this.p.z - cameraDirection.z*1.5)));
         }
     }
-    
     findEnemyAndAttack(level,ct){
         ct.getEntities().forEach(e => {
             if (e == this) return;

@@ -14,7 +14,6 @@ class ProjectileShooter extends Sprite{
 
     setDirectionAndRotation(r,d,xOffset,zOffset){
         this.mesh.setRotationY(r);
-        this.dir = d;
         this.p.x += xOffset;
         this.p.z += zOffset;
         this.mesh.t(xOffset,0,zOffset);

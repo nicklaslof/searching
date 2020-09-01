@@ -1,8 +1,6 @@
 import Entity from "./entity.js";
 import Mesh from "../gl/mesh.js";
 import MeshBuilder from "../gl/meshbuilder.js";
-const white = [1,1,1,1];
-const red = [1,0,0,1];
 class Sprite extends Entity{
     constructor(n, x,y,z,texture,gl, health, triggerId){
         super(n, x,y,z, health, triggerId);
@@ -13,12 +11,14 @@ class Sprite extends Entity{
             this.textureAnimation = texture;
             this.currentFrame = 0;
             this.frameCounter = 0;
+
+
         }else{
             this.texture = texture;
             this.animated = false;
         }
 
-        this.c = white;
+        this.c = [1,1,1,1];
         this.light = 0.5;
         this.hitCCountDown = 0;
         this.changeBackCAfterHit = false;
@@ -39,7 +39,7 @@ class Sprite extends Entity{
 
     hit(level,hitByEntity, amount){
         if (this.hitCounter>= 0.3){
-            this.setC(red);
+            this.setC([1,0,0,1]);
             this.hitCCountDown = 0.5;
             this.changeBackCAfterHit = true;
 
@@ -51,7 +51,7 @@ class Sprite extends Entity{
         super.tick(deltatime,level);
             if (this.changeBackCAfterHit && this.hitCCountDown > 0) this.hitCCountDown -= deltatime;
             if (this.changeBackCAfterHit && this.hitCCountDown <= 0){
-                this.setC(white);
+                this.setC([1,1,1,1]);
                 this.changeBackCAfterHit = false;
             }
 
@@ -68,6 +68,7 @@ class Sprite extends Entity{
                 this.frameCounter = 0;
             }
         }
+
     }
 
     render(gl,shaderprogram,pm,darkness){

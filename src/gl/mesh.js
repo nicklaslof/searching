@@ -1,8 +1,7 @@
 import * as matrix4 from "./matrix4.js";
 import * as quaternion from "./quaternion.js";
-const indicies = [0,1,2,0,2,3];
-class Mesh{
 
+class Mesh{
     constructor(gl, x,y,z){
         this.dirty = true;
         this.verticies = [];
@@ -35,17 +34,14 @@ class Mesh{
         uvs.forEach(uv => { this.uvs.push(uv);});
         this.updateLights(lights);
     }
-    getF32Array(length){
-        return new Float32Array(length);
-    }
 
     updateMesh(){
         let gl = this.gl;
         let indiciesNeeded = this.verticies.length/4;
 
-        this.verticiesBuffer32 = this.getF32Array(this.verticies.length*3);
+        this.verticiesBuffer32 = new Float32Array(this.verticies.length*3);
         this.verticiesBuffer32.set(this.verticies);
-        this.uvArrayBuffer32 = this.getF32Array(this.uvs.length*12);
+        this.uvArrayBuffer32 = new Float32Array(this.uvs.length*12);
         this.indiciesBuffer16 = new Uint16Array(indiciesNeeded*6);
 
         let vertexCounter = 0;
@@ -57,7 +53,7 @@ class Mesh{
             counter += 2;
         });
 
-        
+        let indicies = [0,1,2,0,2,3];
         counter = 0;
         for (let i = 0; i < indiciesNeeded; i++){
             for (let c = 0; c < 6; c++){
@@ -69,13 +65,17 @@ class Mesh{
 
         this.numberOfIndicies = counter;
 
-        this.bindAndBuffer(this.ab,this.pBuffer, this.verticiesBuffer32);
+        gl.bindBuffer(this.ab, this.pBuffer);
+        gl.bufferData(this.ab, this.verticiesBuffer32, this.dd);
 
         this.uploadCols();
         this.uploadLights();
 
-        this.bindAndBuffer(this.ab,this.uvBuffer, this.uvArrayBuffer32);
-        this.bindAndBuffer(this.eab,this.indiciesBuffer, this.indiciesBuffer16);
+        gl.bindBuffer(this.ab, this.uvBuffer);
+        gl.bufferData(this.ab, this.uvArrayBuffer32, this.dd);
+
+        gl.bindBuffer(this.eab, this.indiciesBuffer);
+        gl.bufferData(this.eab, this.indiciesBuffer16, this.dd);
 
         this.dirty = false;
     }
@@ -88,12 +88,16 @@ class Mesh{
     }
 
     setPos(x, y, z){
-        this.p = {x,y,z};
+        this.p.x = x;
+        this.p.y = y;
+        this.p.z = z;
         this.updateMatrix();
     }
 
     setS(s){
-        this.scale = [s,s,s];
+        this.scale[0]=s;
+        this.scale[1]=s;
+        this.scale[2]=s;
         this.updateMatrix();
     }
 
@@ -136,25 +140,19 @@ class Mesh{
     }
 
     uploadCols(){
-        this.cArrayBuffer32 = this.getF32Array(this.cs.length*4);
+        this.cArrayBuffer32 = new Float32Array(this.cs.length*4);
         this.cArrayBuffer32.set(this.cs);
-        this.bindAndBuffer(this.ab,this.cb, this.cArrayBuffer32);
+        this.gl.bindBuffer(this.ab, this.cb);
+        this.gl.bufferData(this.ab, this.cArrayBuffer32, this.dd);
     }
     uploadLights(){
-        this.lightArrayBuffer32 = this.getF32Array(this.lights.length*4);
+        this.lightArrayBuffer32 = new Float32Array(this.lights.length*4);
         this.lightArrayBuffer32.set(this.lights);
-        this.bindAndBuffer(this.ab,this.lightBuffer, this.lightArrayBuffer32);
-    }
-
-    bindAndBuffer(glbuffer,buffer,arraybuffer){
-        this.gl.bindBuffer(glbuffer, buffer);
-        this.gl.bufferData(glbuffer, arraybuffer, this.dd);
+        this.gl.bindBuffer(this.ab, this.lightBuffer);
+        this.gl.bufferData(this.ab, this.lightArrayBuffer32, this.dd);
     }
 
     render(gl, shaderProgram, projectionMatrix, texture,darkness, uvs, cols){
-        const locations = shaderProgram.locations;
-        const attribLocations = locations.attribLocations;
-        const uniformLocations = locations.uniformLocations;
         if (this.dirty) return;
         if (uvs != null){
             this.uvs = [];
@@ -165,7 +163,8 @@ class Mesh{
                 this.uvArrayBuffer32[counter+1] = uv[1];
                 counter += 2;
             });
-            this.bindAndBuffer(this.ab,this.uvBuffer, this.uvArrayBuffer32);
+            gl.bindBuffer(this.ab, this.uvBuffer);
+            gl.bufferData(this.ab, this.uvArrayBuffer32, this.dd);
 
         }
 
@@ -175,30 +174,29 @@ class Mesh{
         }
 
         gl.bindBuffer(this.ab, this.pBuffer);
-
-        gl.vertexAttribPointer(attribLocations.vertexPosition, 3, this.float, false, 0, 0);
-        gl.enableVertexAttribArray(attribLocations.vertexPosition);
+        gl.vertexAttribPointer(shaderProgram.locations.attribLocations.vertexPosition, 3, this.float, false, 0, 0);
+        gl.enableVertexAttribArray(shaderProgram.locations.attribLocations.vertexPosition);
 
         gl.bindBuffer(this.ab, this.cb);
-        gl.vertexAttribPointer(attribLocations.color, 4, this.float, false, 0, 0);
-        gl.enableVertexAttribArray(attribLocations.color);
+        gl.vertexAttribPointer(shaderProgram.locations.attribLocations.color, 4, this.float, false, 0, 0);
+        gl.enableVertexAttribArray(shaderProgram.locations.attribLocations.color);
 
         gl.bindBuffer(this.ab, this.lightBuffer);
-        gl.vertexAttribPointer(attribLocations.light, 4, this.float, false, 0, 0);
-        gl.enableVertexAttribArray(attribLocations.light);
+        gl.vertexAttribPointer(shaderProgram.locations.attribLocations.light, 4, this.float, false, 0, 0);
+        gl.enableVertexAttribArray(shaderProgram.locations.attribLocations.light);
 
         gl.bindBuffer(this.ab, this.uvBuffer);
-        gl.vertexAttribPointer(attribLocations.uv, 2, this.float, false, 0, 0);
-        gl.enableVertexAttribArray(attribLocations.uv);
+        gl.vertexAttribPointer(shaderProgram.locations.attribLocations.uv, 2, this.float, false, 0, 0);
+        gl.enableVertexAttribArray(shaderProgram.locations.attribLocations.uv);
 
         gl.useProgram(shaderProgram.shaderProgram);
 
         gl.activeTexture(gl.TEXTURE0);
         gl.bindTexture(gl.TEXTURE_2D, texture.tex);
-        gl.uniform1i(uniformLocations.uSampler, 0);
-        gl.uniform1f(uniformLocations.darkness, darkness);
-        gl.uniformMatrix4fv(uniformLocations.projectionMatrix, false, projectionMatrix);
-        gl.uniformMatrix4fv(uniformLocations.modelViewMatrix, false, this.modelViewMatrix);
+        gl.uniform1i(shaderProgram.locations.uniformLocations.uSampler, 0);
+        gl.uniform1f(shaderProgram.locations.uniformLocations.darkness, darkness);
+        gl.uniformMatrix4fv(shaderProgram.locations.uniformLocations.projectionMatrix, false, projectionMatrix);
+        gl.uniformMatrix4fv(shaderProgram.locations.uniformLocations.modelViewMatrix, false, this.modelViewMatrix);
 
         gl.bindBuffer(this.eab, this.indiciesBuffer);
         gl.drawElements(gl.TRIANGLES,  this.numberOfIndicies,gl.UNSIGNED_SHORT,0);

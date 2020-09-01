@@ -1,14 +1,10 @@
 class InputHandler{
 
-    constructor(d){
+    constructor(document){
         this.kp = [];
         this.kjp = [];
-        this.addElistner(d,"keydown", this.handleKeyboardDownEvent.bind(this));
-        this.addElistner(d,"keyup", this.handleKeyboardUpEvent.bind(this));
-    }
-
-    addElistner(doc,n,b){
-        doc.addEventListener(n, b);
+        document.addEventListener("keydown", this.handleKeyboardDownEvent.bind(this));
+        document.addEventListener("keyup", this.handleKeyboardUpEvent.bind(this));
     }
 
     handleKeyboardDownEvent(e){
