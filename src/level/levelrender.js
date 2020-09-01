@@ -42,6 +42,7 @@ class LevelRender{
         LevelRender.projectile = this.newAtlasTexture(64,24,5,5);
 
         LevelRender.dagger = this.newAtlasTexture(72,0,8,16);
+        LevelRender.wand = this.newAtlasTexture(80,0,15,15);
 
         LevelRender.bat = new Array();
 

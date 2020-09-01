@@ -1,13 +1,13 @@
 import LevelRender from "../level/levelrender.js";
 import Item from "./item.js";
 
-class Dagger extends Item{
+class Wand extends Item{
     constructor(x,y,z,gl,onGroundScale,level) {
-        super("dagger",x,y,z,LevelRender.dagger,gl,level);
+        super("wand",x,y,z,LevelRender.wand,gl,level);
         this.onGroundScale = onGroundScale;
-        this.modifier = (level == 1?1:2);
+        this.modifier = (level == 1?1:3);
     }
 
    
 }
-export default Dagger;
+export default Wand;

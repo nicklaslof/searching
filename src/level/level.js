@@ -6,6 +6,7 @@ import Bars from "../entities/bars.js";
 import Tile from "../tiles/tile.js";
 import CollisionTile from "./collisiontile.js";
 import Dagger from "../entities/dagger.js";
+import Wand from "../entities/wand.js";
 import ItemSprite from "../entities/itemsprite.js";
 import FloorTrigger from "../entities/floortrigger.js";
 import Pot from "../entities/pot.js";
@@ -79,7 +80,7 @@ class Level{
                         }
                         if (c == 'l')level.addTile(x,z,Tiles.lava);
                         if (c == 'b')level.addEntity(new Bat(x,0.2,z,level.gl));
-                        if (c == 'd')level.addEntity(new ItemSprite(new Dagger(x,0,z,level.gl,0.3,1),x,0,z,LevelRender.dagger,level.gl).setNotRespawn());
+                        if (c == 'd')level.addEntity(new ItemSprite(new Wand(x,0,z,level.gl,0.3,1),x,0,z,LevelRender.wand,level.gl).setNotRespawn());
                         if (c == 'j')level.addEntity(new Pot(x,0,z,level.gl));
                         if (c == 'c')level.addEntity(new Box(x,0,z,level.gl,alpha).setNotRespawn());
                         if (c == 'f'){

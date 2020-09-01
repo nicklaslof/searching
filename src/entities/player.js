@@ -108,9 +108,15 @@ class Player extends Entity{
         //let cameraDirection = LevelRender.camera.getDirection();
        // level.addEntity(new Projectile(this.p.x - cameraDirection.x, 0.3, this.p.z - cameraDirection.z,level.gl, -cameraDirection.x*5, -cameraDirection.z*5));
         if (this.i == null) return;
-        let cameraDirection = LevelRender.camera.getDirection();
-        if (!this.findEnemyAndAttack(level,level.getCollisionTile(Math.round(this.p.x - cameraDirection.x), Math.round(this.p.z - cameraDirection.z)))){
-            this.findEnemyAndAttack(level,level.getCollisionTile(Math.round(this.p.x - cameraDirection.x*1.5), Math.round(this.p.z - cameraDirection.z*1.5)));
+        if (this.i.n == "dagger"){
+            let cameraDirection = LevelRender.camera.getDirection();
+            if (!this.findEnemyAndAttack(level,level.getCollisionTile(Math.round(this.p.x - cameraDirection.x), Math.round(this.p.z - cameraDirection.z)))){
+                this.findEnemyAndAttack(level,level.getCollisionTile(Math.round(this.p.x - cameraDirection.x*1.5), Math.round(this.p.z - cameraDirection.z*1.5)));
+            }
+        }else{
+            let cameraDirection = LevelRender.camera.getDirection();
+            console.log(LevelRender.camera.currentRot);
+            level.addEntity(new Projectile(this.p.x - cameraDirection.x, 0.3, this.p.z - cameraDirection.z,level.gl, -cameraDirection.x*5, -cameraDirection.z*5));
         }
     }
     findEnemyAndAttack(level,ct){
