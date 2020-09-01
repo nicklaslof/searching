@@ -3,17 +3,11 @@ class Entity{
         this.n = n;
         this.orginalPos = {x,y,z};
         this.health = health;
-
         this.radius = 0.4;
-
         this.hitCounter = 0;
-
-        
         this.triggerId = triggerId;
         this.respawn = true;
         this.reset();
-       
-
     }
     reset(){
         this.p = {x:this.orginalPos.x,y:this.orginalPos.y,z:this.orginalPos.z};
@@ -26,8 +20,7 @@ class Entity{
         this.dispose = false;
         this.notAddedToCollider = true;
         this.knockBack = {x:0,z:0};
-        this.tempVector = {x:0,y:0,z:0};
-        this.movement = {x:0,y:0,z:0};
+        this.tempVector = this.movement = {x:0,y:0,z:0};
         this.currentTileX = Math.round(this.p.x);
         this.currentTileZ = Math.round(this.p.z);
     }

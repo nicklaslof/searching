@@ -15,6 +15,10 @@ class Pot extends Billboardsprite{
         }
         super.removeThisEntity(level);
     }
+    collidedBy(entity, level){
+        super.collidedBy(entity,level);
+            if(entity.n == "projectile" && this.distanceToOtherEntity(entity) < 0.8 && this.hitCounter>= 0.5)this.hit(level,entity,entity.damage);
+    }
 }
 
 export default Pot;

@@ -1,1 +1,14 @@
-<script type="module" src="mainloop.js"></script><link rel="stylesheet" href="index.css"><canvas id="gl"></canvas><canvas id="ui"></canvas>
+<script type="module" src="mainloop.js"></script><link rel="stylesheet" href="index.css"><button onclick="cap(this);">Start game</button><canvas id="gl"></canvas><canvas id="ui"></canvas>
+
+
+<script>
+    var c = document.querySelectorAll("canvas");
+    function cap(b) {
+        c.forEach(ca => {
+            ca.requestPointerLock();
+            ca.style.visibility='visible';
+
+        });
+        b.style.visibility="hidden";
+    }
+</script>

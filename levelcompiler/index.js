@@ -30,6 +30,7 @@ loadImage("level.png").then((image) => {
                 if (c == 0x00ff00) addToLevel(level,x,z,"p"); // Player
                 if (c == 0x202020) addToLevel(level,x,z,"b"); // Bat
                 if (c == 0x808080) addToLevel(level,x,z,"d"); // Dagger
+                if (c == 0x00ffff) addToLevel(level,x,z,"w"); // Dagger
                 if (c == 0x003359) addToLevel(level,x,z,"j"); // Jar
                 if (c == 0x3f3f7f) addToLevel(level,x,z,"c"); // Box
                 if (c == 0xffff99) addToLevel(level,x,z,"f"); // Appaering floor

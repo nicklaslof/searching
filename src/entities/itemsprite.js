@@ -21,7 +21,7 @@ collidedBy(entity, level){
             if (!this.nospace){
                 level.displayMessage("Press shift to pickup",this.na(),0.1);
             }
-            if (Game.inputHandler.wasKeyJustPressed(16)){
+            if (Game.inputHandler.isKeyDown(16)){
                 if (entity.hasSpace()){
                     entity.pickup(this.i);
                     level.displayMessage("You picked up "+this.na() ,"", 3);

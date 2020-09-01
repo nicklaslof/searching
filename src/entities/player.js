@@ -8,15 +8,18 @@ import Projectile from "./projectile.js";
 class Player extends Entity{
     constructor(x,y,z) {
         super("player",x,y,z,5);
-        this.speed = 3;
         this.isAttacking = false;
         this.inventory = new Inventory();
+        this.showAttack = false;
+        this.attackCounter = 0;
     }
 
     tick(deltaTime, level){
         super.tick(deltaTime,level);
         this.inventory.tick(deltaTime,level);
         this.i = this.inventory.getItemInSlot(this.inventory.selectedSlot);
+        if (this.showAttack && this.attackCounter > 0) this.attackCounter -= deltaTime;
+        if (this.attackCounter <= 0) this.showAttack = false;
 
         if (this.knockBack.x == 0 || this.knockBack.z == 0){
             let tv = this.tempVector;
@@ -25,20 +28,20 @@ class Player extends Entity{
             this.counter += deltaTime;
             let v = {x:0,y:0,z:0};
             let cameraDirection = LevelRender.camera.getDirection();
-    
-            if (inputHandler.isKeyDown(65))LevelRender.camera.rotate(3 * deltaTime);
-            if (inputHandler.isKeyDown(68))LevelRender.camera.rotate(-3* deltaTime);
+  
+            LevelRender.camera.rotate((inputHandler.getMouseX()/8) * deltaTime);
             if (inputHandler.isKeyDown(87))v.z = -2.5;
             if (inputHandler.isKeyDown(83))v.z = 2.5;
-            if (inputHandler.isKeyDown(32)){
-                this.isAttacking = true;
+            if (inputHandler.getClicked() && this.attackCounter <= 0){
+                this.isAttacking = this.showAttack = true;
+                this.attackCounter = 0.3;
                 this.attack(level);
             }else{
                 this.isAttacking = false;
             }
-            if (inputHandler.wasKeyJustPressed(69))this.useItem(level);
+            if (inputHandler.isKeyDown(69))this.useItem(level);
 
-            if (inputHandler.wasKeyJustPressed(81)) this.dropCurrentItem(level);
+            if (inputHandler.isKeyDown(81)) this.dropCurrentItem(level);
             
             if (v.x !=0 || v.z != 0){
                 tv.x = cameraDirection.x * v.z * deltaTime;
@@ -55,8 +58,8 @@ class Player extends Entity{
         
         if (this.i != null){
             let itemPos = {x:this.p.x - LevelRender.camera.getDirection().x/4,y:0,z:this.p.z - LevelRender.camera.getDirection().z/4};
-            if (!this.isAttacking){
-             this.i.renderPlayerHolding(itemPos,0.11);
+            if (!this.showAttack){
+                this.i.renderPlayerHolding(itemPos,0.11);
             }else{
                 this.i.renderPlayerAttack(itemPos,0.10);
             }
@@ -67,7 +70,6 @@ class Player extends Entity{
 
     dropCurrentItem(level){
         if (this.i != null){
-            if (this.i.n == "torch") LevelRender.darkness = 5;
             let itemSprite = new ItemSprite(this.i,this.p.x-LevelRender.camera.getDirection().x/2,-0.2,this.p.z-LevelRender.camera.getDirection().z/2,this.i.texture,level.gl);
             itemSprite.knockback(LevelRender.camera.getDirection().x,LevelRender.camera.getDirection().z);
             level.addEntity(itemSprite); 
@@ -80,7 +82,6 @@ class Player extends Entity{
     }
 
     pickup(i){
-        if (i.n == "torch") LevelRender.darkness = 20;
         this.inventory.addItemToFirstAvailableSlot(i);
     }
     useItem(level){
@@ -105,18 +106,15 @@ class Player extends Entity{
     }
 
     attack(level){
-        //let cameraDirection = LevelRender.camera.getDirection();
-       // level.addEntity(new Projectile(this.p.x - cameraDirection.x, 0.3, this.p.z - cameraDirection.z,level.gl, -cameraDirection.x*5, -cameraDirection.z*5));
         if (this.i == null) return;
-        if (this.i.n == "dagger"){
+        if (this.i.n == "wand"){
+            let cameraDirection = LevelRender.camera.getDirection();
+            level.addEntity(new Projectile(this.p.x - cameraDirection.x, 0.3, this.p.z - cameraDirection.z,level.gl, -cameraDirection.x*5, -cameraDirection.z*5,this.i.getDamage()));
+        }else{
             let cameraDirection = LevelRender.camera.getDirection();
             if (!this.findEnemyAndAttack(level,level.getCollisionTile(Math.round(this.p.x - cameraDirection.x), Math.round(this.p.z - cameraDirection.z)))){
                 this.findEnemyAndAttack(level,level.getCollisionTile(Math.round(this.p.x - cameraDirection.x*1.5), Math.round(this.p.z - cameraDirection.z*1.5)));
             }
-        }else{
-            let cameraDirection = LevelRender.camera.getDirection();
-            console.log(LevelRender.camera.currentRot);
-            level.addEntity(new Projectile(this.p.x - cameraDirection.x, 0.3, this.p.z - cameraDirection.z,level.gl, -cameraDirection.x*5, -cameraDirection.z*5));
         }
     }
     findEnemyAndAttack(level,ct){

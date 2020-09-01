@@ -34,15 +34,7 @@ class Bat extends Billboardsprite{
 
     collidedBy(entity, level){
         super.collidedBy(entity,level);
-        let d = this.distanceToOtherEntity(entity);
-        if (entity.n == "projectile"){
-            if(d < 0.6){
-                if (this.hitCounter>= 0.5){
-                    super.knockback(entity.p.x - this.p.x*2, entity.p.z - this.p.z*2);
-                    this.hit(level,entity,1);
-                }
-            }
-        }
+            if(entity.n == "projectile" && this.distanceToOtherEntity(entity) < 0.8 && this.hitCounter>= 0.5)this.hit(level,entity,entity.damage);
     }
 
     removeThisEntity(level){

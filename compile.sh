@@ -2,7 +2,7 @@
 rm dist.zip
 mkdir -p dist
 cd src
-cp -av f.png ../dist/
+cp -av f-tinified.png ../dist/f.png
 cp -av a-tinified.png ../dist/a.png
 cp -av *.txt ../dist/
 cp index.html index.css ../dist/

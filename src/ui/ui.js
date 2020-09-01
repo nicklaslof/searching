@@ -13,7 +13,6 @@ class UI{
         };
         this.atlas.src="a.png";
 
-        this.characters = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ!/?";
         this.fontWidth = 5;
         this.fontHeight = 5;
         this.numberOfSlots = 8;
@@ -53,7 +52,7 @@ class UI{
     }
 
     renderHealth(level){
-        this.drawTextAt("health: "+level.player.currentHealth+"/"+level.player.maxHealth,50,450);
+        this.drawTextAt("health "+level.player.currentHealth+" of "+level.player.maxHealth,50,450);
     }
 
     drawInventorySlots(level){
@@ -98,7 +97,9 @@ class UI{
     drawTextAt(text,x,y){
         this.c.globalAlpha = 0.9;
         for (let i = 0; i < text.length; i++) {
-            this.c.drawImage(this.font,this.characters.indexOf(text[i].toUpperCase())*this.fontWidth,0,this.fontWidth,this.fontHeight,x,y,6,8);
+            let cc = text.toUpperCase().charCodeAt(i);
+            let index = cc - (cc < 64?48:55);
+            this.c.drawImage(this.font,index*this.fontWidth,0,this.fontWidth,this.fontHeight,x,y,6,8);
             x += 8;
         }
         this.c.globalAlpha = 1;
