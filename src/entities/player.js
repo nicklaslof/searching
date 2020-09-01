@@ -11,7 +11,6 @@ class Player extends Entity{
         this.speed = 3;
         this.isAttacking = false;
         this.inventory = new Inventory();
-        this.onAppareingfloor = false;
     }
 
     tick(deltaTime, level){
@@ -62,9 +61,8 @@ class Player extends Entity{
                 this.i.renderPlayerAttack(itemPos,0.10);
             }
         }
-        LevelRender.camera.setPos(this.p.x, this.onAppareingfloor?+0:+0.3, this.p.z);
+        LevelRender.camera.setPos(this.p.x, 0.3, this.p.z);
 
-        this.onAppareingfloor=false;
     }
 
     dropCurrentItem(level){
@@ -96,11 +94,6 @@ class Player extends Entity{
     collidedBy(entity, level){
         super.collidedBy(entity,level);
         let d = this.distanceToOtherEntity(entity);
-        if (entity.n == "appareingfloor"){
-            if (d < 1 && entity.visble){
-                this.onAppareingfloor = true;
-            }
-        } 
         if (entity.n == "bat" || entity.n == "projectile"){
             if(d < 0.4){
                 if (this.hitCounter>= 0.5){

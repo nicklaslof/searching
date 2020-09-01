@@ -8,8 +8,8 @@ class LavaTile extends Tile{
         this.setBlocksLight(false);
     }
 
-    b(entity){
-        if (entity.n == "projectile" || entity.n == "bat") return false;
+    blocks(e){
+        if (e.n == "projectile" || e.n == "bat") return false;
         return true;
     }
     

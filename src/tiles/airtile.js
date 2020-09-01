@@ -4,7 +4,7 @@ class AirTile extends Tile{
         super();
     }
 
-    b(entity){
+    blocks(e){
         return false;
     }
     

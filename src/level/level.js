@@ -129,6 +129,7 @@ class Level{
 
         let falloff = 0.2;
         if (tile.blocksLight) falloff = 2;
+        if (tile == Tiles.appareringFloor) falloff = 0;
 
         let l = this.getLight(x-1,z);
         let r = this.getLight(x+1,z);
@@ -166,7 +167,7 @@ class Level{
                     if (!this.getTile(x,z-1).c(tile)) MeshBuilder.back(tile.getUVs(),wr,x,0,z,this.getLight(x,z-1),tile.height,tile.YOffset);
                 }else if (tile == Tiles.lava || tile == Tiles.appareringFloor){
                     let light = this.getLight(x,z);
-                    MeshBuilder.bottom(tile.getUVs(), fr,x,-0.5,z,light,tile.YOffset);
+                    MeshBuilder.bottom(tile.getUVs(), fr,x,-0.15,z,light,tile.YOffset);
                     MeshBuilder.top(LevelRender.dirt.getUVs(),rr,x,2.9,z,light, tile.YOffset,[0.4,0.4,0.45,1]);
                 }else{
                     

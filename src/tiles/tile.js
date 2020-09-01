@@ -13,7 +13,7 @@ class Tile{
         return this.texture.getUVs();
     }
 
-    b(entity){
+    blocks(e){
        return true;
     }
     c(tile){
