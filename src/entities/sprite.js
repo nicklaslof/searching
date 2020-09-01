@@ -11,14 +11,13 @@ class Sprite extends Entity{
             this.textureAnimation = texture;
             this.currentFrame = 0;
             this.frameCounter = 0;
-
-
+            
         }else{
             this.texture = texture;
             this.animated = false;
         }
 
-        this.c = [1,1,1,1];
+        this.c = this.baseColor = [1,1,1,1];
         this.light = 0.5;
         this.hitCCountDown = 0;
         this.changeBackCAfterHit = false;
@@ -51,7 +50,7 @@ class Sprite extends Entity{
         super.tick(deltatime,level);
             if (this.changeBackCAfterHit && this.hitCCountDown > 0) this.hitCCountDown -= deltatime;
             if (this.changeBackCAfterHit && this.hitCCountDown <= 0){
-                this.setC([1,1,1,1]);
+                this.setC(this.baseColor);
                 this.changeBackCAfterHit = false;
             }
 

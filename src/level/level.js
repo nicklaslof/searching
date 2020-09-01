@@ -15,7 +15,6 @@ import Box from "../entities/box.js";
 import MeshBuilder from "../gl/meshbuilder.js";
 import AppareringFloor from "../entities/appareringfloor.js";
 import ProjectileShooter from "../entities/projectileshooter.js";
-import Endboss from "../entities/endboss.js";
 
 const maxLight = 2;
 const levelsize = 64;
@@ -75,11 +74,12 @@ class Level{
                         if (c == 'p'){
                             level.player = new Player(x,0,z);
                             level.addEntity(level.player);
-                            level.displayMessage("where am i? i cant find my things!!","and where is my 04?",10);
+                            level.displayMessage("where am i  i cant find my things","and where is my 04",10);
                             this.showHints = 10;
                         }
                         if (c == 'l')level.addTile(x,z,Tiles.lava);
-                        if (c == 'b')level.addEntity(new Bat(x,0.2,z,level.gl));
+                        if (x == 14 && z == 10) console.log(alpha);
+                        if (c == 'b')level.addEntity(new Bat(x,0.2,z,level.gl,alpha));
                         if (c == 'd')level.addEntity(new ItemSprite(new Dagger(x,0,z,level.gl,0.3,1),x,0,z,LevelRender.dagger,level.gl).setNotRespawn());
                         if (c == 'w')level.addEntity(new ItemSprite(new Wand(x,0,z,level.gl,0.3,1),x,0,z,LevelRender.wand,level.gl).setNotRespawn());
                         if (c == 'j')level.addEntity(new Pot(x,0,z,level.gl));
@@ -95,7 +95,6 @@ class Level{
                         }
                         if (c == 't')level.addEntity(new FloorTrigger(x,0,z,level.gl,alpha).setNotRespawn());
                         if (c == 'o')level.addEntity(new ProjectileShooter(x,0,z,level,alpha).setNotRespawn());
-                        if (c == 'z')level.addEntity(new Endboss(x,0,z,level.gl).setNotRespawn());
 
                     }
                 }
@@ -265,13 +264,9 @@ class Level{
         }
 
         if (this.showHints<=0 && !this.hintsShown){
-            this.displayMessage("move with WASD. fight with space","drop things with q and use with e",12);
+            this.displayMessage("WASD and mouse to control","q to drop items and e to eat",12);
             this.hintsShown = true;
             this.showHints = 12;
-        }
-        if (this.showHints<=0 && !this.hintsShown2){
-            this.displayMessage("browse inventory with number keys","pick up items with shift",12);
-            this.hintsShown2 = true;
         }
 
         if (this.displayMessageCounter <= 0){

@@ -23,7 +23,8 @@ loadImage("level.png").then((image) => {
                     let b = 126-(255-alpha);
                 }
                 c = (c & 0x0FFFFFF);
-                if (x == 29 && z == 3) console.log(c);
+
+                if (x == 14 && z == 10) console.log(alpha);
                 if (c == 0x333324) addToLevel(level,x,z,"s"); // Stonewall 
                 if (c == 0x444424) addToLevel(level,x,z,"g"); // Grassy Stonewall
                 if (c == 0x0050ff) addToLevel(level,x,z,"l"); // Lava
@@ -39,7 +40,7 @@ loadImage("level.png").then((image) => {
                 if (c == 0xffffff || c == 0xfefefe) addToLevel(level,x,z,"t"); // Floortrigger
                 if (c == 0xee00ff) addToLevel(level,x,z,"o"); // Projectile shooter
                 if (c == 0x999999) addToLevel(level,x,z,"n"); // No floor
-                if (c == 0xffbb00) addToLevel(level,x,z,"z"); // End boss
+
             }
         }
     
