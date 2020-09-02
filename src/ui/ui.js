@@ -40,7 +40,7 @@ class UI{
         let text = level.getUIText();
         this.drawText(text[0],250);
         this.drawText(text[1],270);
-        if (level.player != null){
+        if (level.player != null && level.player.currentHealth > 0){
             this.renderItemBar(level);
             this.renderHealth(level);
         }

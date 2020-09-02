@@ -309,5 +309,9 @@ class Level{
             this.levelrender.renderEntity(this.player.i);
         }
     }
+
+    restart(){
+        this.player.spawnAtCheckpoint(this);
+    }
 }
 export default Level

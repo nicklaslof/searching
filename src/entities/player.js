@@ -14,8 +14,20 @@ class Player extends Entity{
         this.attackCounter = 0;
     }
 
+    spawnAtCheckpoint(level){
+        level.displayMessage("Respawned","",2);
+        this.currentHealth = this.health;
+        this.p.x = this.checkpoint.x;
+        this.p.z = this.checkpoint.z;
+        //LevelRender.camera.setPos(this.p.x, 0.3, this.p.z);
+    }
+
     tick(deltaTime, level){
         super.tick(deltaTime,level);
+        if (this.currentHealth <= 0){
+            if (Game.inputHandler.isKeyDown(32)) Game.restart();
+            return;
+        }
         this.inventory.tick(deltaTime,level);
         this.i = this.inventory.getItemInSlot(this.inventory.selectedSlot);
         if (this.showAttack && this.attackCounter > 0) this.attackCounter -= deltaTime;
@@ -68,6 +80,10 @@ class Player extends Entity{
 
     }
 
+    removeThisEntity(level){
+        level.displayMessage("You have died.","Press space to try again");
+    }
+    
     dropCurrentItem(level){
         if (this.i != null){
             let itemSprite = new ItemSprite(this.i,this.p.x-LevelRender.camera.getDirection().x/2,-0.2,this.p.z-LevelRender.camera.getDirection().z/2,this.i.texture,level.gl);
@@ -104,7 +120,9 @@ class Player extends Entity{
             }
         }
     }
-
+    setCheckpoint(x,z){
+        this.checkpoint = {x,z};
+    }
     attack(level){
         if (this.i == null) return;
         if (this.i.n == "wand"){

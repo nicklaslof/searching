@@ -17,7 +17,6 @@ class GameScreen{
     render(){
        this.level.render();
        this.ui.render(this.level);
-
     }
 }
 export default GameScreen

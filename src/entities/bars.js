@@ -35,6 +35,7 @@ class Bars extends Sprite{
             this.mesh.t(0,2,0);
             if (this.triggerId == 196 || this.triggerId == 194) level.removeTile(this.p.x, this.p.z-0.5);
             else level.removeTile(this.p.x-0.5, this.p.z);
+            level.player.setCheckpoint(Math.round(this.p.x), Math.round(this.p.z));
             this.triggered = true;
         }
     }

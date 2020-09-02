@@ -29,7 +29,9 @@ class InputHandler{
     }
 
     getClicked(){
-        return this.clicked;
+        let v = this.clicked;
+        this.clicked = false;
+        return v;
     }
 
     getMouseX(){

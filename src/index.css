@@ -1,1 +1,6 @@
-body{background-color: black}#ui{z-index: 10;}canvas{visibility:hidden; position: absolute; width:99%; height:99%;}button{position: absolute;}
+body{background-color: black}#ui{z-index: 10;}canvas{
+    position: absolute;
+    width:70%;
+    height:70%;
+    transform: translate(20%, 20%);  
+}
