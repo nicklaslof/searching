@@ -4,7 +4,7 @@ import Tile from "../tiles/tile.js";
 import MeshBuilder from "../gl/meshbuilder.js";
 class Bars extends Sprite{
     constructor(x,y,z,gl, triggerId) {
-        super("bars", x+0.5,y,z,LevelRender.bars,gl,0,triggerId);
+        super("bars", x,y,z,LevelRender.bars,gl,0,triggerId);
         let r = MeshBuilder.start(gl,x,y+1,z);
         for(let x = 0; x < 4;x++){
             for (let y = 0; y < 8; y++){
@@ -19,6 +19,7 @@ class Bars extends Sprite{
             this.mesh.setRotationY(180);
             this.p.z += 0.5;
             this.mesh.t(0.0,0,0.5);
+            console.log(this.mesh.p);
         } 
         this.neededTriggers = 1;
         if (triggerId == 199 || triggerId == 197) this.neededTriggers = 2;
@@ -32,9 +33,10 @@ class Bars extends Sprite{
         if (source == this) return;
         this.neededTrigger++;
         if (!this.triggered && this.neededTrigger == this.neededTriggers){
+            console.log(this.mesh.p);
             this.mesh.t(0,2,0);
             if (this.triggerId == 196 || this.triggerId == 194) level.removeTile(this.p.x, this.p.z-0.5);
-            else level.removeTile(this.p.x-0.5, this.p.z);
+            else level.removeTile(this.p.x, this.p.z);
             level.player.setCheckpoint(Math.round(this.p.x), Math.round(this.p.z));
             this.triggered = true;
         }
