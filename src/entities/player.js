@@ -40,7 +40,6 @@ class Player extends Entity{
             this.counter += deltaTime;
             let v = {x:0,y:0,z:0};
             let cameraDirection = LevelRender.camera.getDirection();
-  
             LevelRender.camera.rotate((inputHandler.getMouseX()/8) * deltaTime);
             if (inputHandler.isKeyDown(87))v.z = -2.5;
             if (inputHandler.isKeyDown(83))v.z = 2.5;

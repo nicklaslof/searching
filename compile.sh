@@ -8,8 +8,10 @@ cp -av *.txt ../dist/
 cp index.html index.css ../dist/
 rollup mainloop.js --format cjs --file ../dist/bundle.js
 cd ../dist
-terser bundle.js -o mainloop.js --compress --mangle --mangle-props --timings --toplevel --module --mangle-props
+terser bundle.js -o mainloop.js --compress --mangle --mangle-props reserved=["movementX"] --timings --toplevel --module
 rm bundle.js
 cd ..
-/c/Program\ Files/7-Zip/7z.exe a -mx9 -tzip dist.zip dist/*
+cd dist
+/c/Program\ Files/7-Zip/7z.exe a -mx9 -tzip ../dist.zip *
+cd ..
 ./advzip.exe  -4 -i 1000 -z dist.zip
