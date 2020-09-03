@@ -3,7 +3,7 @@ import LevelRender from "../level/levelrender.js";
 import Particle from "./particle.js";
 
 class Projectile extends Billboardsprite{
-    constructor(x,y,z,gl, dirX, dirZ,damage){
+    constructor(x,y,z,gl, dirX, dirZ,damage,source){
         super("projectile", x,y,z,LevelRender.projectile,gl,0);
         this.mesh.setS(0.15);
         this.radius = 0.2;
@@ -13,6 +13,7 @@ class Projectile extends Billboardsprite{
         this.setC([1,0,0,1]);
         this.respawn = false;
         this.damage = damage;
+        this.source = source;
     }
 
     tick(deltatime,level){

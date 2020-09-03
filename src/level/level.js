@@ -74,6 +74,9 @@ class Level{
                         if (c == 'p'){
                             level.player = new Player(x,0,z);
                             level.addEntity(level.player);
+                            //level.player.pickup(level,level.getDagger(1));
+                           level.player.pickup(level,level.getWand(1));
+                            //level.player.pickup(level,level.getApple());
                             level.displayMessage("where am i  i cant find my things","and where is my 04",10);
                            // this.showHints = 10;
                         }

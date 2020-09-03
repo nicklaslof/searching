@@ -19,11 +19,10 @@ class Bars extends Sprite{
             this.mesh.setRotationY(180);
             this.p.z += 0.5;
             this.mesh.t(0.0,0,0.5);
-            console.log(this.mesh.p);
         } 
         this.neededTriggers = 1;
         if (triggerId == 199 || triggerId == 197) this.neededTriggers = 2;
-        if (triggerId == 196) this.neededTriggers = 4;
+        if (triggerId == 196 || triggerId == 193) this.neededTriggers = 4;
         this.neededTrigger = 0;
         this.triggered = false;
     }
@@ -32,8 +31,7 @@ class Bars extends Sprite{
         super.trigger(level,source);
         if (source == this) return;
         this.neededTrigger++;
-        if (!this.triggered && this.neededTrigger == this.neededTriggers){
-            console.log(this.mesh.p);
+        if (!this.triggered && this.neededTrigger == this.neededTriggers){;
             this.mesh.t(0,2,0);
             if (this.triggerId == 196 || this.triggerId == 194) level.removeTile(this.p.x, this.p.z-0.5);
             else level.removeTile(this.p.x, this.p.z);
@@ -49,7 +47,7 @@ class Bars extends Sprite{
         if (this.triggered){
             if (this.triggerId == 253) return;
             this.mesh.t(0,1,0);
-            level.addTile(this.p.x-0.5, this.p.z, new Tile());
+            level.addTile(this.p.x, this.p.z, new Tile());
             this.triggered = false;
         }
     }

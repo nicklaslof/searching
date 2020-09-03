@@ -15,7 +15,7 @@ class UI{
 
         this.fontWidth = 5;
         this.fontHeight = 5;
-        this.numberOfSlots = 8;
+        this.numberOfSlots = 3;
         this.sizeOfSlot = 32;
     }
 
@@ -28,7 +28,7 @@ class UI{
         this.drawText("created for JS13k 2020",175);
         this.drawText("by nicklas lof",200);
         this.drawText("graphics by nicklas lof",240);
-        this.drawText("and Elthen www.patreon.com/elthen/",260);
+        this.drawText("and Elthen at patreon.com",260);
         this.drawText("font by killedbyapixel",280);
         this.drawText("hit 1 to play roguelike",320);
         this.drawText("hit 2 to play with checkpoints",340);
@@ -67,11 +67,14 @@ class UI{
     }
 
     renderItems(level){
-        for(let slot=0; slot < 9; slot++){
+        for(let slot=0; slot < this.numberOfSlots+1; slot++){
             let i = level.player.inventory.getItemInSlot(slot);
             if (i != null){
                 let x = ((this.sizeOfSlot*slot)+this.centerX-((this.numberOfSlots/2)+2)*this.sizeOfSlot)+(slot*5);
-                this.c.drawImage(this.atlas, i.texture.x, i.texture.y,i.texture.width,i.texture.height,x+4,8,i.texture.width*2, i.texture.height*2);
+                this.c.drawImage(this.atlas, i.texture.x, i.texture.y,i.texture.width,i.texture.height,x,8,i.texture.width*2, i.texture.height*2);
+                if (slot == 3){
+                    this.drawTextAt(""+level.player.inventory.apples,324,30);
+                } 
             }
         }
     }

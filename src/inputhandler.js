@@ -1,7 +1,7 @@
 class InputHandler{
 
     constructor(document){
-        this.kp = this.kjp =[];
+        this.kp =[];
         this.mouseX = 0;
         document.addEventListener("keydown", this.handleKeyboardDownEvent.bind(this));
         document.addEventListener("keyup", this.handleKeyboardUpEvent.bind(this));

@@ -1,46 +1,32 @@
 import Game from "../game.js";
 class Inventory{
     constructor() {
-        this.is = new Array(8);
+        this.is = new Array(3);
         this.selectedSlot = 1;
         this.slotWithItems = 0;
+        this.apples = 0;
     }
 
     tick(){
         let inputHandler = Game.inputHandler;
-        for (let key = 49; key < 57; key ++ ){
-            if (inputHandler.isKeyDown(key)) this.selectedSlot=9-(57-key);
+        for (let key = 49; key < 52; key ++ ){
+            if (inputHandler.isKeyDown(key)) this.selectedSlot=3-(51-key);
         }
+
     }
 
     eat(e){
-        for(let slot=0; slot < 9; slot++){
-            let i = this.getItemInSlot(slot);
-            if (i != null && i.n == "apple"){
-               i.use(e);
-               this.removeItemFromSlot(slot);
-               return;
-            }
+        if (this.apples > 0){
+            this.getItemInSlot(3).use(e);
+            this.apples--;
+            if (this.apples <= 0) this.is[2] = null;
         }
-    }
-
-    hasSpace(){
-        return this.slotWithItems < 8
     }
 
     addItemToFirstAvailableSlot(level,itemToAdd){
         if (itemToAdd.n == "dagger") this.replaceAndShow(level,0,itemToAdd);
         else if (itemToAdd.n == "wand")this.replaceAndShow(level,1,itemToAdd);
-        else
-        for (let index = 2; index < this.is.length; index++) {
-            let i = this.is[index];
-            if (i == null){ 
-                //this.is[index] = itemToAdd;
-                this.pickupAndShow(level,index,itemToAdd);
-                this.slotWithItems++;
-                return;
-            }
-        }
+        else {this.pickupAndShow(level,2,itemToAdd); this.apples++};
     }
 
     replaceAndShow(level,slot,item){
@@ -59,6 +45,11 @@ class Inventory{
     }
 
     removeItemFromSlot(slot){
+        if (slot == 3){
+            this.apples--;
+            if (this.apples <= 0) this.is[2] = null;
+            return;
+        } 
         this.is[slot-1] = null;
         this.slotWithItems--;
     }

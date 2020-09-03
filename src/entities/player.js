@@ -42,10 +42,14 @@ class Player extends Entity{
             let inputHandler = Game.inputHandler;
             this.counter += deltaTime;
             let v = {x:0,y:0,z:0};
+            let strafe = {x:0,y:0,z:0};
             let cameraDirection = LevelRender.camera.getDirection();
             LevelRender.camera.rotate((inputHandler.getMouseX()/8) * deltaTime);
-            if (inputHandler.isKeyDown(87))v.z = -2.5;
-            if (inputHandler.isKeyDown(83))v.z = 2.5;
+            if (inputHandler.isKeyDown(87))v.z = -1;
+            if (inputHandler.isKeyDown(83))v.z = 1;
+           
+            if (inputHandler.isKeyDown(65))this.cross(strafe,cameraDirection,{x:0,y:1,z:0});
+            if (inputHandler.isKeyDown(68))this.cross(strafe,cameraDirection,{x:0,y:-1,z:0});
             if (inputHandler.getClicked() && this.attackCounter <= 0){
                 this.isAttacking = this.showAttack = true;
                 this.attackCounter = 0.3;
@@ -55,18 +59,19 @@ class Player extends Entity{
             }
             if (inputHandler.isKeyDown(69))this.eat();
 
-            if (inputHandler.isKeyDown(81)) this.dropCurrentItem(level);
+            if (inputHandler.isKeyDown(81)){ this.dropCurrentItem(level); inputHandler.kp[81] = false} ;
             
-            if (v.x !=0 || v.z != 0){
-                tv.x = cameraDirection.x * v.z * deltaTime;
-                tv.y = cameraDirection.y * v.z * deltaTime;
-                tv.z = cameraDirection.z * v.z * deltaTime;
-    
+            if (v.x !=0 || v.z != 0 || strafe.x != 0 || strafe.z !=0){
+                tv.x = cameraDirection.x * v.z + strafe.x;
+                tv.z = cameraDirection.z * v.z +strafe.z;
+                this.normalize(tv);
+                tv.x *= deltaTime*2.5;
+                tv.z *= deltaTime*2.5;
                 tv.x += pos.x;
                 tv.z += pos.z;
-            
                 if (this.canMove(level,tv.x,pos.z)) pos.x += tv.x-pos.x;
                 if (this.canMove(level,pos.x,tv.z)) pos.z += tv.z-pos.z;
+
             }
         }
         
@@ -81,6 +86,13 @@ class Player extends Entity{
         LevelRender.camera.setPos(this.p.x, 0.3, this.p.z);
 
     }
+
+    cross(out, a, b) {
+        out.x = a.y * b.z - a.z * b.y;
+        out.y = a.z * b.x - a.x * b.z;
+        out.z = a.x * b.y - a.y * b.x;
+        return out;
+      }
 
     removeThisEntity(level){
         level.displayMessage("You have died.","Press space to try again");
@@ -112,16 +124,12 @@ class Player extends Entity{
         } 
     }
 
-    hasSpace(){
-       return this.inventory.hasSpace();
-    }
-
     collidedBy(entity, level){
         super.collidedBy(entity,level);
         let d = this.distanceToOtherEntity(entity);
-        if (entity.n == "bat" || entity.n == "projectile"){
-            if(d < 0.4){
-                if (this.hitCounter>= 0.5){
+        if (entity.n == "bat" || (entity.n == "projectile" && entity.source != this)){
+            if(d < 0.6){
+                if (this.hitCounter>= 1){
                     super.knockback(entity.p.x - this.p.x*2, entity.p.z - this.p.z*2);
                     this.hit(level,entity,1);
                 }
@@ -135,11 +143,11 @@ class Player extends Entity{
         if (this.i == null) return;
         if (this.i.n == "wand"){
             let cameraDirection = LevelRender.camera.getDirection();
-            level.addEntity(new Projectile(this.p.x - cameraDirection.x, 0.3, this.p.z - cameraDirection.z,level.gl, -cameraDirection.x*5, -cameraDirection.z*5,this.i.getDamage()));
+            level.addEntity(new Projectile(this.p.x - cameraDirection.x, 0.3, this.p.z - cameraDirection.z,level.gl, -cameraDirection.x*5, -cameraDirection.z*5,this.i.getDamage(),this));
         }else{
             let cameraDirection = LevelRender.camera.getDirection();
             if (!this.findEnemyAndAttack(level,level.getCollisionTile(Math.round(this.p.x - cameraDirection.x), Math.round(this.p.z - cameraDirection.z)))){
-                this.findEnemyAndAttack(level,level.getCollisionTile(Math.round(this.p.x - cameraDirection.x*1.5), Math.round(this.p.z - cameraDirection.z*1.5)));
+                this.findEnemyAndAttack(level,level.getCollisionTile(Math.round(this.p.x - cameraDirection.x*2), Math.round(this.p.z - cameraDirection.z*2)));
             }
         }
     }

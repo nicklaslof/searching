@@ -16,7 +16,7 @@ class Tiles{
         Tiles.airtile = new AirTile().setBlocksLight(false);
         Tiles.light = new AirTile();
         Tiles.lava = new LavaTile();
-        Tiles.appareringFloor = new Tile(LevelRender.lava).setHeight(1).setYOffset(-0.9).setBlocksLight(false);
+        Tiles.appareringFloor = new LavaTile().setHeight(1).setYOffset(-0.9).setBlocksLight(false);
     }
 }
 export default Tiles;
