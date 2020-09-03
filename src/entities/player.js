@@ -12,6 +12,9 @@ class Player extends Entity{
         this.inventory = new Inventory();
         this.showAttack = false;
         this.attackCounter = 0;
+        this.eatDelay = 0;
+        this.daggerItemLevel = 0;
+        this.wandItemLevel = 0;
     }
 
     spawnAtCheckpoint(level){
@@ -19,7 +22,6 @@ class Player extends Entity{
         this.currentHealth = this.health;
         this.p.x = this.checkpoint.x;
         this.p.z = this.checkpoint.z;
-        //LevelRender.camera.setPos(this.p.x, 0.3, this.p.z);
     }
 
     tick(deltaTime, level){
@@ -32,6 +34,7 @@ class Player extends Entity{
         this.i = this.inventory.getItemInSlot(this.inventory.selectedSlot);
         if (this.showAttack && this.attackCounter > 0) this.attackCounter -= deltaTime;
         if (this.attackCounter <= 0) this.showAttack = false;
+        if (this.eatDelay >0) this.eatDelay -= deltaTime;
 
         if (this.knockBack.x == 0 || this.knockBack.z == 0){
             let tv = this.tempVector;
@@ -50,7 +53,7 @@ class Player extends Entity{
             }else{
                 this.isAttacking = false;
             }
-            if (inputHandler.isKeyDown(69))this.useItem(level);
+            if (inputHandler.isKeyDown(69))this.eat();
 
             if (inputHandler.isKeyDown(81)) this.dropCurrentItem(level);
             
@@ -96,11 +99,17 @@ class Player extends Entity{
         this.inventory.removeItemFromSlot(this.inventory.selectedSlot);
     }
 
-    pickup(i){
-        this.inventory.addItemToFirstAvailableSlot(i);
+    pickup(level,i){
+        this.inventory.addItemToFirstAvailableSlot(level,i);
+        if (i.n == "dagger") if (this.daggerItemLevel < i.level) this.daggerItemLevel = i.level;
+        if (i.n == "wand") if (this.wandItemLevel < i.level) this.wandItemLevel = i.level;
     }
-    useItem(level){
-        if (this.i != null) this.i.use(level,this);
+
+    eat(){
+        if (this.currentHealth < this.health && this.eatDelay <= 0){
+            this.inventory.eat(this);
+            this.eatDelay = 0.2;
+        } 
     }
 
     hasSpace(){

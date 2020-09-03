@@ -91,6 +91,7 @@ class UI{
     }
 
     drawText(text,y){
+        if (text == null) return;
         this.drawTextAt(text,this.centerX - (text.length * 4)+this.fontWidth,y);
     }
 

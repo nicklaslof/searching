@@ -6,9 +6,8 @@ class Apple extends Item{
         this.onGroundScale = onGroundScale;
         this.respawn = false;
     }
-    use(level, entity){
+    use(entity){
         entity.heal(1);
-        entity.removeCurrentItem(level);
     }
 }
 export default Apple

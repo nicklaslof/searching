@@ -42,6 +42,7 @@ class Game{
         this.now = this.supportsPerformance?performance.now():Date.now();
         let deltaTime = this.now - this.previousUpdate;
         this.previousUpdate = this.now;
+        if (deltaTime > 64) deltaTime = 64;
         this.gamescreen.tick(deltaTime/1000,this);
         this.gamescreen.render();
     }

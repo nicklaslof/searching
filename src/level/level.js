@@ -78,17 +78,16 @@ class Level{
                             this.showHints = 10;
                         }
                         if (c == 'l')level.addTile(x,z,Tiles.lava);
-                        if (x == 14 && z == 10) console.log(alpha);
                         if (c == 'b')level.addEntity(new Bat(x,0.2,z,level.gl,alpha));
-                        if (c == 'd')level.addEntity(new ItemSprite(new Dagger(x,0,z,level.gl,0.3,1),x,0,z,LevelRender.dagger,level.gl).setNotRespawn());
-                        if (c == 'w')level.addEntity(new ItemSprite(new Wand(x,0,z,level.gl,0.3,1),x,0,z,LevelRender.wand,level.gl).setNotRespawn());
+                        if (c == 'd')level.addEntity(new ItemSprite(this.getDagger(1),x,0,z,LevelRender.dagger,level.gl).setNotRespawn());
+                        if (c == 'w')level.addEntity(new ItemSprite(this.getWand(1),x,0,z,LevelRender.wand,level.gl).setNotRespawn());
                         if (c == 'j')level.addEntity(new Pot(x,0,z,level.gl));
                         if (c == 'c')level.addEntity(new Box(x,0,z,level.gl,alpha).setNotRespawn());
                         if (c == 'f'){
                             level.addEntity(new AppareringFloor(x,0,z,level.gl,alpha).setNotRespawn());
                             level.addTile(x,z,Tiles.appareringFloor);
                         };
-                        if (c == 'a')level.addEntity(new ItemSprite(new Apple(x,0,z,level.gl,0.3),x,0,z,LevelRender.apple,level.gl));
+                        if (c == 'a')level.addEntity(new ItemSprite(this.getApple(),x,0,z,LevelRender.apple,level.gl));
                         if (c == 'e'){
                             level.addEntity(new Bars(x,0,z,level.gl,alpha));
                             level.addTile(x,z,new Tile().setBlocksLight(false));
@@ -101,6 +100,18 @@ class Level{
                 done();
             });
          });
+    }
+
+    getDagger(itemLevel){
+        return new Dagger(0,0,0,this.gl,0.3,itemLevel);
+    }
+
+    getWand(itemLevel){
+        return new Wand(0,0,0,this.gl,0.3,itemLevel)
+    }
+
+    getApple(){
+        return new Apple(0,0,0,this.gl,0.3);
     }
 
     addEntity(entity){

@@ -23,8 +23,8 @@ collidedBy(entity, level){
             }
             if (Game.inputHandler.isKeyDown(16)){
                 if (entity.hasSpace()){
-                    entity.pickup(this.i);
-                    level.displayMessage("You picked up "+this.na() ,"", 3);
+                    entity.pickup(level,this.i);
+
                     this.removeThisEntity(level);
                 }else{
                     level.displayMessage("I don't have enough space!","",2);

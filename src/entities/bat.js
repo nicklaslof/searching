@@ -2,6 +2,7 @@ import Billboardsprite from "./billboardsprite.js";
 import LevelRender from "../level/levelrender.js";
 import Particle from "./particle.js";
 import Projectile from "./projectile.js";
+import Tiles from "../tiles/tiles.js";
 
 class Bat extends Billboardsprite{
     constructor(x,y,z,gl,metadata){
@@ -55,6 +56,10 @@ class Bat extends Billboardsprite{
 
     removeThisEntity(level){
        this.addParticles(level,0.12,-0.8);
+        if (this.getRand() < 0.8 && level.getTile(Math.round(this.p.x), Math.round(this.p.z) != Tiles.lava)){
+            if (this.triggerId == 254)this.drop(level,level.getDagger(level.player.daggerItemLevel+1));
+            if (this.triggerId == 253)this.drop(level,level.getWand(level.player.wandItemLevel+1));
+        }
        super.removeThisEntity(level);
     }
     spit(level){
