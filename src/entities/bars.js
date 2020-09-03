@@ -4,7 +4,7 @@ import Tile from "../tiles/tile.js";
 import MeshBuilder from "../gl/meshbuilder.js";
 class Bars extends Sprite{
     constructor(x,y,z,gl, triggerId) {
-        super("bars", x,y,z,LevelRender.bars,gl,0,triggerId);
+        super("br", x,y,z,LevelRender.bars,gl,0,triggerId);
         let r = MeshBuilder.start(gl,x,y+1,z);
         for(let x = 0; x < 4;x++){
             for (let y = 0; y < 8; y++){

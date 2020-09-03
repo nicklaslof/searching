@@ -4,7 +4,7 @@ import Particle from "./particle.js";
 
 class Projectile extends Billboardsprite{
     constructor(x,y,z,gl, dirX, dirZ,damage,source){
-        super("projectile", x,y,z,LevelRender.projectile,gl,0);
+        super("pp", x,y,z,LevelRender.projectile,gl,0);
         this.mesh.setS(0.15);
         this.radius = 0.2;
         this.dirX = dirX;

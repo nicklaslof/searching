@@ -9,7 +9,7 @@ class LavaTile extends Tile{
     }
 
     blocks(e){
-        if (e.n == "projectile" || e.n == "bat") return false;
+        if (e.n == "pp" || e.n == "ba") return false;
         return true;
     }
     

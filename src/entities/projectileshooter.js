@@ -5,7 +5,7 @@ import Tiles from "../tiles/tiles.js";
 
 class ProjectileShooter extends Sprite{
     constructor(x,y,z,level,triggerId){
-        super("projectileshooter", x,y+0.3,z,LevelRender.floorTriggerActive,level.gl,0, triggerId);
+        super("ps", x,y+0.3,z,LevelRender.floorTriggerActive,level.gl,0, triggerId);
         this.counter = 3.5;
         this.triggered = false;
         this.initialized = false;

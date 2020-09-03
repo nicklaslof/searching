@@ -14,7 +14,7 @@ constructor(i,x,y,z,tex, gl) {
 
 collidedBy(entity, level){
     if (this.dispose) return;
-    if (entity.n == "player"){
+    if (entity.n == "p"){
         let d = this.distanceToOtherEntity(entity);
         if(d < 1){
             level.displayMessage("Press shift to pickup",this.na(),0.1);

@@ -7,7 +7,7 @@ import Projectile from "./projectile.js";
 
 class Player extends Entity{
     constructor(x,y,z) {
-        super("player",x,y,z,5);
+        super("p",x,y,z,5);
         this.isAttacking = false;
         this.inventory = new Inventory();
         this.showAttack = false;
@@ -127,7 +127,7 @@ class Player extends Entity{
     collidedBy(entity, level){
         super.collidedBy(entity,level);
         let d = this.distanceToOtherEntity(entity);
-        if (entity.n == "bat" || (entity.n == "projectile" && entity.source != this)){
+        if (entity.n == "ba" || (entity.n == "pp" && entity.source != this)){
             if(d < 0.6){
                 if (this.hitCounter>= 1){
                     super.knockback(entity.p.x - this.p.x*2, entity.p.z - this.p.z*2);
@@ -154,7 +154,7 @@ class Player extends Entity{
     findEnemyAndAttack(level,ct){
         ct.getEntities().forEach(e => {
             if (e == this) return;
-            if (e.n == "bat" || e.n == "pot" || e.n == "box"){
+            if (e.n == "ba" || e.n == "po" || e.n == "b"){
                 e.hit(level,this,this.i.getDamage());
                 return true;
             }

@@ -5,7 +5,7 @@ const c = [0.5,0.5,0.7,1]
 
 class Box extends Entity{
     constructor(x,y,z,gl,triggerId) {
-        super("box",x,y-0.2,z,1,triggerId);
+        super("b",x,y-0.2,z,1,triggerId);
         let r = MeshBuilder.start(gl, x,y,z);
         this.texture = LevelRender.dirt;
         let uvs = this.texture.getUVs();
@@ -41,7 +41,7 @@ class Box extends Entity{
 
     collidedBy(entity, level){
         super.collidedBy(entity,level);
-        if (entity.n == "player"){
+        if (entity.n == "p"){
             if (this.hitCounter< 0.1) return;
             let dirX = entity.p.x - this.p.x;
             let dirZ = entity.p.z - this.p.z;

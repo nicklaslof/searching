@@ -2,7 +2,7 @@ import LevelRender from "../level/levelrender.js";
 import Sprite from "./sprite.js"
 class FloorTrigger extends Sprite{
     constructor(x,y,z,gl,triggerId) {
-        super("floortrigger",x,y-0.98,z,LevelRender.floorTriggerNoActive,gl,0,triggerId);
+        super("f",x,y-0.98,z,LevelRender.floorTriggerNoActive,gl,0,triggerId);
         if (triggerId == 198 || triggerId == 197 || this.triggerId == 194 || this.triggerId == 193) this.setC([0.5,0.5,0.6,1]);
         else this.setC([0.8,0.6,0.3,1]);
         this.mesh.setRotationX(-90);
@@ -26,8 +26,8 @@ class FloorTrigger extends Sprite{
     }
 
     collidedBy(entity, level){
-        if (entity.n == "bat" || entity.n == "projectile" || entity.n == "particle") return;
-        if ((this.triggerId == 198 || this.triggerId == 197 || this.triggerId == 194 || this.triggerId == 193) && entity.n != "box") return;
+        if (entity.n == "ba" || entity.n == "pp" || entity.n == "pa") return;
+        if ((this.triggerId == 198 || this.triggerId == 197 || this.triggerId == 194 || this.triggerId == 193) && entity.n != "b") return;
         if (this.distanceToOtherEntity(entity) < 0.8){
             this.somethingTriggering = true;
             this.untriggerCounter = 0;

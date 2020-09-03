@@ -6,7 +6,7 @@ import Tiles from "../tiles/tiles.js";
 
 class Bat extends Billboardsprite{
     constructor(x,y,z,gl,metadata){
-        super("bat", x,y,z,LevelRender.bat,gl,metadata==252?80:metadata==253?6:5,metadata);
+        super("ba", x,y,z,LevelRender.bat,gl,metadata==252?80:metadata==253?6:5,metadata);
         this.mesh.setS(metadata==252?3:metadata==253?1:0.5);
         this.counter = 0;
         this.random = this.getRand();
@@ -61,7 +61,7 @@ class Bat extends Billboardsprite{
 
     collidedBy(entity, level){
         super.collidedBy(entity,level);
-            if(entity.n == "projectile" && this.distanceToOtherEntity(entity) < 1.3 && this.hitCounter>= 0.5)this.hit(level,entity,entity.damage);
+            if(entity.n == "pp" && this.distanceToOtherEntity(entity) < 1.3 && this.hitCounter>= 0.5)this.hit(level,entity,entity.damage);
     }
 
     removeThisEntity(level){
