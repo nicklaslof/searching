@@ -63,7 +63,6 @@ class Entity{
             }else{
                 this.respawnTimer = 0.0;
                 this.reset();
-                console.log(this.orginalPos);
             }
             return;
          }

@@ -48,8 +48,8 @@ class Level{
         this.t2 = "";
         this.player = null;
         this.displayMessageCounter = 0.1;
-        this.hintsShown = false;
-        this.hintsShown2 = false;
+        //this.hintsShown = false;
+        //this.hintsShown2 = false;
     }
 
     read(done){
@@ -75,7 +75,7 @@ class Level{
                             level.player = new Player(x,0,z);
                             level.addEntity(level.player);
                             level.displayMessage("where am i  i cant find my things","and where is my 04",10);
-                            this.showHints = 10;
+                           // this.showHints = 10;
                         }
                         if (c == 'l')level.addTile(x,z,Tiles.lava);
                         if (c == 'b')level.addEntity(new Bat(x,0.2,z,level.gl,alpha));
@@ -270,15 +270,15 @@ class Level{
             this.displayMessageCounter -=deltaTime;
         }
 
-        if (this.showHints > 0 && (!this.hintsShown || !this.hintsShown2)){
-            this.showHints -= deltaTime;
-        }
+     //  if (this.showHints > 0 && (!this.hintsShown || !this.hintsShown2)){
+     //       this.showHints -= deltaTime;
+     //   }
 
-        if (this.showHints<=0 && !this.hintsShown){
-            this.displayMessage("WASD and mouse to control","q to drop items and e to eat",12);
-            this.hintsShown = true;
-            this.showHints = 12;
-        }
+       // if (this.showHints<=0 && !this.hintsShown){
+       //     this.displayMessage("WASD and mouse to control","q to drop items and e to eat",12);
+      //      this.hintsShown = true;
+      //      this.showHints = 12;
+      //  }
 
         if (this.displayMessageCounter <= 0){
             this.t = "";

@@ -6,19 +6,29 @@ import Tiles from "../tiles/tiles.js";
 
 class Bat extends Billboardsprite{
     constructor(x,y,z,gl,metadata){
-        super("bat", x,y,z,LevelRender.bat,gl,metadata==252?20:metadata==253?6:5,metadata);
+        super("bat", x,y,z,LevelRender.bat,gl,metadata==252?80:metadata==253?6:5,metadata);
         this.mesh.setS(metadata==252?3:metadata==253?1:0.5);
         this.counter = 0;
         this.random = this.getRand();
         this.radius = 0.2;
         this.frameCounter = Math.round(this.random);
-        this.c = this.baseColor = metadata==252?[0.3,0.3,1,1]:metadata==253?[0.0,0.3,0,1]:[1,1,1,1];
+        this.c = this.baseColor = metadata==252?[0.6,0.6,1,1]:metadata==253?[0.0,0.8,0,1]:[1,1,1,1];
         this.cChanged = true;
         this.shootCounter = 0;
         this.shootDelay = this.triggerId==252?4:7;
+        this.particleCounter = 0;
+        this.light = 1;
     }
 
     tick(deltaTime,level){
+        if (this.triggerId == 252 && this.currentHealth <=0){
+            this.particleCounter -= deltaTime;
+            this.respawnTimer = 20;
+            if (this.particleCounter <= 0){
+                this.addParticles(level,0.20,+0.63,6,1);
+                this.particleCounter = 0.4;
+            }
+        }
         super.tick(deltaTime,level);
         if (this.knockBack.x !=0 || this.knockBack.z !=0) return;
         this.counter += deltaTime;
@@ -55,7 +65,8 @@ class Bat extends Billboardsprite{
     }
 
     removeThisEntity(level){
-       this.addParticles(level,0.12,-0.8);
+        if (this.triggerId == 252)level.displayMessage("the bat drops dead revelaing a note that says","04 is in another dungeon",500);
+        this.addParticles(level,0.12,-0.8);
         if (this.getRand() < 0.8 && level.getTile(Math.round(this.p.x), Math.round(this.p.z) != Tiles.lava)){
             if (this.triggerId == 254)this.drop(level,level.getDagger(level.player.daggerItemLevel+1));
             if (this.triggerId == 253)this.drop(level,level.getWand(level.player.wandItemLevel+1));
@@ -76,9 +87,11 @@ class Bat extends Billboardsprite{
         super.hit(level,hitByEntity,amount);
     }
 
-    addParticles(level,s,dirY){
-        for(let i = 0; i < 5;i++){
-            level.addEntity(new Particle(this.p.x-0.2+this.getRand()/3,0.2,this.p.z-0.2+this.getRand()/3,LevelRender.lava,level.gl,0.8,0,dirY,0,s));
+    addParticles(level,s,dirY,lifetime,amount){
+        lifetime=lifetime==null?0.8:lifetime;
+        amount=amount==null?5:amount;
+        for(let i = 0; i < amount;i++){
+            level.addEntity(new Particle(this.p.x-0.2+this.getRand()/3,0.2,this.p.z-0.2+this.getRand()/3,LevelRender.lava,level.gl,lifetime,0,dirY,0,s));
         }
     }
 }
