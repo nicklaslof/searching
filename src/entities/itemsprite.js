@@ -8,7 +8,7 @@ constructor(i,x,y,z,tex, gl) {
     this.i = i;
     this.setC(i.c);
     this.counter = 0;
-    
+    this.radius = 0.1;
     this.mesh.setS(i.onGroundScale);
 }
 
@@ -17,7 +17,7 @@ collidedBy(entity, level){
     if (entity.n == "p"){
         let d = this.distanceToOtherEntity(entity);
         if(d < 1){
-            level.displayMessage("Press shift to pickup",this.na(),0.1);
+            level.displayMessage("Press shift to pickup",this.n=="dagger"||this.n=="wand"?this.na():this.n,0.1);
             if (Game.inputHandler.isKeyDown(16)){
                     entity.pickup(level,this.i);
                     this.removeThisEntity(level);

@@ -17,7 +17,7 @@ class Sprite extends Entity{
         }
 
         this.c = this.baseColor = [1,1,1,1];
-        this.light = 0.5;
+        this.light = 0.7;
         this.hitCCountDown = 0;
         this.changeBackCAfterHit = false;
         let r = MeshBuilder.start(gl,x,y,z);

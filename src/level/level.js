@@ -114,7 +114,7 @@ class Level{
     }
 
     getApple(){
-        return new Apple(0,0,0,this.gl,0.3);
+        return new Apple(0,0,0,this.gl,0.6);
     }
 
     addEntity(entity){
