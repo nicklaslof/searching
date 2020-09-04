@@ -9,7 +9,6 @@ class Box extends Entity{
         let r = MeshBuilder.start(gl, x,y,z);
         this.texture = LevelRender.dirt;
         let uvs = this.texture.getUVs();
-        this.light = [0,0,0,1];
         MeshBuilder.left(uvs,r,0,0,0,1,1,0,c);
         MeshBuilder.right(uvs,r,0,0,0,1,1,0,c);
         MeshBuilder.back(uvs,r,0,0,0,1,1,0,c);
@@ -23,7 +22,7 @@ class Box extends Entity{
     removeThisEntity(level){
         this.removeFromCollision(level,this.currentTileX, this.currentTileZ);
         this.reset();
-        level.displayMessage("A new box magically appears in the orginal place","",3);
+        level.displayMessage("A new box magically appears","",3);
     }
     render(gl,shaderprogram,pm,darkness){
         this.mesh.setPos(this.p.x, this.p.y-0.1, this.p.z);

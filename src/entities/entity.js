@@ -118,7 +118,6 @@ class Entity{
 
     trigger(level, source){
         if (source == this) return;
-        //("Triggered! "+this);
     }
     untrigger(level, source){
         if (source == this) return;
@@ -140,7 +139,6 @@ class Entity{
     }
 
     render(gl,shaderprogram,pm,darkess){
-        
     }
 
     canMove(level,x,z){

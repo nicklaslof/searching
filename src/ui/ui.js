@@ -4,13 +4,9 @@ class UI{
         this.c.imageSmoothingEnabled = false;
         this.centerX = this.c.canvas.width/2;
         this.font = new Image();
-        this.font.onload  = () =>{
-        };
         this.font.src="f.png";
 
         this.atlas = new Image();
-        this.atlas.onload  = () =>{
-        };
         this.atlas.src="a.png";
 
         this.fontWidth = 5;
@@ -18,28 +14,21 @@ class UI{
         this.numberOfSlots = 3;
         this.sizeOfSlot = 32;
     }
-
-    tick(deltatime){
-
-    }
     renderIntro(){
         this.drawText("searching for 04",100);
         this.drawText("a classic dungeon crawler",150);
-        this.drawText("created for JS13k 2020",175);
+        this.drawText("for JS13k 2020",175);
         this.drawText("by nicklas lof",200);
         this.drawText("graphics by nicklas lof",240);
         this.drawText("and Elthen at patreon.com",260);
         this.drawText("font by killedbyapixel",280);
-        this.drawText("hit 1 to play roguelike",320);
-        this.drawText("hit 2 to play with checkpoints",340);
-        
-
+        this.drawText("hit 1 to play roguelike",340);
+        this.drawText("hit 2 to play with checkpoints",360);
     }
     render(level){
         this.c.clearRect(0, 0, this.c.canvas.width, this.c.canvas.height);
-        let text = level.getUIText();
-        this.drawText(text[0],250);
-        this.drawText(text[1],270);
+        this.drawText(level.t,250);
+        this.drawText(level.t2,270);
         if (level.player != null && level.player.currentHealth > 0){
             this.renderItemBar(level);
             this.renderHealth(level);

@@ -8,9 +8,7 @@ class Pot extends Billboardsprite{
         this.mesh.setS(0.6);
     }
     removeThisEntity(level){
-        if (this.getRand() < 0.4){
-           this.drop(level,level.getApple());
-        }
+        if (this.getRand() < 0.4)this.drop(level,level.getApple());
         super.removeThisEntity(level);
     }
     collidedBy(entity, level){

@@ -3,6 +3,7 @@ import LevelRender from "../level/levelrender.js";
 import Particle from "./particle.js";
 import Projectile from "./projectile.js";
 import Tiles from "../tiles/tiles.js";
+import Game from "../game.js"
 
 class Bat extends Billboardsprite{
     constructor(x,y,z,gl,metadata){
@@ -16,18 +17,12 @@ class Bat extends Billboardsprite{
         this.cChanged = true;
         this.shootCounter = 0;
         this.shootDelay = this.triggerId==252?4:7;
-        this.particleCounter = 0;
         this.light = 1;
     }
 
     tick(deltaTime,level){
         if (this.triggerId == 252 && this.currentHealth <=0){
-            this.particleCounter -= deltaTime;
             this.respawnTimer = 20;
-            if (this.particleCounter <= 0){
-                this.addParticles(level,0.20,+0.63,6,1);
-                this.particleCounter = 0.4;
-            }
         }
         super.tick(deltaTime,level);
         if (this.knockBack.x !=0 || this.knockBack.z !=0) return;
@@ -76,13 +71,16 @@ class Bat extends Billboardsprite{
     spit(level){
         let dir = {x:level.player.p.x - (this.p.x), y:0, z:level.player.p.z - (this.p.z)};
         this.normalize(dir);
-        level.addEntity(new Projectile(this.p.x, 0.3, this.p.z,level.gl, dir.x*5, dir.z*5));
+        level.addEntity(new Projectile(this.p.x, 0.3, this.p.z,level.gl, dir.x*5, dir.z*5,0,this,this.c));
     }
 
     hit(level,hitByEntity, amount){
         if (amount == null) return;
         if (this.hitCounter>= 0.3){
-            this.addParticles(level,0.02,-0.4);
+            if (amount>0){
+                Game.playAudio(3000,0.20);
+                this.addParticles(level,0.02,-0.4);
+            }
         }
         super.hit(level,hitByEntity,amount);
     }
@@ -91,7 +89,7 @@ class Bat extends Billboardsprite{
         lifetime=lifetime==null?0.8:lifetime;
         amount=amount==null?5:amount;
         for(let i = 0; i < amount;i++){
-            level.addEntity(new Particle(this.p.x-0.2+this.getRand()/3,0.2,this.p.z-0.2+this.getRand()/3,LevelRender.lava,level.gl,lifetime,0,dirY,0,s));
+            level.addEntity(new Particle(this.p.x-0.2+this.getRand()/3,0.2,this.p.z-0.2+this.getRand()/3,LevelRender.lava,level.gl,lifetime,0,dirY,0,s,[1,0,0,1]));
         }
     }
 }

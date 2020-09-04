@@ -77,7 +77,7 @@ class Level{
                             //level.player.pickup(level,level.getDagger(1));
                            //level.player.pickup(level,level.getWand(1));
                             //level.player.pickup(level,level.getApple());
-                            level.displayMessage("where am i  i cant find my things","and where is my 04",10);
+                            level.displayMessage("where am i  i cant find my things","and where is 04",10);
                            // this.showHints = 10;
                         }
                         if (c == 'l')level.addTile(x,z,Tiles.lava);
@@ -232,10 +232,6 @@ class Level{
     getCollisionTile(x,z){
         let c = this.collisionTiles[x + (z*levelsize)];
         return c;
-    }
-
-    getUIText(){
-        return [this.t,this.t2];
     }
 
     trigger(triggerId,source){

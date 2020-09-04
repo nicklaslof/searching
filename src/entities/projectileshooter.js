@@ -37,7 +37,7 @@ class ProjectileShooter extends Sprite{
         this.counter += deltatime;
 
         if (this.counter >= 3.5){
-            level.addEntity(new Projectile(this.p.x+(this.dir.x/10) , 0.3, this.p.z+(this.dir.z/10), level.gl, this.dir.x, this.dir.z));
+            level.addEntity(new Projectile(this.p.x+(this.dir.x/10) , 0.3, this.p.z+(this.dir.z/10), level.gl, this.dir.x, this.dir.z,0,this,[1,1,1,1]));
             this.counter = 0;
         }
     }

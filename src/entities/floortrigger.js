@@ -1,5 +1,6 @@
 import LevelRender from "../level/levelrender.js";
 import Sprite from "./sprite.js"
+import Game from "../game.js"
 class FloorTrigger extends Sprite{
     constructor(x,y,z,gl,triggerId) {
         super("f",x,y-0.98,z,LevelRender.floorTriggerNoActive,gl,0,triggerId);
@@ -19,6 +20,7 @@ class FloorTrigger extends Sprite{
             this.frameChanged = true;
             this.texture = LevelRender.floorTriggerNoActive;
             level.untrigger(this.triggerId, this);
+            Game.playAudio(200,0.18);
         }
         if (this.untriggerCounter > 0.1){
             this.somethingTriggering = false;
@@ -32,6 +34,7 @@ class FloorTrigger extends Sprite{
             this.somethingTriggering = true;
             this.untriggerCounter = 0;
             if(!this.triggered){
+                Game.playAudio(240,0.18);
                 level.trigger(this.triggerId,this);
                 this.frameChanged = true;
                 this.texture = LevelRender.floorTriggerActive;

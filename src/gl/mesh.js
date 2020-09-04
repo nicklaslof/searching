@@ -3,11 +3,8 @@ import * as quaternion from "./quaternion.js";
 
 class Mesh{
     constructor(gl, x,y,z){
-        this.dirty = true;
+        //this.dirty = true;
         this.verticies = [];
-        this.cs = [];
-        this.uvs = [];
-        this.lights = [];
         this.modelViewMatrix = matrix4.create();
         this.p = {x,y,z};
         this.scale = [1,1,1];
@@ -31,12 +28,11 @@ class Mesh{
     addVerticies(verticies, cols, uvs,lights){
         verticies.forEach(vertex => { this.verticies.push(vertex); });
         this.updateCols(cols);  
-        uvs.forEach(uv => { this.uvs.push(uv);});
+        this.updateUVs(uvs);
         this.updateLights(lights);
     }
 
     updateMesh(){
-        let gl = this.gl;
         let indiciesNeeded = this.verticies.length/4;
 
         this.verticiesBuffer32 = new Float32Array(this.verticies.length*3);
@@ -46,12 +42,6 @@ class Mesh{
 
         let vertexCounter = 0;
         let counter = 0;
-
-        this.uvs.forEach(uv => {
-            this.uvArrayBuffer32[counter] = uv[0];
-            this.uvArrayBuffer32[counter+1] = uv[1];
-            counter += 2;
-        });
 
         let indicies = [0,1,2,0,2,3];
         counter = 0;
@@ -65,19 +55,20 @@ class Mesh{
 
         this.numberOfIndicies = counter;
 
-        gl.bindBuffer(this.ab, this.pBuffer);
-        gl.bufferData(this.ab, this.verticiesBuffer32, this.dd);
+        this.gl.bindBuffer(this.ab, this.pBuffer);
+        this.gl.bufferData(this.ab, this.verticiesBuffer32, this.dd);
 
         this.uploadCols();
         this.uploadLights();
+        this.uploadUVs();
 
-        gl.bindBuffer(this.ab, this.uvBuffer);
-        gl.bufferData(this.ab, this.uvArrayBuffer32, this.dd);
+        this.gl.bindBuffer(this.ab, this.uvBuffer);
+        this.gl.bufferData(this.ab, this.uvArrayBuffer32, this.dd);
 
-        gl.bindBuffer(this.eab, this.indiciesBuffer);
-        gl.bufferData(this.eab, this.indiciesBuffer16, this.dd);
+        this.gl.bindBuffer(this.eab, this.indiciesBuffer);
+        this.gl.bufferData(this.eab, this.indiciesBuffer16, this.dd);
 
-        this.dirty = false;
+        //this.dirty = false;
     }
 
     t(x, y, z){
@@ -126,6 +117,7 @@ class Mesh{
         quaternion.fromEuler(this.quaternion,this.rotX,this.rotY,0);
         this.updateMatrix();
     }
+    
     updateMatrix(){
         matrix4.fromRotationTranslationScale(this.modelViewMatrix, this.quaternion, [this.p.x, this.p.y, this.p.z],this.scale);
     }
@@ -137,6 +129,11 @@ class Mesh{
     updateLights(lights){
         this.lights = [];
         lights.forEach(light => { light.forEach(l => {this.lights.push(l);})});
+    }
+
+    updateUVs(uvs){
+        this.uvs = [];
+        uvs.forEach(uv => { this.uvs.push(uv);});
     }
 
     uploadCols(){
@@ -151,21 +148,22 @@ class Mesh{
         this.gl.bindBuffer(this.ab, this.lightBuffer);
         this.gl.bufferData(this.ab, this.lightArrayBuffer32, this.dd);
     }
+    uploadUVs(){
+        let counter = 0;
+        this.uvs.forEach(uv => {
+            this.uvArrayBuffer32[counter] = uv[0];
+            this.uvArrayBuffer32[counter+1] = uv[1];
+            counter += 2;
+        });
+        this.gl.bindBuffer(this.ab, this.uvBuffer);
+        this.gl.bufferData(this.ab, this.uvArrayBuffer32, this.dd);
+
+    }
 
     render(gl, shaderProgram, projectionMatrix, texture,darkness, uvs, cols){
-        if (this.dirty) return;
         if (uvs != null){
-            this.uvs = [];
-            uvs.forEach(uv => { this.uvs.push(uv);});
-            let counter = 0;
-            this.uvs.forEach(uv => {
-                this.uvArrayBuffer32[counter] = uv[0];
-                this.uvArrayBuffer32[counter+1] = uv[1];
-                counter += 2;
-            });
-            gl.bindBuffer(this.ab, this.uvBuffer);
-            gl.bufferData(this.ab, this.uvArrayBuffer32, this.dd);
-
+            this.updateUVs(uvs);
+            this.uploadUVs();
         }
 
         if (cols != null){

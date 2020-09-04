@@ -23,29 +23,29 @@ class LevelRender{
     constructor(gl,shaderprogram) {
         this.shaderprogram = shaderprogram;
         this.gl = gl;
-        LevelRender.camera = new Camera(gl, 0,-0.2,0);
+        LevelRender.camera = new Camera(gl);
         LevelRender.camera.setRotation(180);
         this.atlas = new GLTexture(gl, "a.png");
         LevelRender.stoneWall = this.newAtlasTexture(16,16,16,16);
         LevelRender.grassyStoneWall = this.newAtlasTexture(16,48,16,16);
-        LevelRender.dirt = this.newAtlasTexture(80,48,16,16);
-        LevelRender.grassGround = this.newAtlasTexture(48,48,16,16);
-        LevelRender.floor = this.newAtlasTexture(96,0,16,16);
-        LevelRender.bars = this.newAtlasTexture(80,16,16,16);
-        LevelRender.floorTriggerNoActive = this.newAtlasTexture(48,20,6,6);
-        LevelRender.floorTriggerActive = this.newAtlasTexture(55,20,6,6);
+        LevelRender.dirt = this.newAtlasTexture(48,48,16,16);
+        LevelRender.grassGround = this.newAtlasTexture(48,16,16,16);
+        LevelRender.floor = this.newAtlasTexture(0,32,16,16);
+        LevelRender.bars = this.newAtlasTexture(32,32,15,15);
+        LevelRender.floorTriggerNoActive = this.newAtlasTexture(0,20,6,6);
+        LevelRender.floorTriggerActive = this.newAtlasTexture(7,20,6,6);
         LevelRender.pot = this.newAtlasTexture(32,0,16,16);
-        LevelRender.apple = this.newAtlasTexture(32,32,15,15);
-        LevelRender.lava = this.newAtlasTexture(64,16,1,1);
-        LevelRender.projectile = this.newAtlasTexture(64,24,5,5);
+        LevelRender.apple = this.newAtlasTexture(0,48,15,15);
+        LevelRender.lava = this.newAtlasTexture(1,17,1,1);
+        LevelRender.projectile = this.newAtlasTexture(0,27,5,5);
 
-        LevelRender.dagger = this.newAtlasTexture(96,32,15,15);
-        LevelRender.wand = this.newAtlasTexture(80,0,15,15);
+        LevelRender.dagger = this.newAtlasTexture(33,17,13,15);
+        LevelRender.wand = this.newAtlasTexture(16,33,15,14);
 
         LevelRender.bat = new Array();
 
         for (let i = 0; i < 2; i++) {
-            LevelRender.bat.push(new Texture(this.atlas,16*i,0,16,14,112,66));
+            LevelRender.bat.push(new Texture(this.atlas,16*i,0,16,14,65,65));
         }
 
         this.wallmeshes = [];
@@ -55,7 +55,7 @@ class LevelRender{
     }
 
     newAtlasTexture(x,y,w,h){
-        return new Texture(this.atlas,x,y,w,h,112,66);
+        return new Texture(this.atlas,x,y,w,h,65,65);
     }
 
     render(){

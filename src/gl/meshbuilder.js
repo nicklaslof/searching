@@ -5,12 +5,7 @@ class MeshBuilder{
 
 
     static start(gl,x,y,z){
-        let m = new Mesh(gl,x,y,z);
-        let v = [];
-        let c = [];
-        let u = [];
-        let l = [];
-        return {m,v,c,u,l};
+        return {m:new Mesh(gl,x,y,z),v:[],c:[],u:[],l:[]};
     }
 
     static ac(cc,c){

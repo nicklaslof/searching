@@ -7,7 +7,6 @@ class IntroScreen{
     }
 
     tick(deltaTime, game){
-        this.ui.tick(deltaTime);
         if (Game.inputHandler.isKeyDown(49)) Game.startRoguelike();
         if (Game.inputHandler.isKeyDown(50)) Game.startCheckpoints();
     }

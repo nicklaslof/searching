@@ -7,7 +7,5 @@ class Wand extends Item{
         this.onGroundScale = onGroundScale;
         this.modifier = (level == 1?2:4);
     }
-
-   
 }
 export default Wand;

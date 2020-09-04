@@ -47,15 +47,14 @@ class Sprite extends Entity{
 
     tick(deltatime,level){
         super.tick(deltatime,level);
-            if (this.changeBackCAfterHit && this.hitCCountDown > 0) this.hitCCountDown -= deltatime;
-            if (this.changeBackCAfterHit && this.hitCCountDown <= 0){
-                this.setC(this.baseColor);
-                this.changeBackCAfterHit = false;
-            }
+        if (this.changeBackCAfterHit && this.hitCCountDown > 0) this.hitCCountDown -= deltatime;
+        if (this.changeBackCAfterHit && this.hitCCountDown <= 0){
+            this.setC(this.baseColor);
+            this.changeBackCAfterHit = false;
+        }
 
-        this.mesh.p.x = this.p.x;
-        this.mesh.p.y = this.p.y;
-        this.mesh.p.z = this.p.z;
+        this.mesh.setPos(this.p.x,this.p.y,this.p.z);
+
         if (this.animated){
             this.frameCounter += deltatime;
             if (this.frameCounter >= 0.016*15){
@@ -66,21 +65,17 @@ class Sprite extends Entity{
                 this.frameCounter = 0;
             }
         }
-
     }
 
     render(gl,shaderprogram,pm,darkness){
         if (this.dispose) return;
-        let c = null;
-        if (this.cChanged){
-            c = [this.c, this.c, this.c, this.c];
-            this.cChanged = false;
-        }
+    
         if (this.frameChanged){
-            this.mesh.render(gl,shaderprogram,pm,this.texture.texture, darkness, this.texture.getUVs(),c);
+            this.mesh.render(gl,shaderprogram,pm,this.texture.texture, darkness, this.texture.getUVs());
             this.frameChanged = false;
         }else{
-            this.mesh.render(gl,shaderprogram,pm,this.texture.texture,darkness,null,c);
+            this.mesh.render(gl,shaderprogram,pm,this.texture.texture,darkness,null,this.cChanged?[this.c, this.c, this.c, this.c]:null);
+            this.cChanged = false;
         }
     }
 }

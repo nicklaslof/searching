@@ -11,7 +11,6 @@ class GameScreen{
 
     tick(deltaTime){
         this.level.tick(deltaTime);
-        this.ui.tick(deltaTime);
     }
 
     render(){

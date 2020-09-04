@@ -1,13 +1,13 @@
 import Billboardsprite from "./billboardsprite.js"
 
 class Particle extends Billboardsprite{
-    constructor(x,y,z,tex,gl, health,velX,velY,velZ,s) {
+    constructor(x,y,z,tex,gl, health,velX,velY,velZ,s,color) {
         super("pa",x,y,z,tex,gl,health,0);
         this.velX = velX;
         this.velY = velY;
         this.velZ = velZ;
         this.setS(s);
-        this.setC([1,0,0,1]);
+        this.setC(color);
         this.setNotRespawn();
     }
     tick(deltatime,level){
