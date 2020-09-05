@@ -4,7 +4,7 @@ import Texture from "../gl/texture.js";
 const s = 0.5;
 class LevelRender{
     static camera;
-    static darkness;
+    static playerHurt;
 
     static stoneWall;
     static grassyStoneWall;
@@ -51,7 +51,7 @@ class LevelRender{
         this.wallmeshes = [];
         this.roofMeshes = [];
         this.floorMeshes = [];
-        LevelRender.darkness = 18;
+        LevelRender.playerHurt = 0;
     }
 
     newAtlasTexture(x,y,w,h){
@@ -60,23 +60,23 @@ class LevelRender{
 
     render(){
         this.wallmeshes.forEach(mesh =>{
-            mesh.render(this.gl,this.shaderprogram,LevelRender.camera.pm, this.atlas,LevelRender.darkness);
+            mesh.render(this.gl,this.shaderprogram,LevelRender.camera.pm, this.atlas,LevelRender.playerHurt);
         });
         this.roofMeshes.forEach(mesh =>{
-            mesh.render(this.gl,this.shaderprogram,LevelRender.camera.pm,this.atlas,LevelRender.darkness);
+            mesh.render(this.gl,this.shaderprogram,LevelRender.camera.pm,this.atlas,LevelRender.playerHurt);
         });
         this.floorMeshes.forEach(mesh =>{
-            mesh.render(this.gl,this.shaderprogram,LevelRender.camera.pm,this.atlas,LevelRender.darkness);
+            mesh.render(this.gl,this.shaderprogram,LevelRender.camera.pm,this.atlas,LevelRender.playerHurt);
         });
         
     }
 
     renderEntity(entity){
-        entity.render(this.gl, this.shaderprogram, LevelRender.camera.pm,LevelRender.darkness);
+        entity.render(this.gl, this.shaderprogram, LevelRender.camera.pm,LevelRender.playerHurt);
     }
 
     renderItem(item){
-        item.render(this.gl, this.shaderprogram, LevelRender.camera.pm,LevelRender.darkness, true);
+        item.render(this.gl, this.shaderprogram, LevelRender.camera.pm,LevelRender.playerHurt, true);
     }
 }
 export default LevelRender

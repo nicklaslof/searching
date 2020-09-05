@@ -49,6 +49,7 @@ class Level{
         this.t2 = "";
         this.player = null;
         this.displayMessageCounter = 0.1;
+        this.finished = false;
         //this.hintsShown = false;
         //this.hintsShown2 = false;
     }

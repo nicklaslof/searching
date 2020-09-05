@@ -15,6 +15,7 @@ class Player extends Entity{
         this.eatDelay = 0;
         this.daggerItemLevel = 0;
         this.wandItemLevel = 0;
+        this.hitCounter = 0.5;
     }
 
     spawnAtCheckpoint(level){
@@ -25,8 +26,10 @@ class Player extends Entity{
     }
 
     tick(deltaTime, level){
+        
         super.tick(deltaTime,level);
-        if (this.currentHealth <= 0){
+        LevelRender.playerHurt=this.hitCounter < 0.1?1:0;
+        if (this.currentHealth <= 0 || level.finished){
             if (Game.inputHandler.isKeyDown(32)) Game.restart();
             return;
         }
@@ -135,6 +138,7 @@ class Player extends Entity{
             }
         }
     }
+
     setCheckpoint(x,z){
         this.checkpoint = {x,z};
     }

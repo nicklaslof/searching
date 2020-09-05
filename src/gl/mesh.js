@@ -160,7 +160,7 @@ class Mesh{
 
     }
 
-    render(gl, shaderProgram, projectionMatrix, texture,darkness, uvs, cols){
+    render(gl, shaderProgram, projectionMatrix, texture,playerHurt, uvs, cols){
         if (uvs != null){
             this.updateUVs(uvs);
             this.uploadUVs();
@@ -192,7 +192,7 @@ class Mesh{
         gl.activeTexture(gl.TEXTURE0);
         gl.bindTexture(gl.TEXTURE_2D, texture.tex);
         gl.uniform1i(shaderProgram.locations.uniformLocations.uSampler, 0);
-        gl.uniform1f(shaderProgram.locations.uniformLocations.darkness, darkness);
+        gl.uniform1f(shaderProgram.locations.uniformLocations.playerHurt, playerHurt);
         gl.uniformMatrix4fv(shaderProgram.locations.uniformLocations.projectionMatrix, false, projectionMatrix);
         gl.uniformMatrix4fv(shaderProgram.locations.uniformLocations.modelViewMatrix, false, this.modelViewMatrix);
 

@@ -1,7 +1,8 @@
+const e = "error:";
 class ShaderProgram{
 
     constructor(gl, vertexshader, fragmentshader){
-        const e = "error:";
+        
         this.vertexshader = this.loadShader(gl, gl.VERTEX_SHADER, vertexshader);
         this.fragmentshader = this.loadShader(gl, gl.FRAGMENT_SHADER, fragmentshader);
         this.shaderProgram = gl.createProgram();
@@ -23,7 +24,7 @@ class ShaderProgram{
               uniformLocations: {
                 projectionMatrix: gl.getUniformLocation(this.shaderProgram, 'pm'),
                 modelViewMatrix: gl.getUniformLocation(this.shaderProgram, 'mvm'),
-                darkness: gl.getUniformLocation(this.shaderProgram, 'd'),
+                playerHurt: gl.getUniformLocation(this.shaderProgram, 'h'),
                 uSampler: gl.getUniformLocation(this.shaderProgram, 's'),
               },
         };

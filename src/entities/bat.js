@@ -15,13 +15,14 @@ class Bat extends Billboardsprite{
         this.c = this.baseColor = metadata==252?[0.6,0.6,1,1]:metadata==253?[0.0,0.8,0,1]:[1,1,1,1];
         this.cChanged = true;
         this.shootCounter = 0;
-        this.shootDelay = this.triggerId==252?3:5;
+        this.shootDelay = this.triggerId==252?2:5;
         this.light = 1;
     }
 
     tick(deltaTime,level){
         if (this.triggerId == 252 && this.currentHealth <=0){
             this.respawnTimer = 20;
+            level.finished = true;
         }
         super.tick(deltaTime,level);
         if (this.knockBack.x !=0 || this.knockBack.z !=0) return;
@@ -55,18 +56,18 @@ class Bat extends Billboardsprite{
 
     collidedBy(entity, level){
         super.collidedBy(entity,level);
-            if(entity.n == "pp" && this.distanceToOtherEntity(entity) < 1.3 && this.hitCounter>= 0.5)this.hit(level,entity,entity.damage);
+            if(entity.n == "pp" && entity.source != this && this.distanceToOtherEntity(entity) < 1.3 && this.hitCounter>= 0.5)this.hit(level,entity,entity.damage);
     }
 
     removeThisEntity(level){
-        if (this.triggerId == 252)level.displayMessage("the bat drops dead revelaing a note that says","04 is in another dungeon",500);
+        if (this.triggerId == 252)level.displayMessage("the bat drops dead revelaing a note that says","04 is in another dungeon     thanks for playing",500);
         this.addParticles(level,0.12,-0.8);
         if (this.getRand() < 0.1 && level.getTile(Math.round(this.p.x), Math.round(this.p.z)) != Tiles.lava){
             if (this.triggerId == 254)this.drop(level,level.getDagger(level.player.daggerItemLevel+1));
             if (this.triggerId == 253)this.drop(level,level.getWand(level.player.wandItemLevel+1));
         }
        super.removeThisEntity(level);
-       if (this.triggerId == 253) this.respawnTimer = this.getRand() * 15;
+       if (this.triggerId == 253) this.respawnTimer = (this.getRand()+1) * 25;
     }
     spit(level){
         let dir = {x:level.player.p.x - (this.p.x), y:0, z:level.player.p.z - (this.p.z)};
