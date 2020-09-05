@@ -31,7 +31,7 @@ class Inventory{
 
     replaceAndShow(level,slot,item){
         if (this.is[slot] == null){ this.pickupAndShow(level,slot,item); return}
-        this.showMessage(level,"you replaced "+this.is[0].n + " "+this.is[0].getDamage()+" damage"," with "+item.n + " "+item.getDamage()+" damage");
+        this.showMessage(level,"you replaced "+this.is[slot].n + " "+this.is[slot].getDamage()+" damage"," with "+item.n + " "+item.getDamage()+" damage");
         this.is[slot] = item;
     }
 

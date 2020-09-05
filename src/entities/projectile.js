@@ -26,7 +26,7 @@ class Projectile extends Billboardsprite{
             this.removeThisEntity(level);
         }
         if (this.particleCounter >= 0.1){
-            level.addEntity(new Particle(this.p.x-0.3+(this.getRand()/5), 0.2+this.getRand()/5, this.p.z-0.3+this.getRand()/5,LevelRender.lava,level.gl,0.4,
+            level.addEntity(new Particle(this.p.x-0.3+(this.getRand()/5), 0.2+this.getRand()/5, this.p.z-0.3+this.getRand()/5,LevelRender.lava,level.gl,0.15,
             this.getRandDirection(),this.getRandDirection(),this.getRandDirection(),0.05,this.c));
             this.particleCounter = 0;
         }

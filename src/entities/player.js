@@ -141,7 +141,7 @@ class Player extends Entity{
     attack(level){
         if (this.i == null) return;
         if (this.i.n == "wand"){
-            level.addEntity(new Projectile(this.p.x - LevelRender.camera.getDirection().x, 0.3, this.p.z - LevelRender.camera.getDirection().z,level.gl, -LevelRender.camera.getDirection().x*5, -LevelRender.camera.getDirection().z*5,this.i.getDamage(),this,[1,1,0,1]));
+            level.addEntity(new Projectile(this.p.x - LevelRender.camera.getDirection().x, 0.3, this.p.z - LevelRender.camera.getDirection().z,level.gl, -LevelRender.camera.getDirection().x*5, -LevelRender.camera.getDirection().z*5,this.i.getDamage(),this,[0.3,0.3,0,1]));
         }else{
             if (!this.findEnemyAndAttack(level,level.getCollisionTile(Math.round(this.p.x - LevelRender.camera.getDirection().x), Math.round(this.p.z - LevelRender.camera.getDirection().z)))){
                 this.findEnemyAndAttack(level,level.getCollisionTile(Math.round(this.p.x - LevelRender.camera.getDirection().x*2), Math.round(this.p.z - LevelRender.camera.getDirection().z*2)));

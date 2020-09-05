@@ -6,7 +6,7 @@ import Tiles from "../tiles/tiles.js";
 
 class Bat extends Billboardsprite{
     constructor(x,y,z,gl,metadata){
-        super("ba", x,y,z,LevelRender.bat,gl,metadata==252?80:metadata==253?6:5,metadata);
+        super("ba", x,y,z,LevelRender.bat,gl,metadata==252?100:metadata==253?6:5,metadata);
         this.mesh.setS(metadata==252?3:metadata==253?1:0.5);
         this.counter = 0;
         this.random = this.getRand();
@@ -15,7 +15,7 @@ class Bat extends Billboardsprite{
         this.c = this.baseColor = metadata==252?[0.6,0.6,1,1]:metadata==253?[0.0,0.8,0,1]:[1,1,1,1];
         this.cChanged = true;
         this.shootCounter = 0;
-        this.shootDelay = this.triggerId==252?4:7;
+        this.shootDelay = this.triggerId==252?3:7;
         this.light = 1;
     }
 

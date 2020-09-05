@@ -1,5 +1,6 @@
 import MeshBuilder from "../gl/meshbuilder.js";
 import LevelRender from "../level/levelrender.js";
+import Particle from "./particle.js"
 import Entity from "./entity.js"
 const c = [0.5,0.5,0.7,1]
 
@@ -21,8 +22,12 @@ class Box extends Entity{
     }
     removeThisEntity(level){
         this.removeFromCollision(level,this.currentTileX, this.currentTileZ);
+        for (let i = 0; i < 20; i++){
+            level.addEntity(new Particle(this.p.x-0.2+this.getRand()/3,-0.2,this.p.z-0.2+this.getRand()/3,LevelRender.lava,level.gl,this.getRand(),0,this.getRand(),0,this.getRand()/7,[0.25,0.25,0.35,1]));
+        }
         this.reset();
         level.displayMessage("A new box magically appears","",3);
+        
     }
     render(gl,shaderprogram,pm,darkness){
         this.mesh.setPos(this.p.x, this.p.y-0.1, this.p.z);
