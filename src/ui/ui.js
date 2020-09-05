@@ -60,7 +60,7 @@ class UI{
             let i = level.player.inventory.getItemInSlot(slot);
             if (i != null){
                 let x = ((this.sizeOfSlot*slot)+this.centerX-((this.numberOfSlots/2)+2)*this.sizeOfSlot)+(slot*5);
-                this.c.drawImage(this.atlas, i.texture.x, i.texture.y,i.texture.width,i.texture.height,x,8,i.texture.width*2, i.texture.height*2);
+                this.c.drawImage(this.atlas, i.texture.x, i.texture.y,i.texture.width,i.texture.height,x+3,12,i.texture.width*2, i.texture.height*2);
                 if (slot == 3){
                     this.drawTextAt(""+level.player.inventory.apples,324,30);
                 } 

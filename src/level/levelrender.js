@@ -35,12 +35,12 @@ class LevelRender{
         LevelRender.floorTriggerNoActive = this.newAtlasTexture(0,20,6,6);
         LevelRender.floorTriggerActive = this.newAtlasTexture(7,20,6,6);
         LevelRender.pot = this.newAtlasTexture(32,0,15,15);
-        LevelRender.apple = this.newAtlasTexture(0,48,15,15);
+        LevelRender.apple = this.newAtlasTexture(1,49,12,13);
         LevelRender.lava = this.newAtlasTexture(1,28,1,1);
         LevelRender.projectile = this.newAtlasTexture(0,27,5,5);
 
-        LevelRender.dagger = this.newAtlasTexture(34,17,12,15);
-        LevelRender.wand = this.newAtlasTexture(16,33,15,14);
+        LevelRender.dagger = this.newAtlasTexture(34,17,12,14);
+        LevelRender.wand = this.newAtlasTexture(18,34,13,12);
 
         LevelRender.bat = new Array();
 

@@ -129,7 +129,6 @@ class Player extends Entity{
         if (entity.n == "ba" || (entity.n == "pp" && entity.source != this)){
             if(this.distanceToOtherEntity(entity) < 0.6){
                 if (this.hitCounter>= 1){
-                    Game.playAudio(60,1.90);
                     super.knockback(entity.p.x - this.p.x*2, entity.p.z - this.p.z*2);
                     this.hit(level,entity,1);
                 }
