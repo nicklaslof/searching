@@ -16,6 +16,7 @@ import MeshBuilder from "../gl/meshbuilder.js";
 import AppareringFloor from "../entities/appareringfloor.js";
 import ProjectileShooter from "../entities/projectileshooter.js";
 import LavaEffect from "../entities/lavaeffect.js";
+import Billboardsprite from "../entities/billboardsprite.js";
 
 const maxLight = 2;
 const levelsize = 64;
@@ -192,7 +193,7 @@ class Level{
                 }else{
                     
                     let light = this.getLight(x,z);
-                    if ((x < 16 && z < 16) || ((x >32 && x < 66) && (z > 19 && z < 38))){
+                    if ((x < 16 && z < 16) || ((x >32 && x < 56) && (z > 19 && z < 38))){
                         MeshBuilder.bottom(LevelRender.grassGround.getUVs(), fr,x,-1,z,light,tile.YOffset);
                         MeshBuilder.top(LevelRender.dirt.getUVs(),rr,x,2,z,light, tile.YOffset,[0.9,0.5,0,1]);
                     }else{

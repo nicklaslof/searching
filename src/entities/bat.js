@@ -72,7 +72,7 @@ class Bat extends Billboardsprite{
     spit(level){
         let dir = {x:level.player.p.x - (this.p.x), y:0, z:level.player.p.z - (this.p.z)};
         this.normalize(dir);
-        level.addEntity(new Projectile(this.p.x, 0.3, this.p.z,level.gl, dir.x*5, dir.z*5,0,this,this.c));
+        level.addEntity(new Projectile(this.p.x, 0.3, this.p.z,level.gl, dir.x*5, dir.z*5,0,this,this.baseColor));
     }
 
     hit(level,hitByEntity, amount){

@@ -15,7 +15,7 @@ class Bars extends Sprite{
         this.mesh = MeshBuilder.build(r);
 
         this.mesh.setRotationY(270);
-        if (triggerId == 196 || triggerId == 194){
+        if (triggerId == 196){
             this.mesh.setRotationY(180);
             this.p.z += 0.5;
             this.mesh.t(0.0,0,0.5);
@@ -34,7 +34,7 @@ class Bars extends Sprite{
         if (!this.triggered && this.neededTrigger == this.neededTriggers){;
            // this.mesh.t(0,2,0);
            this.p.y += 1;
-            if (this.triggerId == 196 || this.triggerId == 194) level.removeTile(this.p.x, this.p.z-0.5);
+            if (this.triggerId == 196) level.removeTile(this.p.x, this.p.z-0.5);
             else level.removeTile(this.p.x, this.p.z);
             level.player.setCheckpoint(Math.round(this.p.x), Math.round(this.p.z));
             this.triggered = true;

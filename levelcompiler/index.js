@@ -38,8 +38,10 @@ loadImage("level.png").then((image) => {
                 if (c == 0x0000ff) addToLevel(level,x,z,"a"); // Apple
                 if (c == 0xaaaaaa || c == 0xa9a9a9) addToLevel(level,x,z,"e"); // Bars
                 if (c == 0xffffff || c == 0xfefefe) addToLevel(level,x,z,"t"); // Floortrigger
-                if (c == 0xee00ff) addToLevel(level,x,z,"o"); // Projectile shooter
+                if (c == 0xee00ff || c == 0xed00ff) addToLevel(level,x,z,"o"); // Projectile shooter
                 if (c == 0x999999) addToLevel(level,x,z,"n"); // No floor
+
+                if (x == 58 && z == 31) console.log(c);
 
             }
         }
