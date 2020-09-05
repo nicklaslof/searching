@@ -20,7 +20,7 @@ class Entity{
         this.dispose = false;
         this.notAddedToCollider = true;
         this.knockBack = {x:0,z:0};
-        this.tempVector = this.movement = {x:0,y:0,z:0};
+        this.tempVector = {x:0,y:0,z:0};
         this.currentTileX = Math.round(this.p.x);
         this.currentTileZ = Math.round(this.p.z);
     }
@@ -36,10 +36,6 @@ class Entity{
                 this.knockback(dirX, dirZ);
                 this.currentHealth -= amount;
             }
-    }
-
-    getPosition(){
-        return this.p;
     }
 
     removeThisEntity(level){
@@ -117,10 +113,8 @@ class Entity{
     }
 
     trigger(level, source){
-        if (source == this) return;
     }
     untrigger(level, source){
-        if (source == this) return;
     }
 
     addToCollision(level,x,z){

@@ -10,7 +10,8 @@ class IntroScreen{
     }
 
     tick(deltaTime, game){
-        LevelRender.camera.rotate(0.001);
+        if (isNaN(deltaTime)) return;
+        LevelRender.camera.rotate(0.15*deltaTime);
         LevelRender.camera.setPos(45, 0.3, 45);
         if (Game.inputHandler.isKeyDown(49)) Game.startRoguelike();
         if (Game.inputHandler.isKeyDown(50)) Game.startCheckpoints();

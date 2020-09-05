@@ -45,8 +45,8 @@ class Player extends Entity{
             this.counter += deltaTime;
             let v = {x:0,y:0,z:0};
             let strafe = {x:0,y:0,z:0};
-            let cameraDirection = LevelRender.camera.getDirection();
             LevelRender.camera.rotate((inputHandler.getMouseX()/9) * deltaTime);
+            let cameraDirection = LevelRender.camera.getDirection();
             if (inputHandler.isKeyDown(87))v.z = -1;
             if (inputHandler.isKeyDown(83))v.z = 1;
            
