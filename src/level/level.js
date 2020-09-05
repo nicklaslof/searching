@@ -15,6 +15,7 @@ import Box from "../entities/box.js";
 import MeshBuilder from "../gl/meshbuilder.js";
 import AppareringFloor from "../entities/appareringfloor.js";
 import ProjectileShooter from "../entities/projectileshooter.js";
+import LavaEffect from "../entities/lavaeffect.js";
 
 const maxLight = 2;
 const levelsize = 64;
@@ -80,7 +81,10 @@ class Level{
                             level.displayMessage("where am i  i cant find my things","and where is 04",10);
                            // this.showHints = 10;
                         }
-                        if (c == 'l')level.addTile(x,z,Tiles.lava);
+                        if (c == 'l'){
+                            level.addTile(x,z,Tiles.lava);
+                            if (Math.random() < 0.5)level.addEntity(new LavaEffect(x,0,z));
+                        }
                         if (c == 'b')level.addEntity(new Bat(x,0.2,z,level.gl,alpha));
                         if (c == 'd')level.addEntity(new ItemSprite(this.getDagger(1),x,0,z,LevelRender.dagger,level.gl).setNotRespawn());
                         if (c == 'w')level.addEntity(new ItemSprite(this.getWand(1),x,0,z,LevelRender.wand,level.gl).setNotRespawn());
@@ -182,7 +186,7 @@ class Level{
                     if (!this.getTile(x,z-1).c(tile)) MeshBuilder.back(tile.getUVs(),wr,x,0,z,this.getLight(x,z-1),tile.height,tile.YOffset);
                 }else if (tile == Tiles.lava || tile == Tiles.appareringFloor){
                     let light = this.getLight(x,z);
-                    MeshBuilder.bottom(tile.getUVs(), fr,x,-0.15,z,light,tile.YOffset);
+                    MeshBuilder.bottom(tile.getUVs(), fr,x,-0.15,z,light/3,tile.YOffset,[1,0.4,0,1]);
                     MeshBuilder.top(LevelRender.dirt.getUVs(),rr,x,2.9,z,light, tile.YOffset,[0.4,0.4,0.45,1]);
                 }else{
                     

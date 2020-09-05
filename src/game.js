@@ -8,9 +8,6 @@ class Game{
     static inputHandler;
     static newGame;
     static respawn;
-    static audio;
-    static osc;
-    static gain;
     constructor() {
         this.supportsPerformance = (typeof performance === 'undefined' ? false : true);
         this.uc = document.getElementById("ui");
@@ -53,24 +50,7 @@ class Game{
     setSize(c){
         c.width = this.width = width;
         c.height = this.height = height;
-        c.addEventListener('click', (e) => { this.c.requestPointerLock(); Game.startAudio();});
-    }
-
-    static startAudio(){
-        Game.audio = new AudioContext();
-    }
-
-    static playAudio(f,l){
-        if (Game.audio == null) { console.log("lol"); return;}
-        Game.osc = Game.audio.createOscillator();
-        Game.gain = Game.audio.createGain();
-
-        Game.osc.connect(Game.gain);
-        Game.osc.type = "sine";
-        Game.osc.frequency.value = f;
-        Game.osc.start(0);
-        Game.gain.connect(Game.audio.destination);
-        Game.gain.gain.exponentialRampToValueAtTime(0.00001, Game.audio.currentTime + l);
+        c.addEventListener('click', (e) => { this.c.requestPointerLock();});
     }
 
     static startRoguelike(){

@@ -28,18 +28,18 @@ class LevelRender{
         this.atlas = new GLTexture(gl, "a.png");
         LevelRender.stoneWall = this.newAtlasTexture(16,16,16,16);
         LevelRender.grassyStoneWall = this.newAtlasTexture(16,48,16,16);
-        LevelRender.dirt = this.newAtlasTexture(48,48,16,16);
+        LevelRender.dirt = this.newAtlasTexture(3,35,10,10);
         LevelRender.grassGround = this.newAtlasTexture(48,16,16,16);
         LevelRender.floor = this.newAtlasTexture(0,32,16,16);
         LevelRender.bars = this.newAtlasTexture(32,32,15,15);
         LevelRender.floorTriggerNoActive = this.newAtlasTexture(0,20,6,6);
         LevelRender.floorTriggerActive = this.newAtlasTexture(7,20,6,6);
-        LevelRender.pot = this.newAtlasTexture(32,0,16,16);
+        LevelRender.pot = this.newAtlasTexture(32,0,15,15);
         LevelRender.apple = this.newAtlasTexture(0,48,15,15);
-        LevelRender.lava = this.newAtlasTexture(1,17,1,1);
+        LevelRender.lava = this.newAtlasTexture(1,28,1,1);
         LevelRender.projectile = this.newAtlasTexture(0,27,5,5);
 
-        LevelRender.dagger = this.newAtlasTexture(33,17,13,15);
+        LevelRender.dagger = this.newAtlasTexture(34,17,12,15);
         LevelRender.wand = this.newAtlasTexture(16,33,15,14);
 
         LevelRender.bat = new Array();

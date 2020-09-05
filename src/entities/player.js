@@ -100,7 +100,6 @@ class Player extends Entity{
     
     dropCurrentItem(level){
         if (this.i != null){
-            Game.playAudio(800,0.09); 
             let itemSprite = new ItemSprite(this.i,this.p.x-LevelRender.camera.getDirection().x/2,-0.2,this.p.z-LevelRender.camera.getDirection().z/2,this.i.texture,level.gl);
             itemSprite.knockback(LevelRender.camera.getDirection().x,LevelRender.camera.getDirection().z);
             level.addEntity(itemSprite); 
@@ -114,7 +113,6 @@ class Player extends Entity{
 
     pickup(level,i){
         this.inventory.addItemToFirstAvailableSlot(level,i);
-        Game.playAudio(1200,0.09);
         if (i.n == "dagger") if (this.daggerItemLevel < i.level) this.daggerItemLevel = i.level;
         if (i.n == "wand") if (this.wandItemLevel < i.level) this.wandItemLevel = i.level;
     }

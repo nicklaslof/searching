@@ -3,7 +3,6 @@ import LevelRender from "../level/levelrender.js";
 import Particle from "./particle.js";
 import Projectile from "./projectile.js";
 import Tiles from "../tiles/tiles.js";
-import Game from "../game.js"
 
 class Bat extends Billboardsprite{
     constructor(x,y,z,gl,metadata){
@@ -78,7 +77,6 @@ class Bat extends Billboardsprite{
         if (amount == null) return;
         if (this.hitCounter>= 0.3){
             if (amount>0){
-                Game.playAudio(3000,0.20);
                 this.addParticles(level,0.02,-0.4);
             }
         }
