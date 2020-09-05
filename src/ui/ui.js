@@ -3,6 +3,7 @@ class UI{
         this.c = c;
         this.c.imageSmoothingEnabled = false;
         this.centerX = this.c.canvas.width/2;
+        this.centerY = this.c.canvas.height/2;
         this.font = new Image();
         this.font.src="f.png";
 
@@ -32,6 +33,7 @@ class UI{
         if (level.player != null && level.player.currentHealth > 0){
             this.renderItemBar(level);
             this.renderHealth(level);
+            this.renderCross(level);
         }
     }
 
@@ -42,6 +44,12 @@ class UI{
 
     renderHealth(level){
         this.drawTextAt("health "+level.player.currentHealth+" of "+level.player.maxHealth,50,450);
+    }
+
+    renderCross(level){
+        if (level.player.i != null && level.player.i.n == "wand"){
+            this.c.drawImage(this.atlas, 8, 27,3,3,this.centerX-6,this.centerY-6,9,9);
+        }
     }
 
     drawInventorySlots(level){

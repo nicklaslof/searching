@@ -15,7 +15,7 @@ class Bat extends Billboardsprite{
         this.c = this.baseColor = metadata==252?[0.6,0.6,1,1]:metadata==253?[0.0,0.8,0,1]:[1,1,1,1];
         this.cChanged = true;
         this.shootCounter = 0;
-        this.shootDelay = this.triggerId==252?3:7;
+        this.shootDelay = this.triggerId==252?3:5;
         this.light = 1;
     }
 
@@ -66,6 +66,7 @@ class Bat extends Billboardsprite{
             if (this.triggerId == 253)this.drop(level,level.getWand(level.player.wandItemLevel+1));
         }
        super.removeThisEntity(level);
+       if (this.triggerId == 253) this.respawnTimer = this.getRand() * 15;
     }
     spit(level){
         let dir = {x:level.player.p.x - (this.p.x), y:0, z:level.player.p.z - (this.p.z)};
