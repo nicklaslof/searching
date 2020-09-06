@@ -41,7 +41,9 @@ loadImage("level.png").then((image) => {
                 if (c == 0xee00ff || c == 0xed00ff) addToLevel(level,x,z,"o"); // Projectile shooter
                 if (c == 0x999999) addToLevel(level,x,z,"n"); // No floor
 
-                if (x == 58 && z == 31) console.log(c);
+                if (x == 28 && z == 30) console.log(c);
+                if (x == 29 && z == 30) console.log(c);
+                if (x == 30 && z == 30) console.log(c);
 
             }
         }

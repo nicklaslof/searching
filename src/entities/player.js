@@ -26,13 +26,16 @@ class Player extends Entity{
     }
 
     tick(deltaTime, level){
-        
         super.tick(deltaTime,level);
-        LevelRender.playerHurt=this.hitCounter < 0.1?1:0;
         if (this.currentHealth <= 0 || level.finished){
-            if (Game.inputHandler.isKeyDown(32)) Game.restart();
+            if (level.finished) this.i = null;
+            LevelRender.camera.rotate(0.15*deltaTime);
+            LevelRender.camera.setPos(this.p.x, 0.3, this.p.z);
+            if (Game.inputHandler.isKeyDown(32) && !level.finished) Game.restart();
             return;
         }
+
+        LevelRender.playerHurt=this.hitCounter < 0.1?1:0;
         this.inventory.tick(deltaTime,level);
         this.i = this.inventory.getItemInSlot(this.inventory.selectedSlot);
         if (this.showAttack && this.attackCounter > 0) this.attackCounter -= deltaTime;
@@ -128,6 +131,7 @@ class Player extends Entity{
     }
 
     collidedBy(entity, level){
+        if (level.finished) return;
         super.collidedBy(entity,level);
         if (entity.n == "ba" || (entity.n == "pp" && entity.source != this)){
             if(this.distanceToOtherEntity(entity) < 0.6){
