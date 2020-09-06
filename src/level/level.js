@@ -16,7 +16,6 @@ import MeshBuilder from "../gl/meshbuilder.js";
 import AppareringFloor from "../entities/appareringfloor.js";
 import ProjectileShooter from "../entities/projectileshooter.js";
 import LavaEffect from "../entities/lavaeffect.js";
-import Billboardsprite from "../entities/billboardsprite.js";
 
 const maxLight = 2;
 const levelsize = 64;
@@ -37,6 +36,7 @@ class Level{
                 this.collisionTiles[x + (z*levelsize)] = new CollisionTile(x,z);
             }
         }
+        this.oobCollisionTile = new CollisionTile(-1,-1);
         this.lightmap = new Array(levelsize*levelsize);
         this.lightmap.fill(0);
 
@@ -237,6 +237,7 @@ class Level{
 
     getCollisionTile(x,z){
         let c = this.collisionTiles[x + (z*levelsize)];
+        if (c == null) c = this.oobCollisionTile;
         return c;
     }
 

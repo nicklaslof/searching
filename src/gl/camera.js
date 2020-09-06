@@ -42,7 +42,7 @@ class Camera{
         this.update();
     }
     createP(){
-        return matrix4.perspective(this.pm,64 * Math.PI / 180,this.gl.canvas.clientWidth / this.gl.canvas.clientHeight,0.1,1000);
+        return matrix4.perspective(this.pm,64 * Math.PI / 180,this.gl.canvas.clientWidth / this.gl.canvas.clientHeight,0.1,30);
     }
 
     getDirection(){

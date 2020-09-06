@@ -81,7 +81,7 @@ class Player extends Entity{
             }
         }
         
-        if (this.i != null){
+        if (this.i != null && (this.currentHealth>0 || !level.finished)){
             let itemPos = {x:this.p.x - LevelRender.camera.getDirection().x/4,y:0,z:this.p.z - LevelRender.camera.getDirection().z/4};
             if (!this.showAttack){
                 this.i.renderPlayerHolding(itemPos,0.11);
