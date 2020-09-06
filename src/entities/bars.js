@@ -22,6 +22,7 @@ class Bars extends Sprite{
         } 
         this.neededTriggers = 1;
         if (triggerId == 199 || triggerId == 197) this.neededTriggers = 2;
+        if (triggerId == 191) this.neededTriggers = 3;
         if (triggerId == 196 || triggerId == 193) this.neededTriggers = 4;
         this.neededTrigger = 0;
         this.triggered = false;
