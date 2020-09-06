@@ -315,7 +315,7 @@ class Level{
         this.gl.enable(this.gl.BLEND);
         this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE_MINUS_SRC_ALPHA);
         this.e.forEach(entity => {
-            this.levelrender.renderEntity(entity);
+            if (this.distance(entity.p, this.player.p)< 15)this.levelrender.renderEntity(entity);
         });
         this.i.forEach(i => {
             this.levelrender.renderItem(i);
