@@ -13,7 +13,7 @@ class Item{
         this.n = n;
         this.c = level==1?lev1col:level==2?lev2col:lev3col;
         this.light = 1;
-        this.level = level==null?1:level;
+        this.level = level==null?1:Math.min(level,3);
         this.modifier = 1;
         
         let r = MeshBuilder.start(gl,x,y,z);

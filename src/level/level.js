@@ -80,7 +80,7 @@ class Level{
                             //level.player.pickup(level,level.getDagger(1));
                            //level.player.pickup(level,level.getWand(3));
                             //level.player.pickup(level,level.getApple());
-                            level.displayMessage("where am i  i cant find my things","and where is 04",10);
+                            level.displayMessage("Where am i?  I cant find my things","and where is 04?",10);
                            // this.showHints = 10;
                         }
                         if (c == 'l'){

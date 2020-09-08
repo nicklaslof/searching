@@ -118,6 +118,7 @@ class Player extends Entity{
     }
 
     pickup(level,i){
+        Game.playAudio(350,0.1);
         this.inventory.addItemToFirstAvailableSlot(level,i);
         if (i.n == "dagger") if (this.daggerItemLevel < i.level) this.daggerItemLevel = i.level;
         if (i.n == "wand") if (this.wandItemLevel < i.level) this.wandItemLevel = i.level;
@@ -136,6 +137,7 @@ class Player extends Entity{
         if (entity.n == "ba" || (entity.n == "pp" && entity.source != this)){
             if(this.distanceToOtherEntity(entity) < 0.6){
                 if (this.hitCounter>= 1){
+                    Game.playAudio(60,0.3);
                     super.knockback(entity.p.x - this.p.x*2, entity.p.z - this.p.z*2);
                     this.hit(level,entity,1);
                 }

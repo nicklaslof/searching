@@ -12,8 +12,7 @@ class Billboardsprite extends Sprite{
     }
 
     drop(level,item){
-        let itemSprite = new ItemSprite(item,this.p.x-LevelRender.camera.getDirection().x/2,-0.2,this.p.z-LevelRender.camera.getDirection().z/2,item.texture,level.gl).setNotRespawn();
-        itemSprite.knockback(LevelRender.camera.getDirection().x,LevelRender.camera.getDirection().z);
+        let itemSprite = new ItemSprite(item,this.p.x,-0.2,this.p.z,item.texture,level.gl).setNotRespawn();
         level.addEntity(itemSprite); 
     }
 }

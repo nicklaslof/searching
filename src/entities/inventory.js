@@ -31,12 +31,12 @@ class Inventory{
 
     replaceAndShow(level,slot,item){
         if (this.is[slot] == null){ this.pickupAndShow(level,slot,item); return}
-        this.showMessage(level,"you replaced "+this.is[slot].n + " "+this.is[slot].getDamage()+" damage"," with "+item.n + " "+item.getDamage()+" damage");
+        this.showMessage(level,"Replaced "+this.is[slot].n + " "+this.is[slot].getDamage()+" damage"," with "+item.n + " "+item.getDamage()+" damage");
         this.is[slot] = item;
     }
 
     pickupAndShow(level,slot,item){
-        this.showMessage(level,"You picked up "+item.n);
+        this.showMessage(level,"Picked up "+item.n);
         this.is[slot] = item;
     }
 

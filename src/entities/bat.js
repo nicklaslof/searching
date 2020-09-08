@@ -3,10 +3,11 @@ import LevelRender from "../level/levelrender.js";
 import Particle from "./particle.js";
 import Projectile from "./projectile.js";
 import Tiles from "../tiles/tiles.js";
+import Game from "../game.js";
 
 class Bat extends Billboardsprite{
     constructor(x,y,z,gl,metadata){
-        super("ba", x,y,z,LevelRender.bat,gl,metadata==252?100:metadata==253?6:5,metadata);
+        super("ba", x,y,z,LevelRender.bat,gl,metadata==252?150:metadata==253?6:5,metadata);
         this.mesh.setS(metadata==252?3:metadata==253?1:0.5);
         this.counter = 0;
         this.random = this.getRand();
@@ -60,12 +61,13 @@ class Bat extends Billboardsprite{
     }
 
     removeThisEntity(level){
-        if (this.triggerId == 252)level.displayMessage("the bat drops dead revelaing a note that says","04 is in another dungeon     thanks for playing",500);
+        if (this.triggerId == 252)level.displayMessage("The bat drops dead revelaing a note that says","04 is in another dungeon.    /Thanks for playing",500);
         this.addParticles(level,0.12,-0.8);
-        if (this.getRand() < 0.1 && level.getTile(Math.round(this.p.x), Math.round(this.p.z)) != Tiles.lava){
+        if (this.getRand() < 0.15 && level.getTile(Math.round(this.p.x), Math.round(this.p.z)) != Tiles.lava){
             if (this.triggerId == 254)this.drop(level,level.getDagger(level.player.daggerItemLevel+1));
             if (this.triggerId == 253)this.drop(level,level.getWand(level.player.wandItemLevel+1));
         }
+        Game.playNoise(4,0.9);
        super.removeThisEntity(level);
        if (this.triggerId == 253) this.respawnTimer = (this.getRand()+1) * 25;
     }
@@ -79,6 +81,7 @@ class Bat extends Billboardsprite{
         if (amount == null) return;
         if (this.hitCounter>= 0.3){
             if (amount>0){
+                Game.playAudio(100,0.2);
                 this.addParticles(level,0.02,-0.4);
             }
         }
