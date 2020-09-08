@@ -10,8 +10,8 @@ class Game{
     static respawn;
     constructor() {
         this.supportsPerformance = (typeof performance === 'undefined' ? false : true);
-        this.uc = document.getElementById("ui");
-        this.c = document.getElementById("gl");
+        this.uc = document.getElementById("u");
+        this.c = document.getElementById("g");
         this.setSize(this.c);
         this.setSize(this.uc);
         Game.newGame = false;
@@ -73,6 +73,7 @@ class Game{
           );
     }
     static playNoise(f,l){
+        if (Game.a == null) return;
         var bufferSize = 4096;
         var lastOut = 0.0;
         if (Game.o != null){Game.g.disconnect();}

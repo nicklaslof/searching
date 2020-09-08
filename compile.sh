@@ -4,10 +4,10 @@ mkdir -p dist
 cd src
 cp -av a-tinified.png ../dist/a.png
 cp -av *.txt ../dist/
-cp index.html index.css ../dist/
-rollup mainloop.js --format cjs --file ../dist/bundle.js
+cp index.html i.css ../dist/
+rollup m.js --format cjs --file ../dist/bundle.js
 cd ../dist
-terser bundle.js -o mainloop.js --compress --mangle --mangle-props reserved=["movementX","imageSmoothingEnabled"] --timings --toplevel --module
+terser bundle.js -o m.js --compress --mangle --mangle-props reserved=["movementX","imageSmoothingEnabled"] --timings --toplevel --module
 rm bundle.js
 cd ..
 cd dist
