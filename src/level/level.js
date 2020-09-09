@@ -33,7 +33,7 @@ class Level{
         this.collisionTiles = new Array(levelsize*levelsize);
         for (let x = 0; x < levelsize; x++){
             for (let z = 0; z < levelsize; z++){
-                this.collisionTiles[x + (z*levelsize)] = new CollisionTile(x,z);
+                this.collisionTiles[x + (z*levelsize)] = new CollisionTile();
             }
         }
         this.oobCollisionTile = new CollisionTile(-1,-1);
@@ -80,7 +80,7 @@ class Level{
                             //level.player.pickup(level,level.getDagger(1));
                            //level.player.pickup(level,level.getWand(3));
                             //level.player.pickup(level,level.getApple());
-                            level.displayMessage("Where am i?  I cant find my things","and where is 04?",10);
+                            level.displayMessage("Where am I?  I can't find my things","and where is 04?",10);
                            // this.showHints = 10;
                         }
                         if (c == 'l'){
@@ -264,8 +264,18 @@ class Level{
     }
 
     removeEntity(entity){
+        
         for(let i = this.e.length - 1; i >= 0; i--) {
-            if(this.e[i] === entity) {
+            if(this.e[i]=== entity) {
+                this.e.splice(i, 1);
+                //console.log(this.e.length);
+            }
+        }
+    }
+
+    cleanUp(){
+        for (let i = 0; i < this.e.length; i++){
+            if((this.e[i].n == "pa" || this.e[i].n == "po") && this.e[i].currentHealth <= 0){
                 this.e.splice(i, 1);
             }
         }
@@ -310,6 +320,8 @@ class Level{
         this.i.forEach(i => {
             i.tick(deltaTime,this,true);
         });
+
+        this.cleanUp();
     }
     render(){
         this.levelrender.render();

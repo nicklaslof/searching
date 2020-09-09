@@ -20,10 +20,12 @@ class Bars extends Sprite{
             this.p.z += 0.5;
             this.mesh.t(0.0,0,0.5);
         } 
-        this.neededTriggers = 1;
-        if (triggerId == 199 || triggerId == 197) this.neededTriggers = 2;
-        if (triggerId == 191) this.neededTriggers = 3;
-        if (triggerId == 196 || triggerId == 193) this.neededTriggers = 4;
+        //this.neededTriggers = 1;
+        this.neededTriggers = triggerId == 199 || triggerId == 197?2:triggerId == 191?3:triggerId == 196 || triggerId == 193?4:1;
+        //console.log(this.neededTriggers);
+        //if (triggerId == 199 || triggerId == 197) this.neededTriggers = 2;
+        //if (triggerId == 191) this.neededTriggers = 3;
+        //if (triggerId == 196 || triggerId == 193) this.neededTriggers = 4;
         this.neededTrigger = 0;
         this.triggered = false;
     }

@@ -3,8 +3,8 @@ window.onload = function () {
 
     let g = new Game();
     requestAnimationFrame(mainloop);
-    function mainloop(){
+    function mainloop(t){
        requestAnimationFrame(mainloop);
-       g.mainloop();
+       g.mainloop(t);
    }
 };

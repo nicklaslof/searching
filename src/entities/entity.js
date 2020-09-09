@@ -20,7 +20,6 @@ class Entity{
         this.dispose = false;
         this.notAddedToCollider = true;
         this.knockBack = {x:0,z:0};
-        this.tempVector = {x:0,y:0,z:0};
         this.currentTileX = Math.round(this.p.x);
         this.currentTileZ = Math.round(this.p.z);
     }
@@ -61,7 +60,9 @@ class Entity{
                 this.reset();
             }
             return;
-         }
+        }
+
+        if (this.distance(this.p, level.player.p)> 15) return;
         
         if (this.notAddedToCollider){
             this.addToCollision(level,this.currentTileX, this.currentTileZ);
@@ -162,10 +163,7 @@ class Entity{
     }
 
     distanceToOtherEntity(entity){
-        let myPos = {x:this.p.x,z:this.p.z}
-        let ePos = {x:entity.p.x,z:entity.p.z}
-        let d = this.distance(myPos, ePos);
-        return d;
+        return this.distance(this.p, entity.p);
     }
 
     getRand(){

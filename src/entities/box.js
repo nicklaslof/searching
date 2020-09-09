@@ -28,7 +28,7 @@ class Box extends Entity{
         }
         this.reset();
         Game.playNoise(4,0.9);
-        level.displayMessage("A new box magically appears","",3);
+        level.displayMessage("A new box appears","",3);
         
     }
     render(gl,shaderprogram,pm,darkness){

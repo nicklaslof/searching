@@ -1,20 +1,19 @@
 class Texture{
-    constructor(texture, x, y, width, height,textureWidth,textureHeight){
+    constructor(texture, x, y, width, height){
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
         this.texture = texture;
         this.dirty = true;
-        this.textureWidth = textureWidth;
-        this.textureHeight = textureHeight;
+
     }
 
     getUVs(){
         if (this.dirty){
 
-            let w = 1 / this.textureWidth;
-            let h = 1 / this.textureHeight;
+            let w = 1 / 65;
+            let h = 1 / 65;
 
             let u = (this.x * w)%1;
             let v = (this.y * h)%1;

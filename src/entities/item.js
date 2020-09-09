@@ -6,7 +6,7 @@ const lev1col = [1,1,1,1];
 const lev2col = [0,1,1,1];
 const lev3col = [0.5,0.3,0.5,1];
 class Item{
-    constructor(n, x,y,z,texture,gl,level) {
+    constructor(n, x,y,z,texture,gl,onGroundScale,level) {
         this.texture = texture;
         this.p = {x,y,z};
         this.rotation = {x,y,z};
@@ -15,6 +15,7 @@ class Item{
         this.light = 1;
         this.level = level==null?1:Math.min(level,3);
         this.modifier = 1;
+        this.onGroundScale = onGroundScale;
         
         let r = MeshBuilder.start(gl,x,y,z);
         MeshBuilder.front(this.texture.getUVs(),r,0.75,0,0,this.light,1,null,this.c);

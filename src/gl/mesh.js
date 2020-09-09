@@ -37,7 +37,7 @@ class Mesh{
 
         this.verticiesBuffer32 = new Float32Array(this.verticies.length*3);
         this.verticiesBuffer32.set(this.verticies);
-        this.uvArrayBuffer32 = new Float32Array(this.uvs.length*12);
+        this.uvArrayBuffer32 = new Float32Array(this.verticies.length*12);
         this.indiciesBuffer16 = new Uint16Array(indiciesNeeded*6);
 
         let vertexCounter = 0;
@@ -137,13 +137,13 @@ class Mesh{
     }
 
     uploadCols(){
-        this.cArrayBuffer32 = new Float32Array(this.cs.length*4);
+        this.cArrayBuffer32 = new Float32Array(this.verticies.length*4);
         this.cArrayBuffer32.set(this.cs);
         this.gl.bindBuffer(this.ab, this.cb);
         this.gl.bufferData(this.ab, this.cArrayBuffer32, this.dd);
     }
     uploadLights(){
-        this.lightArrayBuffer32 = new Float32Array(this.lights.length*4);
+        this.lightArrayBuffer32 = new Float32Array(this.verticies.length*4);
         this.lightArrayBuffer32.set(this.lights);
         this.gl.bindBuffer(this.ab, this.lightBuffer);
         this.gl.bufferData(this.ab, this.lightArrayBuffer32, this.dd);

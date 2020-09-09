@@ -9,7 +9,6 @@ class Game{
     static newGame;
     static respawn;
     constructor() {
-        this.supportsPerformance = (typeof performance === 'undefined' ? false : true);
         this.uc = document.getElementById("u");
         this.c = document.getElementById("g");
         this.setSize(this.c);
@@ -21,7 +20,7 @@ class Game{
         this.shaderProgram = new ShaderProgram(this.gl,`precision lowp float;attribute vec4 p;attribute vec4 c;attribute vec4 l;attribute vec2 u;uniform mat4 mvm;uniform mat4 pm;varying vec4 vc;varying vec2 uv;varying float d;varying vec4 li;void main(){gl_Position=pm*mvm*p;vc=c;li=l;uv=u;d=gl_Position.z/27.0;}`,`precision lowp float;varying vec4 vc;varying vec2 uv;varying float d;varying vec4 li;uniform sampler2D s;uniform float h;void main(){vec4 col=texture2D(s,uv)*vc;float z=gl_FragCoord.z/gl_FragCoord.w;float fogFactor=exp2(-0.15*0.15*z*z*1.4);fogFactor=clamp(fogFactor,0.0,1.0);vec4 c=vec4(col.rgb-d,col.a)+(col.rgba*(li*1.2));if(c.a<0.2)discard;if(h>0.0)gl_FragColor=vec4(1,0,0,1);else gl_FragColor=mix(vec4(0.05,0.05,0.15,1),c,fogFactor);}`);
         this.gamescreen = new IntroScreen(this.gl,this.uc.getContext("2d"), this.shaderProgram,1);
     }
-     mainloop(){
+     mainloop(t){
          if (Game.newGame){
             this.gamescreen = new GameScreen(this.gl, this.uc.getContext("2d"), this.shaderProgram,1);
             Game.newGame = false;
@@ -39,10 +38,9 @@ class Game{
         this.gl.enable(this.gl.CULL_FACE);
         this.gl.disable(this.gl.BLEND);
 
-        this.now = this.supportsPerformance?performance.now():Date.now();
-        let deltaTime = this.now - this.previousUpdate;
-        this.previousUpdate = this.now;
-        if (deltaTime > 64) deltaTime = 64;
+        let deltaTime = t - this.previousUpdate;
+        this.previousUpdate = t;
+        if (deltaTime > 32) deltaTime = 32;
         this.gamescreen.tick(deltaTime/1000,this);
         this.gamescreen.render();
     }

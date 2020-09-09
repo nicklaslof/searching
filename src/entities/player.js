@@ -17,6 +17,9 @@ class Player extends Entity{
         this.daggerItemLevel = 0;
         this.wandItemLevel = 0;
         this.hitCounter = 0.5;
+        this.v = {x:0,z:0};
+        this.strafe = {x:0,z:0};
+        this.tempVector = {x:0,z:0};
     }
 
     spawnAtCheckpoint(level){
@@ -44,18 +47,21 @@ class Player extends Entity{
         if (this.eatDelay >0) this.eatDelay -= deltaTime;
 
         if (this.knockBack.x == 0 || this.knockBack.z == 0){
-            let pos = this.p;
+            this.v.x = 0;
+            this.v.z = 0;
+            this.strafe.x = 0;
+            this.strafe.z = 0;
             let inputHandler = Game.inputHandler;
             this.counter += deltaTime;
-            let v = {x:0,y:0,z:0};
-            let strafe = {x:0,y:0,z:0};
+
             LevelRender.camera.rotate((inputHandler.getMouseX()/9) * deltaTime);
+            
             let cameraDirection = LevelRender.camera.getDirection();
-            if (inputHandler.isKeyDown(87))v.z = -1;
-            if (inputHandler.isKeyDown(83))v.z = 1;
+            if (inputHandler.isKeyDown(87))this.v.z = -1;
+            if (inputHandler.isKeyDown(83))this.v.z = 1;
            
-            if (inputHandler.isKeyDown(65))this.cross(strafe,cameraDirection,up);
-            if (inputHandler.isKeyDown(68))this.cross(strafe,cameraDirection,down);
+            if (inputHandler.isKeyDown(65))this.cross(this.strafe,cameraDirection,up);
+            if (inputHandler.isKeyDown(68))this.cross(this.strafe,cameraDirection,down);
             if (inputHandler.getClicked() && this.attackCounter <= 0){
                 this.isAttacking = this.showAttack = true;
                 this.attackCounter = 0.3;
@@ -68,16 +74,16 @@ class Player extends Entity{
 
             if (inputHandler.isKeyDown(81)){ this.dropCurrentItem(level); inputHandler.kp[81] = false} ;
             
-            if (v.x !=0 || v.z != 0 || strafe.x != 0 || strafe.z !=0){
-                this.tempVector.x = cameraDirection.x * v.z + strafe.x;
-                this.tempVector.z = cameraDirection.z * v.z +strafe.z;
+            if (this.v.x !=0 || this.v.z != 0 || this.strafe.x != 0 || this.strafe.z !=0){
+                this.tempVector.x = cameraDirection.x * this.v.z + this.strafe.x;
+                this.tempVector.z = cameraDirection.z * this.v.z + this.strafe.z;
                 this.normalize(this.tempVector);
                 this.tempVector.x *= deltaTime*2.5;
                 this.tempVector.z *= deltaTime*2.5;
-                this.tempVector.x += pos.x;
-                this.tempVector.z += pos.z;
-                if (this.canMove(level,this.tempVector.x,pos.z)) pos.x += this.tempVector.x-pos.x;
-                if (this.canMove(level,pos.x,this.tempVector.z)) pos.z += this.tempVector.z-pos.z;
+                this.tempVector.x += this.p.x;
+                this.tempVector.z += this.p.z;
+                if (this.canMove(level,this.tempVector.x,this.p.z)) this.p.x += this.tempVector.x-this.p.x;
+                if (this.canMove(level,this.p.x,this.tempVector.z)) this.p.z += this.tempVector.z-this.p.z;
 
             }
         }

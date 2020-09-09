@@ -13,13 +13,13 @@ class UI{
     }
     renderIntro(){
         this.drawText("Searching for 04",100,"30px monospace");
-        this.drawText("A classic dungeon crawler",150);
-        this.drawText("for JS13k 2020",175);
-        this.drawText("by Nicklas Löf",200);
+        this.drawText("by Nicklas Löf",175);
+        this.drawText("for JS13k 2020",200);
+
         this.drawText("Graphics by Nicklas Löf",240);
-        this.drawText("and Elthen at patreon.com",260);
-        this.drawText("Hit 1 to play roguelike",340);
-        this.drawText("Hit 2 to play with checkpoints",360);
+        this.drawText("Elthen at patreon.com",260);
+        this.drawText("Hit 1: Roguelike",340);
+        this.drawText("Hit 2: Checkpoints",360);
     }
     render(level){
         this.c.clearRect(0, 0, this.c.canvas.width, this.c.canvas.height);

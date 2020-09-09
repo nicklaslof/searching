@@ -1,7 +1,5 @@
 class CollisionTile{
-    constructor(x,z) {
-        this.x = x;
-        this.z = z;
+    constructor() {
         this.e = []
     }
     
