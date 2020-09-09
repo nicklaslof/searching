@@ -275,7 +275,7 @@ class Level{
 
     cleanUp(){
         for (let i = 0; i < this.e.length; i++){
-            if((this.e[i].n == "pa" || this.e[i].n == "po") && this.e[i].currentHealth <= 0){
+            if((this.e[i].n == "pa" || this.e[i].n == "pp") && this.e[i].currentHealth <= 0){
                 this.e.splice(i, 1);
             }
         }
