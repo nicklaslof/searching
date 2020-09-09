@@ -61,8 +61,6 @@ class Entity{
             }
             return;
         }
-
-        if (this.distance(this.p, level.player.p)> 15) return;
         
         if (this.notAddedToCollider){
             this.addToCollision(level,this.currentTileX, this.currentTileZ);

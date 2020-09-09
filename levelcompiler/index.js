@@ -1,20 +1,20 @@
 #!/usr/bin/env node
 
 const { createCanvas, loadImage,ImageData } = require('canvas');
-const canvas = createCanvas(64, 64);
+const canvas = createCanvas(64, 53);
 const ctx = canvas.getContext('2d');
 canvas.imageSmoothingEnabled = false;
 ctx.imageSmoothingEnabled = false;
 
-let level = new Array(64*64);
+let level = new Array(64*53);
 level.fill("x");
-let metaData = new Array(64*64);
+let metaData = new Array(64*53);
 metaData.fill("x");
 
 loadImage("level.png").then((image) => {
     ctx.drawImage(image, 0, 0);
         for (let x = 0; x < 64; x++) {
-            for (let z = 0; z < 64; z++) {
+            for (let z = 0; z < 53; z++) {
 
                 let c = new Uint32Array(ctx.getImageData(x, z, 1, 1).data.buffer);
                 let alpha = (c >>> 24 );
@@ -68,8 +68,8 @@ function addToLevel(level,x,z,data){
 function getLevelString(level){
     let txt = "";
     for (let x = 0; x < 64; x++) {
-        for (let z = 0; z < 64; z++) {
-            txt += level[z + (x*64)];
+        for (let z = 0; z < 53; z++) {
+            txt += level[z + (x*53)];
         }
     }
     return txt;
