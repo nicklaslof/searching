@@ -16,10 +16,10 @@ class ShaderProgram{
 
         this.locations = {
             attribLocations: {
-                vertexPosition: gl.getAttribLocation(this.shaderProgram, 'vp'),
-                color: gl.getAttribLocation(this.shaderProgram, 'col'),
+                vertexPosition: gl.getAttribLocation(this.shaderProgram, 'p'),
+                color: gl.getAttribLocation(this.shaderProgram, 'c'),
                 light: gl.getAttribLocation(this.shaderProgram, 'l'),
-                uv: gl.getAttribLocation(this.shaderProgram, "aUV")
+                uv: gl.getAttribLocation(this.shaderProgram, "u")
               },
               uniformLocations: {
                 projectionMatrix: gl.getUniformLocation(this.shaderProgram, 'pm'),

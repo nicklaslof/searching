@@ -17,7 +17,7 @@ collidedBy(entity, level){
     if (entity.n == "p"){
         let d = this.distanceToOtherEntity(entity);
         if(d < 1){
-            level.displayMessage("Shift: Pickup",this.n=="dagger"||this.n=="wand"?this.n+" !"+this.i.getDamage()+" damage!":this.n,0.1);
+            level.displayMessage("Shift: Pickup",this.n=="dagger"||this.n=="wand"?this.n+" ("+this.i.getDamage()+" damage)":this.n,0.1);
             if (Game.inputHandler.isKeyDown(16)){
                     entity.pickup(level,this.i);
                     this.removeThisEntity(level);

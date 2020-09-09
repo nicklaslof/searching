@@ -4,7 +4,8 @@ import Entity from "./entity.js";
 import Inventory from "./inventory.js";
 import ItemSprite from "./itemsprite.js";
 import Projectile from "./projectile.js";
-
+const up = {x:0,y:1,z:0};
+const down = {x:0,y:-1,z:0}
 class Player extends Entity{
     constructor(x,y,z) {
         super("p",x,y,z,5);
@@ -53,8 +54,8 @@ class Player extends Entity{
             if (inputHandler.isKeyDown(87))v.z = -1;
             if (inputHandler.isKeyDown(83))v.z = 1;
            
-            if (inputHandler.isKeyDown(65))this.cross(strafe,cameraDirection,{x:0,y:1,z:0});
-            if (inputHandler.isKeyDown(68))this.cross(strafe,cameraDirection,{x:0,y:-1,z:0});
+            if (inputHandler.isKeyDown(65))this.cross(strafe,cameraDirection,up);
+            if (inputHandler.isKeyDown(68))this.cross(strafe,cameraDirection,down);
             if (inputHandler.getClicked() && this.attackCounter <= 0){
                 this.isAttacking = this.showAttack = true;
                 this.attackCounter = 0.3;

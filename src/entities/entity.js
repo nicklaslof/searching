@@ -75,7 +75,7 @@ class Entity{
         if (this.knockBack.z > -0.2 && this.knockBack.z < 0.2) this.knockBack.z = 0;
         if (this.knockBack.x !=0 || this.knockBack.z !=0){
             let knockX = this.p.x - this.knockBack.x * 5 * deltaTime;
-            let knockZ = this.p.z - this.knockBack.z * 5 *deltaTime;
+            let knockZ = this.p.z - this.knockBack.z * 5 * deltaTime;
             if (this.canMove(level, knockX, this.p.z))this.p.x = knockX;
             if (this.canMove(level, this.p.x, knockZ))this.p.z = knockZ;
             this.knockBack.x /= 65*deltaTime;

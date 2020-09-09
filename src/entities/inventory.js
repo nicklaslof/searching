@@ -26,17 +26,12 @@ class Inventory{
     addItemToFirstAvailableSlot(level,itemToAdd){
         if (itemToAdd.n == "dagger") this.replaceAndShow(level,0,itemToAdd);
         else if (itemToAdd.n == "wand")this.replaceAndShow(level,1,itemToAdd);
-        else {this.pickupAndShow(level,2,itemToAdd); this.apples++};
+        else {this.is[2] = itemToAdd; this.apples++};
     }
 
     replaceAndShow(level,slot,item){
-        if (this.is[slot] == null){ this.pickupAndShow(level,slot,item); return}
-        this.showMessage(level,"Replaced "+this.is[slot].n + " "+this.is[slot].getDamage()+" damage"," with "+item.n + " "+item.getDamage()+" damage");
-        this.is[slot] = item;
-    }
-
-    pickupAndShow(level,slot,item){
-        this.showMessage(level,"Picked up "+item.n);
+        if (this.is[slot] == null){ this.is[slot] = item; return}
+        this.showMessage(level,"Replaced "+this.is[slot].n + " ("+this.is[slot].getDamage()+" damage)"," with "+item.n + " ("+item.getDamage()+" damage)");
         this.is[slot] = item;
     }
 

@@ -18,7 +18,7 @@ class Game{
         Game.respawn = false;
         this.gl = this.c.getContext("webgl");
         Game.inputHandler = new InputHandler(document);
-        this.shaderProgram = new ShaderProgram(this.gl,`precision lowp float;attribute vec4 vp;attribute vec4 col;attribute vec4 l;attribute vec2 aUV;uniform mat4 mvm;uniform mat4 pm;varying vec4 vc;varying vec2 uv;varying float d;varying vec4 li;void main(){gl_Position=pm*mvm*vp;vc=col;li=l;uv=aUV;d=gl_Position.z/27.0;}`,`precision lowp float;varying vec4 vc;varying vec2 uv;varying float d;varying vec4 li;uniform sampler2D s;uniform float h;void main(){vec4 col=texture2D(s,uv)*vc;float z=gl_FragCoord.z/gl_FragCoord.w;float fogFactor=exp2(-0.15*0.15*z*z*1.4);fogFactor=clamp(fogFactor,0.0,1.0);vec4 c=vec4(col.rgb-d,col.a)+(col.rgba*(li*1.2));if(c.a<0.2)discard;if(h>0.0)gl_FragColor=vec4(1,0,0,1);else gl_FragColor=mix(vec4(0.05,0.05,0.15,1),c,fogFactor);}`);
+        this.shaderProgram = new ShaderProgram(this.gl,`precision lowp float;attribute vec4 p;attribute vec4 c;attribute vec4 l;attribute vec2 u;uniform mat4 mvm;uniform mat4 pm;varying vec4 vc;varying vec2 uv;varying float d;varying vec4 li;void main(){gl_Position=pm*mvm*p;vc=c;li=l;uv=u;d=gl_Position.z/27.0;}`,`precision lowp float;varying vec4 vc;varying vec2 uv;varying float d;varying vec4 li;uniform sampler2D s;uniform float h;void main(){vec4 col=texture2D(s,uv)*vc;float z=gl_FragCoord.z/gl_FragCoord.w;float fogFactor=exp2(-0.15*0.15*z*z*1.4);fogFactor=clamp(fogFactor,0.0,1.0);vec4 c=vec4(col.rgb-d,col.a)+(col.rgba*(li*1.2));if(c.a<0.2)discard;if(h>0.0)gl_FragColor=vec4(1,0,0,1);else gl_FragColor=mix(vec4(0.05,0.05,0.15,1),c,fogFactor);}`);
         this.gamescreen = new IntroScreen(this.gl,this.uc.getContext("2d"), this.shaderProgram,1);
     }
      mainloop(){
@@ -54,9 +54,7 @@ class Game{
     }
 
     startAudio(){
-        if (navigator.userAgent.indexOf("Chrome") !== -1){
         Game.a = new AudioContext();
-        }
     }
 
     static playAudio(f,l){
@@ -68,17 +66,20 @@ class Game{
         Game.g.connect(Game.a.destination);
         Game.o.start();
         Game.o.frequency.value = f;
+        Game.g.gain.linearRampToValueAtTime(
+            Game.g.gain.value, Game.a.currentTime
+          );
         Game.g.gain.exponentialRampToValueAtTime(
-            0.00001, Game.a.currentTime + l
+            0.00001, Game.a.currentTime + l+0.1
           );
     }
     static playNoise(f,l){
         if (Game.a == null) return;
-        var bufferSize = 4096;
+        var bufferSize = 8192;
         var lastOut = 0.0;
-        if (Game.o != null){Game.g.disconnect();}
-        Game.g = Game.a.createGain();
-        Game.g.connect(Game.a.destination);
+        if (Game.g2 != null){Game.g2.disconnect();}
+        Game.g2 = Game.a.createGain();
+        Game.g2.connect(Game.a.destination);
         var n = Game.a.createScriptProcessor(bufferSize, 1, 1);
         n.onaudioprocess = function(e) {
             var output = e.outputBuffer.getChannelData(0);
@@ -89,9 +90,12 @@ class Game{
                 output[i] *= 3.5;
             }
         }
-
-        n.connect(Game.g);
-        Game.g.gain.exponentialRampToValueAtTime(
+        Game.g2.gain.linearRampToValueAtTime(
+            Game.g2.gain.value, Game.a.currentTime
+          );
+        n.connect(Game.g2);
+        
+        Game.g2.gain.exponentialRampToValueAtTime(
             0.00001, Game.a.currentTime + l
           );
     }

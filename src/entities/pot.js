@@ -24,6 +24,10 @@ class Pot extends Billboardsprite{
             }
     }
     hit(level,entity,damage){
+        for (let i = 0; i < 5; i++){
+            level.addEntity(new Particle(this.p.x-0.2+this.getRand()/3,-0.2,this.p.z-0.2+this.getRand()/3,LevelRender.lava,level.gl,this.getRand(),0,this.getRand(),0,this.getRand()/14,
+            this.getRand()<0.5?[0.6,0.5,0.4,1]:[0.4,0.3,0.2,1]));
+        }
         Game.playNoise(2,0.6);
         super.hit(level,entity,damage);
     }
