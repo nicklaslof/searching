@@ -271,6 +271,7 @@ class Level{
                 //console.log(this.e.length);
             }
         }
+        this.cleanUp();
     }
 
     cleanUp(){
@@ -320,8 +321,6 @@ class Level{
         this.i.forEach(i => {
             i.tick(deltaTime,this,true);
         });
-
-        this.cleanUp();
     }
     render(){
         this.levelrender.render();

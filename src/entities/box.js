@@ -27,7 +27,7 @@ class Box extends Entity{
             level.addEntity(new Particle(this.p.x-0.2+this.getRand()/3,-0.2,this.p.z-0.2+this.getRand()/3,LevelRender.lava,level.gl,this.getRand(),0,this.getRand(),0,this.getRand()/7,[0.25,0.25,0.35,1]));
         }
         this.reset();
-        Game.playNoise(4,0.9);
+        Game.playNoise(0.9);
         level.displayMessage("A new box appears","",3);
         
     }
@@ -39,10 +39,8 @@ class Box extends Entity{
         this.knockBack.x = x;
         this.knockBack.z = z;
         this.normalize(this.knockBack);
-        if (s != null){
-            this.knockBack.x *= s;
-            this.knockBack.z *= s;
-        }
+        this.knockBack.x *= s;
+        this.knockBack.z *= s;
     }
 
     collidedBy(entity, level){
@@ -52,8 +50,8 @@ class Box extends Entity{
             let dirX = entity.p.x - this.p.x;
             let dirZ = entity.p.z - this.p.z;
             let d = this.distanceToOtherEntity(entity);
-            if(d < 0.6){
-                Game.playNoise(2,0.6);
+            if(d < 0.8){
+                Game.playNoise(0.5);
                 this.knockback(Math.round(dirX), Math.round(dirZ),0.75);
                 this.hitCounter = 0;
 

@@ -8,6 +8,7 @@ class LavaEffect extends Entity{
     }
 
     tick(deltaTime, level){
+        if (this.distance(this.p, level.player.p)> 10) return;
         super.tick(deltaTime,level);
         this.counter -=deltaTime;
         if (this.counter <= 0){

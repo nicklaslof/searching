@@ -66,6 +66,7 @@ class Player extends Entity{
                 this.isAttacking = this.showAttack = true;
                 this.attackCounter = 0.3;
                 this.attack(level);
+                //Game.playNoise(0.9);
                                
             }else{
                 this.isAttacking = false;
@@ -97,6 +98,7 @@ class Player extends Entity{
             }
         }
         LevelRender.camera.setPos(this.p.x, 0.3, this.p.z);
+        if (Math.round(this.p.x) == 32 && Math.round(this.p.z) == 47) level.displayMessage("Prepare for boss fight!" ,"", 4);
 
     }
 

@@ -8,8 +8,8 @@ class Pot extends Billboardsprite{
         this.mesh.setS(0.6);
     }
     removeThisEntity(level){
-        Game.playNoise(4,0.9);
-        if (this.getRand() < 0.2)this.drop(level,level.getApple());
+        Game.playNoise(0.9);
+        if (this.getRand() < 0.17)this.drop(level,level.getApple());
         for (let i = 0; i < 20; i++){
             level.addEntity(new Particle(this.p.x-0.2+this.getRand()/3,-0.2,this.p.z-0.2+this.getRand()/3,LevelRender.lava,level.gl,this.getRand(),0,this.getRand(),0,this.getRand()/7,
             this.getRand()<0.5?[0.6,0.5,0.4,1]:[0.4,0.3,0.2,1]));
@@ -28,7 +28,7 @@ class Pot extends Billboardsprite{
             level.addEntity(new Particle(this.p.x-0.2+this.getRand()/3,-0.2,this.p.z-0.2+this.getRand()/3,LevelRender.lava,level.gl,this.getRand(),0,this.getRand(),0,this.getRand()/14,
             this.getRand()<0.5?[0.6,0.5,0.4,1]:[0.4,0.3,0.2,1]));
         }
-        Game.playNoise(2,0.6);
+        Game.playNoise(0.5);
         super.hit(level,entity,damage);
     }
 }

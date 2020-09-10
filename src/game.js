@@ -68,33 +68,35 @@ class Game{
             Game.g.gain.value, Game.a.currentTime
           );
         Game.g.gain.exponentialRampToValueAtTime(
-            0.00001, Game.a.currentTime + l+0.1
+            0.00001, Game.a.currentTime + l+0.2
           );
     }
-    static playNoise(f,l){
+    static playNoise(l){
         if (Game.a == null) return;
-        var bufferSize = 8192;
+        if (Game.n != null) Game.n.disconnect();
+        var bufferSize = 2048;
         var lastOut = 0.0;
         if (Game.g2 != null){Game.g2.disconnect();}
         Game.g2 = Game.a.createGain();
         Game.g2.connect(Game.a.destination);
-        var n = Game.a.createScriptProcessor(bufferSize, 1, 1);
-        n.onaudioprocess = function(e) {
+        Game.n = Game.a.createScriptProcessor(bufferSize, 1, 1);
+        Game.n.onaudioprocess = function(e) {
             var output = e.outputBuffer.getChannelData(0);
             for (var i = 0; i < bufferSize; i++) {
-                var nn = Math.random() * f - 1;
+                var nn = Math.random() * 2 - 1;
                 output[i] = (lastOut + (0.02 * nn)) / 1.02;
                 lastOut = output[i];
                 output[i] *= 3.5;
             }
         }
+        
         Game.g2.gain.linearRampToValueAtTime(
             Game.g2.gain.value, Game.a.currentTime
           );
-        n.connect(Game.g2);
-        
+
+        Game.n.connect(Game.g2);
         Game.g2.gain.exponentialRampToValueAtTime(
-            0.00001, Game.a.currentTime + l
+            0.00001, Game.a.currentTime + l+0.1
           );
     }
 
