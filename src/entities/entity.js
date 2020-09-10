@@ -167,7 +167,6 @@ class Entity{
     getRand(){
         return Math.random();
     }
-    
 }
 
 export default Entity;

@@ -75,7 +75,7 @@ class Level{
                         if (c == 's')level.addTile(x,z,Tiles.stoneWallTile);
                         if (c == 'g')level.addTile(x,z,Tiles.grassyStoneWallTile);
                         if (c == 'p'){
-                            level.player = new Player(x,0,z);
+                            level.player = new Player(x,0.3,z);
                             level.addEntity(level.player);
                             //level.player.pickup(level,level.getDagger(1));
                            //level.player.pickup(level,level.getWand(3));
@@ -165,12 +165,6 @@ class Level{
         if (b > finalLight) finalLight = b - falloff;
 
         return finalLight>2?2:finalLight<0?0:finalLight;
-    }
-
-    distance(v1, v2) {
-        let x = v1.x - v2.x
-        let z = v1.z - v2.z;
-        return Math.hypot(x, z);
     }
 
     parse(){
@@ -303,8 +297,10 @@ class Level{
         }
         let level = this;
         this.e.sort(function (a, b) {
-            let aDest = level.distance(a.p,level.player.p);
-            let bDest = level.distance(b.p,level.player.p);
+            //let aDest = level.distance(a.p,level.player.p);
+            //let bDest = level.distance(b.p,level.player.p);
+            let aDest = a.distanceToOtherEntity(level.player);
+            let bDest = b.distanceToOtherEntity(level.player);
             if (aDest > bDest) {
                 return -1;
             }
@@ -327,7 +323,7 @@ class Level{
         this.gl.enable(this.gl.BLEND);
         this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE_MINUS_SRC_ALPHA);
         this.e.forEach(entity => {
-            if (this.distance(entity.p, this.player.p)< 15)this.levelrender.renderEntity(entity);
+            if (entity.distanceToOtherEntity(this.player)< 15)this.levelrender.renderEntity(entity);
         });
         this.i.forEach(i => {
             this.levelrender.renderItem(i);

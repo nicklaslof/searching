@@ -34,7 +34,7 @@ class Player extends Entity{
         if (this.currentHealth <= 0 || level.finished){
             if (level.finished) this.i = null;
             LevelRender.camera.rotate(0.15*deltaTime);
-            LevelRender.camera.setPos(this.p.x, 0.3, this.p.z);
+            LevelRender.camera.setPos(this.p);
             if (Game.inputHandler.isKeyDown(32) && !level.finished) Game.restart();
             return;
         }
@@ -66,6 +66,7 @@ class Player extends Entity{
                 this.isAttacking = this.showAttack = true;
                 this.attackCounter = 0.3;
                 this.attack(level);
+                //Game.playAudio(100,0.2);
                 //Game.playNoise(0.9);
                                
             }else{
@@ -97,7 +98,7 @@ class Player extends Entity{
                 this.i.renderPlayerAttack(itemPos,0.10);
             }
         }
-        LevelRender.camera.setPos(this.p.x, 0.3, this.p.z);
+        LevelRender.camera.setPos(this.p);
         if (Math.round(this.p.x) == 32 && Math.round(this.p.z) == 47) level.displayMessage("Prepare for boss fight!" ,"", 4);
 
     }

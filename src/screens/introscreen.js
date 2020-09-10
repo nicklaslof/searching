@@ -7,12 +7,13 @@ class IntroScreen{
     constructor(gl, uic, shaderprogram,type) {
         this.level = new Level(gl, shaderprogram,type);
         this.ui = new UI(uic);
+        this.introPos = {x:45,y:0.3,z:45};
     }
 
     tick(deltaTime, game){
         if (isNaN(deltaTime)) return;
         LevelRender.camera.rotate(0.15*deltaTime);
-        LevelRender.camera.setPos(45, 0.3, 45);
+        LevelRender.camera.setPos(this.introPos);
         if (Game.inputHandler.isKeyDown(49)) Game.startRoguelike();
         if (Game.inputHandler.isKeyDown(50)) Game.startCheckpoints();
     }

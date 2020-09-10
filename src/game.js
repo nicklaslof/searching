@@ -57,30 +57,34 @@ class Game{
 
     static playAudio(f,l){
         if (Game.a == null) return;
-        if (Game.o != null){ Game.o.disconnect(); Game.g.disconnect();}
-        Game.o = Game.a.createOscillator();
-        Game.g = Game.a.createGain();
-        Game.o.connect(Game.g);
-        Game.g.connect(Game.a.destination);
-        Game.o.start();
-        Game.o.frequency.value = f;
-        Game.g.gain.linearRampToValueAtTime(
-            Game.g.gain.value, Game.a.currentTime
-          );
-        Game.g.gain.exponentialRampToValueAtTime(
+        let o = Game.a.createOscillator();
+        let g = Game.a.createGain();
+        o.connect(g);
+        g.connect(Game.a.destination);
+        o.start();
+        o.frequency.value = f;
+        g.gain.linearRampToValueAtTime(
+            g.gain.value, Game.a.currentTime
+        );
+        g.gain.exponentialRampToValueAtTime(
             0.00001, Game.a.currentTime + l+0.2
-          );
+        );
+
+        setTimeout(function(){
+            o.disconnect();
+            g.disconnect();
+        },1000);
     }
     static playNoise(l){
         if (Game.a == null) return;
-        if (Game.n != null) Game.n.disconnect();
+        
         var bufferSize = 2048;
         var lastOut = 0.0;
-        if (Game.g2 != null){Game.g2.disconnect();}
-        Game.g2 = Game.a.createGain();
-        Game.g2.connect(Game.a.destination);
-        Game.n = Game.a.createScriptProcessor(bufferSize, 1, 1);
-        Game.n.onaudioprocess = function(e) {
+
+        let g2 = Game.a.createGain();
+        g2.connect(Game.a.destination);
+        let n = Game.a.createScriptProcessor(bufferSize, 1, 1);
+        n.onaudioprocess = function(e) {
             var output = e.outputBuffer.getChannelData(0);
             for (var i = 0; i < bufferSize; i++) {
                 var nn = Math.random() * 2 - 1;
@@ -90,14 +94,20 @@ class Game{
             }
         }
         
-        Game.g2.gain.linearRampToValueAtTime(
-            Game.g2.gain.value, Game.a.currentTime
-          );
+        g2.gain.linearRampToValueAtTime(
+            g2.gain.value, Game.a.currentTime
+        );
 
-        Game.n.connect(Game.g2);
-        Game.g2.gain.exponentialRampToValueAtTime(
+        n.connect(g2);
+
+        g2.gain.exponentialRampToValueAtTime(
             0.00001, Game.a.currentTime + l+0.1
-          );
+        );
+
+        setTimeout(function(){
+            n.disconnect();
+            g2.disconnect();
+        },1000);
     }
 
     static startRoguelike(){
@@ -108,7 +118,7 @@ class Game{
         Game.startRoguelike();
     }
     static restart(){
-        if (!Game.checkpoints) Game.startRoguelike();
+        if (!Game.checkpoints) window.location.reload(false);
         else Game.respawn = true;
     }
 }

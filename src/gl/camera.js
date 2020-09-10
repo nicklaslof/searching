@@ -35,8 +35,8 @@ class Camera{
         return this.quaternion;
     }
 
-    setPos(x,y,z){
-        this.pos = {x,y,z};
+    setPos(p){
+        this.pos = p;
         this.pm = matrix4.create();
         this.createP();
         this.update();
