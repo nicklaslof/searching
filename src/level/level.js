@@ -20,8 +20,7 @@ import LavaEffect from "../entities/lavaeffect.js";
 const maxLight = 2;
 const levelsize = 64;
 class Level{
-    constructor(gl,shaderprogram,type) {
-        this.type = type;
+    constructor(gl,shaderprogram) {
         this.levelrender = new LevelRender(gl,shaderprogram);
         new Tiles();
         this.gl = gl;
@@ -46,13 +45,11 @@ class Level{
             this.parse();
         });
 
-        this.t = "";
-        this.t2 = "";
+        this.uiMessage1 = "";
+        this.uiMessage2 = "";
         this.player = null;
         this.displayMessageCounter = 0.1;
         this.finished = false;
-        //this.hintsShown = false;
-        //this.hintsShown2 = false;
     }
 
     read(done){
@@ -70,39 +67,35 @@ class Level{
             .then(data => {
                 for (let x = 0; x < levelsize; x++) {
                     for (let z = 0; z < levelsize; z++) {
-                        let c = data.charAt(x + (z*levelsize));
-                        let alpha = level.metadata[x + (z*levelsize)];
-                        if (c == 's')level.addTile(x,z,Tiles.stoneWallTile);
-                        if (c == 'g')level.addTile(x,z,Tiles.grassyStoneWallTile);
-                        if (c == 'p'){
+                        let levelItem = data.charAt(x + (z*levelsize));
+                        let metaData = level.metadata[x + (z*levelsize)];
+                        if (levelItem == 's')level.addTile(x,z,Tiles.stoneWallTile);
+                        if (levelItem == 'g')level.addTile(x,z,Tiles.grassyStoneWallTile);
+                        if (levelItem == 'p'){
                             level.player = new Player(x,0.3,z);
                             level.addEntity(level.player);
-                            //level.player.pickup(level,level.getDagger(1));
-                           //level.player.pickup(level,level.getWand(3));
-                            //level.player.pickup(level,level.getApple());
                             level.displayMessage("Where am I?  I can't find my things","and where is 04?",10);
-                           // this.showHints = 10;
                         }
-                        if (c == 'l'){
+                        if (levelItem == 'l'){
                             level.addTile(x,z,Tiles.lava);
                             if (Math.random() < 0.5)level.addEntity(new LavaEffect(x,0,z));
                         }
-                        if (c == 'b')level.addEntity(new Bat(x,0.2,z,level.gl,alpha));
-                        if (c == 'd')level.addEntity(new ItemSprite(this.getDagger(1),x,0,z,LevelRender.dagger,level.gl).setNotRespawn());
-                        if (c == 'w')level.addEntity(new ItemSprite(this.getWand(1),x,0,z,LevelRender.wand,level.gl).setNotRespawn());
-                        if (c == 'j')level.addEntity(new Pot(x,0,z,level.gl));
-                        if (c == 'c')level.addEntity(new Box(x,0,z,level.gl,alpha).setNotRespawn());
-                        if (c == 'f'){
-                            level.addEntity(new AppareringFloor(x,0,z,level.gl,alpha).setNotRespawn());
+                        if (levelItem == 'b')level.addEntity(new Bat(x,0.2,z,level.gl,metaData));
+                        if (levelItem == 'd')level.addEntity(new ItemSprite(this.getDagger(1),x,0,z,LevelRender.dagger,level.gl).setNotRespawn());
+                        if (levelItem == 'w')level.addEntity(new ItemSprite(this.getWand(1),x,0,z,LevelRender.wand,level.gl).setNotRespawn());
+                        if (levelItem == 'j')level.addEntity(new Pot(x,0,z,level.gl));
+                        if (levelItem == 'c')level.addEntity(new Box(x,0,z,level.gl,metaData).setNotRespawn());
+                        if (levelItem == 'f'){
+                            level.addEntity(new AppareringFloor(x,0,z,level.gl,metaData).setNotRespawn());
                             level.addTile(x,z,Tiles.appareringFloor);
                         };
-                        if (c == 'a')level.addEntity(new ItemSprite(this.getApple(),x,0,z,LevelRender.apple,level.gl));
-                        if (c == 'e'){
-                            level.addEntity(new Bars(x,0,z,level.gl,alpha));
+                        if (levelItem == 'a')level.addEntity(new ItemSprite(this.getApple(),x,0,z,LevelRender.apple,level.gl));
+                        if (levelItem == 'e'){
+                            level.addEntity(new Bars(x,0,z,level.gl,metaData));
                             level.addTile(x,z,new Tile().setBlocksLight(false));
                         }
-                        if (c == 't')level.addEntity(new FloorTrigger(x,0,z,level.gl,alpha).setNotRespawn());
-                        if (c == 'o')level.addEntity(new ProjectileShooter(x,0,z,level,alpha).setNotRespawn());
+                        if (levelItem == 't')level.addEntity(new FloorTrigger(x,0,z,level.gl,metaData).setNotRespawn());
+                        if (levelItem == 'o')level.addEntity(new ProjectileShooter(x,0,z,level,metaData).setNotRespawn());
 
                     }
                 }
@@ -152,55 +145,56 @@ class Level{
         if (tile.blocksLight) falloff = 2;
         if (tile == Tiles.appareringFloor) falloff = 0;
 
-        let l = this.getLight(x-1,z);
-        let r = this.getLight(x+1,z);
-        let f = this.getLight(x,z+1);
-        let b = this.getLight(x,z-1);
+        let leftLight = this.getLight(x-1,z);
+        let rightLight = this.getLight(x+1,z);
+        let frontLight = this.getLight(x,z+1);
+        let backLilght = this.getLight(x,z-1);
 
         let finalLight = 0;
 
-        if (l > finalLight) finalLight = l - falloff;
-        if (r > finalLight) finalLight = r - falloff;
-        if (f > finalLight) finalLight = f - falloff;
-        if (b > finalLight) finalLight = b - falloff;
+        if (leftLight > finalLight) finalLight = leftLight - falloff;
+        if (rightLight > finalLight) finalLight = rightLight - falloff;
+        if (frontLight > finalLight) finalLight = frontLight - falloff;
+        if (backLilght > finalLight) finalLight = backLilght - falloff;
 
         return finalLight>2?2:finalLight<0?0:finalLight;
     }
 
     parse(){
         this.buildLight();
-        let wr = MeshBuilder.start(this.gl);
-        let fr = MeshBuilder.start(this.gl);   
-        let rr = MeshBuilder.start(this.gl);       
+        let wallMeshBuilder = MeshBuilder.start(this.gl);
+        let floorMeshBuilder = MeshBuilder.start(this.gl);   
+        let roofMeshBuilder = MeshBuilder.start(this.gl);       
         for (let x = 0; x < levelsize; x++) {
             for (let z = 0; z < levelsize; z++) {
                 let tile = this.tiles[x + (z * levelsize)];
                 if (tile == Tiles.walltile || tile == Tiles.stoneWallTile || tile == Tiles.grassyStoneWallTile){
-                    if (!this.getTile(x-1,z).c(tile)) MeshBuilder.left(tile.getUVs(),wr,x,0,z,this.getLight(x-1,z),tile.height,tile.YOffset);
-                    if (!this.getTile(x+1,z).c(tile)) MeshBuilder.right(tile.getUVs(),wr,x,0,z,this.getLight(x+1,z),tile.height,tile.YOffset);
-                    if (!this.getTile(x,z+1).c(tile)) MeshBuilder.front(tile.getUVs(),wr,x,0,z,this.getLight(x,z+1),tile.height,tile.YOffset);
-                    if (!this.getTile(x,z-1).c(tile)) MeshBuilder.back(tile.getUVs(),wr,x,0,z,this.getLight(x,z-1),tile.height,tile.YOffset);
+                    if (!this.getTile(x-1,z).connectsWith(tile)) MeshBuilder.left(tile.getUVs(),wallMeshBuilder,x,0,z,this.getLight(x-1,z),tile.height,tile.YOffset);
+                    if (!this.getTile(x+1,z).connectsWith(tile)) MeshBuilder.right(tile.getUVs(),wallMeshBuilder,x,0,z,this.getLight(x+1,z),tile.height,tile.YOffset);
+                    if (!this.getTile(x,z+1).connectsWith(tile)) MeshBuilder.front(tile.getUVs(),wallMeshBuilder,x,0,z,this.getLight(x,z+1),tile.height,tile.YOffset);
+                    if (!this.getTile(x,z-1).connectsWith(tile)) MeshBuilder.back(tile.getUVs(),wallMeshBuilder,x,0,z,this.getLight(x,z-1),tile.height,tile.YOffset);
                 }else if (tile == Tiles.lava || tile == Tiles.appareringFloor){
                     let light = this.getLight(x,z);
-                    MeshBuilder.bottom(tile.getUVs(), fr,x,-0.15,z,light/3,tile.YOffset,[1,0.4,0,1]);
-                    MeshBuilder.top(LevelRender.dirt.getUVs(),rr,x,2.9,z,light, tile.YOffset,[0.4,0.4,0.45,1]);
+                    MeshBuilder.bottom(tile.getUVs(), floorMeshBuilder,x,-0.15,z,light/3,tile.YOffset,[1,0.4,0,1]);
+                    MeshBuilder.top(LevelRender.dirt.getUVs(),roofMeshBuilder,x,2.9,z,light, tile.YOffset,[0.4,0.4,0.45,1]);
                 }else{
                     
                     let light = this.getLight(x,z);
                     if ((x < 16 && z < 16) || ((x >32 && x < 56) && (z > 19 && z < 38))){
-                        MeshBuilder.bottom(LevelRender.grassGround.getUVs(), fr,x,-1,z,light,tile.YOffset);
-                        MeshBuilder.top(LevelRender.dirt.getUVs(),rr,x,2,z,light, tile.YOffset,[0.9,0.5,0,1]);
+                        MeshBuilder.bottom(LevelRender.grassGround.getUVs(), floorMeshBuilder,x,-1,z,light,tile.YOffset);
+                        MeshBuilder.top(LevelRender.dirt.getUVs(),roofMeshBuilder,x,2,z,light, tile.YOffset,[0.9,0.5,0,1]);
                     }else{
-                        MeshBuilder.bottom(LevelRender.floor.getUVs(), fr,x,-1,z,light, tile.YOffset);
-                        MeshBuilder.top(LevelRender.dirt.getUVs(),rr,x,2,z,light, tile.YOffset, [0.4,0.4,0.45,1]);
+                        MeshBuilder.bottom(LevelRender.floor.getUVs(), floorMeshBuilder,x,-1,z,light, tile.YOffset);
+                        MeshBuilder.top(LevelRender.dirt.getUVs(),roofMeshBuilder,x,2,z,light, tile.YOffset, [0.4,0.4,0.45,1]);
                     }
                 }
             }
         }
 
-        this.levelrender.wallmeshes.push(MeshBuilder.build(wr));
-        this.levelrender.roofMeshes.push(MeshBuilder.build(rr));
-        this.levelrender.floorMeshes.push(MeshBuilder.build(fr));
+        this.levelrender.wallMesh = MeshBuilder.build(wallMeshBuilder);
+        this.levelrender.roofMesh = MeshBuilder.build(roofMeshBuilder);
+        this.levelrender.floorMesh = MeshBuilder.build(floorMeshBuilder);
+        this.levelrender.dirty = false;
     }
 
     getTile(x,z){
@@ -252,8 +246,8 @@ class Level{
     }
 
     displayMessage(text,text2,timeToShow){
-        this.t = text;
-        this.t2 = text2;
+        this.uiMessage1 = text;
+        this.uiMessage2 = text2;
         this.displayMessageCounter = timeToShow;
     }
 
@@ -262,7 +256,6 @@ class Level{
         for(let i = this.e.length - 1; i >= 0; i--) {
             if(this.e[i]=== entity) {
                 this.e.splice(i, 1);
-                //console.log(this.e.length);
             }
         }
         this.cleanUp();
@@ -281,32 +274,16 @@ class Level{
             this.displayMessageCounter -=deltaTime;
         }
 
-     //  if (this.showHints > 0 && (!this.hintsShown || !this.hintsShown2)){
-     //       this.showHints -= deltaTime;
-     //   }
-
-       // if (this.showHints<=0 && !this.hintsShown){
-       //     this.displayMessage("WASD and mouse to control","q to drop items and e to eat",12);
-      //      this.hintsShown = true;
-      //      this.showHints = 12;
-      //  }
-
         if (this.displayMessageCounter <= 0){
-            this.t = "";
-            this.t2 = "";
+            this.uiMessage1 = "";
+            this.uiMessage2 = "";
         }
         let level = this;
         this.e.sort(function (a, b) {
-            //let aDest = level.distance(a.p,level.player.p);
-            //let bDest = level.distance(b.p,level.player.p);
             let aDest = a.distanceToOtherEntity(level.player);
             let bDest = b.distanceToOtherEntity(level.player);
-            if (aDest > bDest) {
-                return -1;
-            }
-            if (bDest > aDest) {
-                return 1;
-            }
+            if (aDest > bDest) return -1;
+            if (bDest > aDest) return 1;
             return 0;
         });
 

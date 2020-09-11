@@ -1,9 +1,7 @@
 
 class Tile{
     constructor(texture) {
-       if (texture != null){
-           this.texture = texture;
-       }
+       this.texture = texture;
        this.blocksLight = true;
        this.height = 2;
        this.YOffset = 0;
@@ -16,13 +14,10 @@ class Tile{
     blocks(e){
        return true;
     }
-    c(tile){
+    connectsWith(tile){
         return false;
     }
 
-    bl(){
-        return this.blocksLight;
-    }
     setHeight(h){
         this.height = h;
         return this;

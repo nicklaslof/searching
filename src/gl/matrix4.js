@@ -1,3 +1,5 @@
+// The releavant parts needed from the super execellent gl-matrix library.
+// https://github.com/toji/gl-matrix/blob/master/src/mat4.js
 export function create() {
     let out = new Float32Array(16);
     out[0] = 1;

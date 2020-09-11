@@ -44,9 +44,9 @@ class Item{
         quaternion.rotateX(q,q,x);
         this.mesh.setQuaternion(q);
     }
-    render(gl,shaderprogram,pm,darkness){
+    render(gl,shaderprogram,perspectiveMatrix,darkness){
 
-        this.mesh.render(gl,shaderprogram,pm,this.texture.texture,darkness);
+        this.mesh.render(gl,shaderprogram,perspectiveMatrix,this.texture.texture,darkness);
     }
 }
 export default Item

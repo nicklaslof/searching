@@ -9,27 +9,28 @@ class Game{
     static newGame;
     static respawn;
     constructor() {
-        this.uc = document.getElementById("u");
-        this.c = document.getElementById("g");
-        this.setSize(this.c);
-        this.setSize(this.uc);
+        this.uiCancas = document.getElementById("u");
+        this.gameCanvas = document.getElementById("g");
+        this.setSize(this.gameCanvas);
+        this.setSize(this.uiCancas);
         Game.newGame = false;
         Game.respawn = false;
-        this.gl = this.c.getContext("webgl");
+        this.gl = this.gameCanvas.getContext("webgl");
         Game.inputHandler = new InputHandler(document);
         this.shaderProgram = new ShaderProgram(this.gl,`precision lowp float;attribute vec4 p;attribute vec4 c;attribute vec4 l;attribute vec2 u;uniform mat4 mvm;uniform mat4 pm;varying vec4 vc;varying vec2 uv;varying float d;varying vec4 li;void main(){gl_Position=pm*mvm*p;vc=c;li=l;uv=u;d=gl_Position.z/27.0;}`,`precision lowp float;varying vec4 vc;varying vec2 uv;varying float d;varying vec4 li;uniform sampler2D s;uniform float h;void main(){vec4 col=texture2D(s,uv)*vc;float z=gl_FragCoord.z/gl_FragCoord.w;float fogFactor=exp2(-0.15*0.15*z*z*1.4);fogFactor=clamp(fogFactor,0.0,1.0);vec4 c=vec4(col.rgb-d,col.a)+(col.rgba*(li*1.2));if(c.a<0.2)discard;if(h>0.0)gl_FragColor=vec4(1,0,0,1);else gl_FragColor=mix(vec4(0.05,0.05,0.15,1),c,fogFactor);}`);
-        this.gamescreen = new IntroScreen(this.gl,this.uc.getContext("2d"), this.shaderProgram,1);
+        this.gamescreen = new IntroScreen(this.gl,this.uiCancas.getContext("2d"), this.shaderProgram);
     }
-     mainloop(t){
-         if (Game.newGame){
-            this.gamescreen = new GameScreen(this.gl, this.uc.getContext("2d"), this.shaderProgram,1);
-            Game.newGame = false;
-         }
 
-         if (Game.respawn){
+    mainloop(time){
+        if (Game.newGame){
+            this.gamescreen = new GameScreen(this.gl, this.uiCancas.getContext("2d"), this.shaderProgram);
+            Game.newGame = false;
+        }
+
+        if (Game.respawn){
             this.gamescreen.level.restart();
-             Game.respawn = false;
-         }
+            Game.respawn = false;
+        }
 
         this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
         this.gl.clearColor(0,0,0,1);
@@ -38,53 +39,54 @@ class Game{
         this.gl.enable(this.gl.CULL_FACE);
         this.gl.disable(this.gl.BLEND);
 
-        let deltaTime = t - this.previousUpdate;
-        this.previousUpdate = t;
+        let deltaTime = time - this.previousUpdate;
+        this.previousUpdate = time;
         if (deltaTime > 32) deltaTime = 32;
         this.gamescreen.tick(deltaTime/1000,this);
         this.gamescreen.render();
     }
 
-    setSize(c){
-        c.width = this.width = width;
-        c.height = this.height = height;
-        c.addEventListener('click', (e) => { this.c.requestPointerLock(); this.startAudio();});
+    setSize(canvas){
+        canvas.width = this.width = width;
+        canvas.height = this.height = height;
+        canvas.addEventListener('click', (e) => { this.gameCanvas.requestPointerLock(); this.startAudio();});
     }
 
     startAudio(){
-        Game.a = new AudioContext();
+        Game.audio = new AudioContext();
     }
 
-    static playAudio(f,l){
-        if (Game.a == null) return;
-        let o = Game.a.createOscillator();
-        let g = Game.a.createGain();
-        o.connect(g);
-        g.connect(Game.a.destination);
-        o.start();
-        o.frequency.value = f;
-        g.gain.linearRampToValueAtTime(
-            g.gain.value, Game.a.currentTime
+    static playAudio(frequency,length){
+        if (Game.audio == null) return;
+        let oscillator = Game.audio.createOscillator();
+        let gain = Game.audio.createGain();
+        oscillator.connect(gain);
+        gain.connect(Game.audio.destination);
+        oscillator.start();
+        oscillator.frequency.value = frequency;
+        gain.gain.linearRampToValueAtTime(
+            gain.gain.value, Game.audio.currentTime
         );
-        g.gain.exponentialRampToValueAtTime(
-            0.00001, Game.a.currentTime + l+0.2
+        gain.gain.exponentialRampToValueAtTime(
+            0.00001, Game.audio.currentTime + length+0.2
         );
 
         setTimeout(function(){
-            o.disconnect();
-            g.disconnect();
+            oscillator.disconnect();
+            gain.disconnect();
         },1000);
     }
-    static playNoise(l){
-        if (Game.a == null) return;
+
+    static playNoise(length){
+        if (Game.audio == null) return;
         
         var bufferSize = 2048;
         var lastOut = 0.0;
 
-        let g2 = Game.a.createGain();
-        g2.connect(Game.a.destination);
-        let n = Game.a.createScriptProcessor(bufferSize, 1, 1);
-        n.onaudioprocess = function(e) {
+        let gain = Game.audio.createGain();
+        gain.connect(Game.audio.destination);
+        let noise = Game.audio.createScriptProcessor(bufferSize, 1, 1);
+        noise.onaudioprocess = function(e) {
             var output = e.outputBuffer.getChannelData(0);
             for (var i = 0; i < bufferSize; i++) {
                 var nn = Math.random() * 2 - 1;
@@ -94,29 +96,31 @@ class Game{
             }
         }
         
-        g2.gain.linearRampToValueAtTime(
-            g2.gain.value, Game.a.currentTime
+        gain.gain.linearRampToValueAtTime(
+            gain.gain.value, Game.audio.currentTime
         );
 
-        n.connect(g2);
+        noise.connect(gain);
 
-        g2.gain.exponentialRampToValueAtTime(
-            0.00001, Game.a.currentTime + l+0.1
+        gain.gain.exponentialRampToValueAtTime(
+            0.00001, Game.audio.currentTime + length+0.1
         );
 
         setTimeout(function(){
-            n.disconnect();
-            g2.disconnect();
+            noise.disconnect();
+            gain.disconnect();
         },1000);
     }
 
     static startRoguelike(){
         Game.newGame = true;
     }
+
     static startCheckpoints(){
         Game.checkpoints = true;
         Game.startRoguelike();
     }
+
     static restart(){
         if (!Game.checkpoints) window.location.reload(false);
         else Game.respawn = true;

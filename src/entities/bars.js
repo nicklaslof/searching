@@ -5,14 +5,14 @@ import MeshBuilder from "../gl/meshbuilder.js";
 class Bars extends Sprite{
     constructor(x,y,z,gl, triggerId) {
         super("br", x,y+1,z,LevelRender.bars,gl,0,triggerId);
-        let r = MeshBuilder.start(gl,x,y+1,z);
+        let meshBuild = MeshBuilder.start(gl,x,y+1,z);
         for(let x = 0; x < 4;x++){
             for (let y = 0; y < 8; y++){
-                MeshBuilder.front(this.texture.getUVs(),r,(0.24*x),(-0.24*y),0,this.light,1);
+                MeshBuilder.front(this.texture.getUVs(),meshBuild,(0.24*x),(-0.24*y),0,this.light,1);
             }
         }
         
-        this.mesh = MeshBuilder.build(r);
+        this.mesh = MeshBuilder.build(meshBuild);
 
         this.mesh.setRotationY(270);
         if (triggerId == 196){
@@ -20,12 +20,7 @@ class Bars extends Sprite{
             this.p.z += 0.5;
             this.mesh.t(0.0,0,0.5);
         } 
-        //this.neededTriggers = 1;
         this.neededTriggers = triggerId == 199 || triggerId == 197?2:triggerId == 191?3:triggerId == 196 || triggerId == 193?4:1;
-        //console.log(this.neededTriggers);
-        //if (triggerId == 199 || triggerId == 197) this.neededTriggers = 2;
-        //if (triggerId == 191) this.neededTriggers = 3;
-        //if (triggerId == 196 || triggerId == 193) this.neededTriggers = 4;
         this.neededTrigger = 0;
         this.triggered = false;
     }
@@ -35,8 +30,7 @@ class Bars extends Sprite{
         if (source == this) return;
         this.neededTrigger++;
         if (!this.triggered && this.neededTrigger == this.neededTriggers){;
-           // this.mesh.t(0,2,0);
-           this.p.y += 1;
+            this.p.y += 1;
             if (this.triggerId == 196) level.removeTile(this.p.x, this.p.z-0.5);
             else level.removeTile(this.p.x, this.p.z);
             level.player.setCheckpoint(Math.round(this.p.x), Math.round(this.p.z));
@@ -59,9 +53,9 @@ class Bars extends Sprite{
     tick(deltatime,level){
         super.tick(deltatime,level);
     }
-    render(gl,shaderprogram,pm,vm){
+    render(gl,shaderprogram,perspectiveMatrix,darkness){
         gl.disable(gl.CULL_FACE);
-        super.render(gl,shaderprogram,pm,vm);
+        super.render(gl,shaderprogram,perspectiveMatrix,darkness);
         gl.enable(gl.CULL_FACE);
     }
 }

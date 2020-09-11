@@ -14,7 +14,7 @@ class Bat extends Billboardsprite{
         this.radius = metadata==252?0.6:0.2;
         this.frameCounter = Math.round(this.random);
         this.c = this.baseColor = metadata==252?[0.6,0.6,1,1]:metadata==253?[0.0,0.8,0,1]:[1,1,1,1];
-        this.cChanged = true;
+        this.colorChanged = true;
         this.shootCounter = 0;
         this.shootDelay = this.triggerId==252?2:5;
         this.light = 1;

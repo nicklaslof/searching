@@ -1,26 +1,25 @@
 import * as matrix4 from "./matrix4.js";
 import * as quaternion from "./quaternion.js";
-
+const indicies = [0,1,2,0,2,3];
 class Mesh{
     constructor(gl, x,y,z){
-        //this.dirty = true;
         this.verticies = [];
         this.modelViewMatrix = matrix4.create();
-        this.p = {x,y,z};
+        this.position = {x,y,z};
         this.scale = [1,1,1];
         this.gl = gl;
         this.quaternion = quaternion.create();
         this.rotX = 0;
         this.rotY = 0;
-        this.ab = gl.ARRAY_BUFFER;
-        this.dd = gl.DYNAMIC_DRAW;
-        this.eab = gl.ELEMENT_ARRAY_BUFFER;
-        this.float = gl.FLOAT;
+        this.arrayBuffer = gl.ARRAY_BUFFER;
+        this.dynamicDraw = gl.DYNAMIC_DRAW;
+        this.elementArrayBuffer = gl.ELEMENT_ARRAY_BUFFER;
+        this.fl = gl.FLOAT;
 
-        this.pBuffer = gl.createBuffer();
-        this.cb = gl.createBuffer();
-        this.lightBuffer = gl.createBuffer();
-        this.uvBuffer = gl.createBuffer();
+        this.positionsBuffer = gl.createBuffer();
+        this.colorsBuffer = gl.createBuffer();
+        this.lightsBuffer = gl.createBuffer();
+        this.uvsBuffer = gl.createBuffer();
         this.indiciesBuffer = gl.createBuffer();
         this.darknessBuffer = gl.createBuffer();
     }
@@ -43,7 +42,7 @@ class Mesh{
         let vertexCounter = 0;
         let counter = 0;
 
-        let indicies = [0,1,2,0,2,3];
+        
         counter = 0;
         for (let i = 0; i < indiciesNeeded; i++){
             for (let c = 0; c < 6; c++){
@@ -55,33 +54,27 @@ class Mesh{
 
         this.numberOfIndicies = counter;
 
-        this.gl.bindBuffer(this.ab, this.pBuffer);
-        this.gl.bufferData(this.ab, this.verticiesBuffer32, this.dd);
+        this.gl.bindBuffer(this.arrayBuffer, this.positionsBuffer);
+        this.gl.bufferData(this.arrayBuffer, this.verticiesBuffer32, this.dynamicDraw);
 
         this.uploadCols();
         this.uploadLights();
         this.uploadUVs();
-
-        this.gl.bindBuffer(this.ab, this.uvBuffer);
-        this.gl.bufferData(this.ab, this.uvArrayBuffer32, this.dd);
-
-        this.gl.bindBuffer(this.eab, this.indiciesBuffer);
-        this.gl.bufferData(this.eab, this.indiciesBuffer16, this.dd);
-
-        //this.dirty = false;
+        this.gl.bindBuffer(this.elementArrayBuffer, this.indiciesBuffer);
+        this.gl.bufferData(this.elementArrayBuffer, this.indiciesBuffer16, this.dynamicDraw);
     }
 
     t(x, y, z){
-        this.p.x += x;
-        this.p.y += y;
-        this.p.z += z;
+        this.position.x += x;
+        this.position.y += y;
+        this.position.z += z;
         this.updateMatrix();
     }
 
     setPos(x, y, z){
-        this.p.x = x;
-        this.p.y = y;
-        this.p.z = z;
+        this.position.x = x;
+        this.position.y = y;
+        this.position.z = z;
         this.updateMatrix();
     }
 
@@ -119,7 +112,7 @@ class Mesh{
     }
     
     updateMatrix(){
-        matrix4.fromRotationTranslationScale(this.modelViewMatrix, this.quaternion, [this.p.x, this.p.y, this.p.z],this.scale);
+        matrix4.fromRotationTranslationScale(this.modelViewMatrix, this.quaternion, [this.position.x, this.position.y, this.position.z],this.scale);
     }
 
     updateCols(c){
@@ -139,14 +132,14 @@ class Mesh{
     uploadCols(){
         this.cArrayBuffer32 = new Float32Array(this.verticies.length*4);
         this.cArrayBuffer32.set(this.cs);
-        this.gl.bindBuffer(this.ab, this.cb);
-        this.gl.bufferData(this.ab, this.cArrayBuffer32, this.dd);
+        this.gl.bindBuffer(this.arrayBuffer, this.colorsBuffer);
+        this.gl.bufferData(this.arrayBuffer, this.cArrayBuffer32, this.dynamicDraw);
     }
     uploadLights(){
         this.lightArrayBuffer32 = new Float32Array(this.verticies.length*4);
         this.lightArrayBuffer32.set(this.lights);
-        this.gl.bindBuffer(this.ab, this.lightBuffer);
-        this.gl.bufferData(this.ab, this.lightArrayBuffer32, this.dd);
+        this.gl.bindBuffer(this.arrayBuffer, this.lightsBuffer);
+        this.gl.bufferData(this.arrayBuffer, this.lightArrayBuffer32, this.dynamicDraw);
     }
     uploadUVs(){
         let counter = 0;
@@ -155,36 +148,36 @@ class Mesh{
             this.uvArrayBuffer32[counter+1] = uv[1];
             counter += 2;
         });
-        this.gl.bindBuffer(this.ab, this.uvBuffer);
-        this.gl.bufferData(this.ab, this.uvArrayBuffer32, this.dd);
+        this.gl.bindBuffer(this.arrayBuffer, this.uvsBuffer);
+        this.gl.bufferData(this.arrayBuffer, this.uvArrayBuffer32, this.dynamicDraw);
 
     }
 
-    render(gl, shaderProgram, projectionMatrix, texture,playerHurt, uvs, cols){
-        if (uvs != null){
-            this.updateUVs(uvs);
+    render(gl, shaderProgram, projectionMatrix, texture,playerHurt, newUvs, newColors){
+        if (newUvs != null){
+            this.updateUVs(newUvs);
             this.uploadUVs();
         }
 
-        if (cols != null){
-            this.updateCols(cols);
+        if (newColors != null){
+            this.updateCols(newColors);
             this.uploadCols();
         }
 
-        gl.bindBuffer(this.ab, this.pBuffer);
-        gl.vertexAttribPointer(shaderProgram.locations.attribLocations.vertexPosition, 3, this.float, false, 0, 0);
+        gl.bindBuffer(this.arrayBuffer, this.positionsBuffer);
+        gl.vertexAttribPointer(shaderProgram.locations.attribLocations.vertexPosition, 3, this.fl, false, 0, 0);
         gl.enableVertexAttribArray(shaderProgram.locations.attribLocations.vertexPosition);
 
-        gl.bindBuffer(this.ab, this.cb);
-        gl.vertexAttribPointer(shaderProgram.locations.attribLocations.color, 4, this.float, false, 0, 0);
+        gl.bindBuffer(this.arrayBuffer, this.colorsBuffer);
+        gl.vertexAttribPointer(shaderProgram.locations.attribLocations.color, 4, this.fl, false, 0, 0);
         gl.enableVertexAttribArray(shaderProgram.locations.attribLocations.color);
 
-        gl.bindBuffer(this.ab, this.lightBuffer);
-        gl.vertexAttribPointer(shaderProgram.locations.attribLocations.light, 4, this.float, false, 0, 0);
+        gl.bindBuffer(this.arrayBuffer, this.lightsBuffer);
+        gl.vertexAttribPointer(shaderProgram.locations.attribLocations.light, 4, this.fl, false, 0, 0);
         gl.enableVertexAttribArray(shaderProgram.locations.attribLocations.light);
 
-        gl.bindBuffer(this.ab, this.uvBuffer);
-        gl.vertexAttribPointer(shaderProgram.locations.attribLocations.uv, 2, this.float, false, 0, 0);
+        gl.bindBuffer(this.arrayBuffer, this.uvsBuffer);
+        gl.vertexAttribPointer(shaderProgram.locations.attribLocations.uv, 2, this.fl, false, 0, 0);
         gl.enableVertexAttribArray(shaderProgram.locations.attribLocations.uv);
 
         gl.useProgram(shaderProgram.shaderProgram);
@@ -196,7 +189,7 @@ class Mesh{
         gl.uniformMatrix4fv(shaderProgram.locations.uniformLocations.projectionMatrix, false, projectionMatrix);
         gl.uniformMatrix4fv(shaderProgram.locations.uniformLocations.modelViewMatrix, false, this.modelViewMatrix);
 
-        gl.bindBuffer(this.eab, this.indiciesBuffer);
+        gl.bindBuffer(this.elementArrayBuffer, this.indiciesBuffer);
         gl.drawElements(gl.TRIANGLES,  this.numberOfIndicies,gl.UNSIGNED_SHORT,0);
     }
 }

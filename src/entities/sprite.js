@@ -27,7 +27,7 @@ class Sprite extends Entity{
 
     setC(c){
         this.c = c;
-        this.cChanged = true;
+        this.colorChanged = true;
     }
 
     setS(scale){
@@ -67,15 +67,15 @@ class Sprite extends Entity{
         }
     }
 
-    render(gl,shaderprogram,pm,darkness){
+    render(gl,shaderprogram,perspectiveMatrix,darkness){
         if (this.dispose) return;
     
         if (this.frameChanged){
-            this.mesh.render(gl,shaderprogram,pm,this.texture.texture, darkness, this.texture.getUVs());
+            this.mesh.render(gl,shaderprogram,perspectiveMatrix,this.texture.texture, darkness, this.texture.getUVs());
             this.frameChanged = false;
         }else{
-            this.mesh.render(gl,shaderprogram,pm,this.texture.texture,darkness,null,this.cChanged?[this.c, this.c, this.c, this.c]:null);
-            this.cChanged = false;
+            this.mesh.render(gl,shaderprogram,perspectiveMatrix,this.texture.texture,darkness,null,this.colorChanged?[this.c, this.c, this.c, this.c]:null);
+            this.colorChanged = false;
         }
     }
 }

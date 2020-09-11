@@ -1,115 +1,114 @@
  import Mesh from "../gl/mesh.js";
-const s = 0.5;
+const baseSize = 0.5;
 const white = [1,1,1,1];
 class MeshBuilder{
 
 
     static start(gl,x,y,z){
-        return {m:new Mesh(gl,x,y,z),v:[],c:[],u:[],l:[]};
+        return {mesh:new Mesh(gl,x,y,z),verticies:[],colors:[],uvs:[],lights:[]};
     }
 
-    static ac(cc,c){
-        if (c == null) c = white;
-            cc.push(c,c,c,c);
+    static addColor(colors,color){
+        if (color == null) color = white;
+            colors.push(color,color,color,color);
     }
 
-    static al(lights,light){
+    static addLight(lights,light){
         let l = [light,light,light,1];
         lights.push(l,l,l,l);
     }
-
-
-    static build(r){
-        r.m.addVerticies(r.v, r.c, r.u,r.l);
-        r.m.updateMesh();
-        return r.m;
+    
+    static build(meshBuild){
+        meshBuild.mesh.addVerticies(meshBuild.verticies, meshBuild.colors, meshBuild.uvs,meshBuild.lights);
+        meshBuild.mesh.updateMesh();
+        return meshBuild.mesh;
     }
 
-    static left(uvs,render,x,y,z,light,height,yOffset,c){
+    static left(uvs,render,x,y,z,light,height,yOffset,color){
         if (height == null) height = 1;
         if (yOffset!=null) y += yOffset;
-        for(let i = 0; i < height; i++){
-            MeshBuilder.ac(render.c,c);
-            MeshBuilder.al(render.l,light);
-            uvs.forEach(uv => { render.u.push(uv); });
-            render.v.push(
-                x-s,y+i-s,z-s,
-                x-s,y+i-s,z+s,
-                x-s,y+i+s,z+s,
-                x-s,y+i+s,z-s
+        for(let h = 0; h < height; h++){
+            MeshBuilder.addColor(render.colors,color);
+            MeshBuilder.addLight(render.lights,light);
+            uvs.forEach(uv => { render.uvs.push(uv); });
+            render.verticies.push(
+                x-baseSize,y+h-baseSize,z-baseSize,
+                x-baseSize,y+h-baseSize,z+baseSize,
+                x-baseSize,y+h+baseSize,z+baseSize,
+                x-baseSize,y+h+baseSize,z-baseSize
             );
         }
        
     }
-    static right(uvs,render,x,y,z,light,height,yOffset,c){
+    static right(uvs,render,x,y,z,light,height,yOffset,color){
         if (height == null) height = 1;
         if (yOffset!=null) y += yOffset;
-        for(let i = 0; i < height; i++){
-            MeshBuilder.ac(render.c,c);
-            MeshBuilder.al(render.l,light);
-            uvs.forEach(uv => { render.u.push(uv); });
-            render.v.push(
-                x+s,y+i-s,z-s,
-                x+s,y+i+s,z-s,
-                x+s,y+i+s,z+s,
-                x+s,y+i-s,z+s
+        for(let h = 0; h < height; h++){
+            MeshBuilder.addColor(render.colors,color);
+            MeshBuilder.addLight(render.lights,light);
+            uvs.forEach(uv => { render.uvs.push(uv); });
+            render.verticies.push(
+                x+baseSize,y+h-baseSize,z-baseSize,
+                x+baseSize,y+h+baseSize,z-baseSize,
+                x+baseSize,y+h+baseSize,z+baseSize,
+                x+baseSize,y+h-baseSize,z+baseSize
             );
         }
     }
-    static front(uvs,render,x,y,z,light,height,yOffset,c){
+    static front(uvs,render,x,y,z,light,height,yOffset,color){
         if (height == null) height = 1;
         if (yOffset!=null) y += yOffset;
-        for(let i = 0; i < height; i++){
-            MeshBuilder.ac(render.c,c);
-            MeshBuilder.al(render.l,light);
-            uvs.forEach(uv => { render.u.push(uv); });
-            render.v.push(
-                x-s,y+i-s,z+s,
-                x+s,y+i-s,z+s,
-                x+s,y+i+s,z+s,
-                x-s,y+i+s,z+s
+        for(let h = 0; h < height; h++){
+            MeshBuilder.addColor(render.colors,color);
+            MeshBuilder.addLight(render.lights,light);
+            uvs.forEach(uv => { render.uvs.push(uv); });
+            render.verticies.push(
+                x-baseSize,y+h-baseSize,z+baseSize,
+                x+baseSize,y+h-baseSize,z+baseSize,
+                x+baseSize,y+h+baseSize,z+baseSize,
+                x-baseSize,y+h+baseSize,z+baseSize
             );
         }
     }
-    static back(uvs,render,x,y,z,light,height,yOffset,c){
+    static back(uvs,render,x,y,z,light,height,yOffset,color){
         if (height == null) height = 1;
         if (yOffset!=null) y += yOffset;
-        for(let i = 0; i < height; i++){
-            MeshBuilder.ac(render.c,c);
-            MeshBuilder.al(render.l,light);
-            uvs.forEach(uv => { render.u.push(uv); });
-            render.v.push(
-                x-s,y+i-s,z-s,
-                x-s,y+i+s,z-s,
-                x+s,y+i+s,z-s,
-                x+s,y+i-s,z-s
+        for(let h = 0; h < height; h++){
+            MeshBuilder.addColor(render.colors,color);
+            MeshBuilder.addLight(render.lights,light);
+            uvs.forEach(uv => { render.uvs.push(uv); });
+            render.verticies.push(
+                x-baseSize,y+h-baseSize,z-baseSize,
+                x-baseSize,y+h+baseSize,z-baseSize,
+                x+baseSize,y+h+baseSize,z-baseSize,
+                x+baseSize,y+h-baseSize,z-baseSize
             );
         }
     }
 
     
-    static top(uvs,render,x,y,z,light,yOffset, c){
+    static top(uvs,render,x,y,z,light,yOffset, color){
         if (yOffset!=null) y += yOffset;
-        MeshBuilder.ac(render.c,c);
-        MeshBuilder.al(render.l,light);
-        uvs.forEach(uv => { render.u.push(uv); });
-        render.v.push(
-            x-s,y-s,z-s,
-            x+s,y-s,z-s,
-            x+s,y-s,z+s,
-            x-s,y-s,z+s
+        MeshBuilder.addColor(render.colors,color);
+        MeshBuilder.addLight(render.lights,light);
+        uvs.forEach(uv => { render.uvs.push(uv); });
+        render.verticies.push(
+            x-baseSize,y-baseSize,z-baseSize,
+            x+baseSize,y-baseSize,z-baseSize,
+            x+baseSize,y-baseSize,z+baseSize,
+            x-baseSize,y-baseSize,z+baseSize
         );
     }
-    static bottom(uvs,render,x,y,z,light,yOffset, c){
+    static bottom(uvs,render,x,y,z,light,yOffset, color){
         if (yOffset!=null) y += yOffset;
-        MeshBuilder.ac(render.c,c);
-        MeshBuilder.al(render.l,light);
-        uvs.forEach(uv => { render.u.push(uv); });
-        render.v.push(
-            x-s,y+s,z-s,
-            x-s,y+s,z+s,
-            x+s,y+s,z+s,
-            x+s,y+s,z-s
+        MeshBuilder.addColor(render.colors,color);
+        MeshBuilder.addLight(render.lights,light);
+        uvs.forEach(uv => { render.uvs.push(uv); });
+        render.verticies.push(
+            x-baseSize,y+baseSize,z-baseSize,
+            x-baseSize,y+baseSize,z+baseSize,
+            x+baseSize,y+baseSize,z+baseSize,
+            x+baseSize,y+baseSize,z-baseSize
         ); 
     }
 

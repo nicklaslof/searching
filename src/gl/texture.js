@@ -6,19 +6,17 @@ class Texture{
         this.height = height;
         this.texture = texture;
         this.dirty = true;
-
     }
 
     getUVs(){
         if (this.dirty){
-
             let w = 1 / 65;
             let h = 1 / 65;
 
             let u = (this.x * w)%1;
             let v = (this.y * h)%1;
-            let u2 = ((this.width) * w)+u;
-            let v2 = ((this.height) * h)+v;
+            let u2 = (this.width * w)+u;
+            let v2 = (this.height * h)+v;
 
             this.uvs = [[u,v2,0.0],[u2,v2,0.0], [u2,v,0.0],[u,v,0.0]];
             this.dirty = false;

@@ -28,8 +28,8 @@ class UI{
     }
     render(level){
         this.c.clearRect(0, 0, this.c.canvas.width, this.c.canvas.height);
-        this.drawText(level.t,250);
-        this.drawText(level.t2,270);
+        this.drawText(level.uiMessage1,250);
+        this.drawText(level.uiMessage2,270);
         if (level.player != null && level.player.currentHealth > 0){
             this.renderItemBar(level);
             this.renderHealth(level);
@@ -43,7 +43,7 @@ class UI{
     }
 
     renderHealth(level){
-        this.drawTextAt("Health "+level.player.currentHealth+" of "+level.player.maxHealth,70,450);
+        this.drawTextAt("Health "+level.player.currentHealth+"/"+level.player.maxHealth,70,450);
     }
 
     renderCross(level){
@@ -58,7 +58,7 @@ class UI{
 
         for (let slot = 1; slot < this.numberOfSlots+1; slot++){
             if (slot == selectedSlot) this.c.strokeStyle ="#ffffff"; else this.c.strokeStyle ="#444444";
-            this.drawBox(this.c,((this.sizeOfSlot*slot)+this.centerX-((this.numberOfSlots/2)+1.5)*this.sizeOfSlot)+(slot*5),10,this.sizeOfSlot);
+            this.drawBox(((this.sizeOfSlot*slot)+this.centerX-((this.numberOfSlots/2)+1.5)*this.sizeOfSlot)+(slot*5),10,this.sizeOfSlot);
         }
 
     }
@@ -76,13 +76,13 @@ class UI{
         }
     }
 
-    drawBox(c,x,y,size){
+    drawBox(x,y,size){
         this.c.beginPath();
-        c.moveTo(x,y);
-        c.lineTo(x+size,y);
-        c.lineTo(x+size,y+size);
-        c.lineTo(x,y+size);
-        c.lineTo(x,y);
+        this.c.moveTo(x,y);
+        this.c.lineTo(x+size,y);
+        this.c.lineTo(x+size,y+size);
+        this.c.lineTo(x,y+size);
+        this.c.lineTo(x,y);
         
         this.c.closePath();
         this.c.stroke();

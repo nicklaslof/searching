@@ -8,16 +8,15 @@ const c = [0.5,0.5,0.7,1]
 class Box extends Entity{
     constructor(x,y,z,gl,triggerId) {
         super("b",x,y-0.2,z,1,triggerId);
-        let r = MeshBuilder.start(gl, x,y,z);
+        let meshBuilder = MeshBuilder.start(gl, x,y,z);
         this.texture = LevelRender.dirt;
-        let uvs = this.texture.getUVs();
-        MeshBuilder.left(uvs,r,0,0,0,1,1,0,c);
-        MeshBuilder.right(uvs,r,0,0,0,1,1,0,c);
-        MeshBuilder.back(uvs,r,0,0,0,1,1,0,c);
-        MeshBuilder.front(uvs,r,0,0,0,1,1,0,c);
-        MeshBuilder.top(uvs,r,0,0,0,1,0,c);
-        MeshBuilder.bottom(uvs,r,0,0,0,1,0,c);
-        this.mesh = MeshBuilder.build(r);
+        MeshBuilder.left(this.texture.getUVs(),meshBuilder,0,0,0,1,1,0,c);
+        MeshBuilder.right(this.texture.getUVs(),meshBuilder,0,0,0,1,1,0,c);
+        MeshBuilder.back(this.texture.getUVs(),meshBuilder,0,0,0,1,1,0,c);
+        MeshBuilder.front(this.texture.getUVs(),meshBuilder,0,0,0,1,1,0,c);
+        MeshBuilder.top(this.texture.getUVs(),meshBuilder,0,0,0,1,0,c);
+        MeshBuilder.bottom(this.texture.getUVs(),meshBuilder,0,0,0,1,0,c);
+        this.mesh = MeshBuilder.build(meshBuilder);
         this.mesh.setS(0.5);
         this.raidus=-0.5;
     }
@@ -49,8 +48,7 @@ class Box extends Entity{
             if (this.hitCounter< 0.1) return;
             let dirX = entity.p.x - this.p.x;
             let dirZ = entity.p.z - this.p.z;
-            let d = this.distanceToOtherEntity(entity);
-            if(d < 0.8){
+            if(this.distanceToOtherEntity(entity) < 0.8){
                 Game.playNoise(0.5);
                 this.knockback(Math.round(dirX), Math.round(dirZ),0.75);
                 this.hitCounter = 0;

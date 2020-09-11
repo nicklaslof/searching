@@ -1,8 +1,6 @@
 class GlTexture {
     constructor(gl, file) {
         this.tex = gl.createTexture();
-        gl.bindTexture(gl.TEXTURE_2D, this.tex);
-        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, new Uint8Array([255, 255, 255, 255]));
         let image = new Image();
         image.onload  = () =>{
             gl.bindTexture(gl.TEXTURE_2D, this.tex);

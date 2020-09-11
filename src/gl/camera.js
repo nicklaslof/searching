@@ -4,11 +4,11 @@ import * as quaternion from "./quaternion.js";
 class Camera{
     constructor(gl, x,y,z){
         this.gl = gl;
-        this.pm = matrix4.create();
-        this.pos = {x,y,z};
+        this.perspectiveMatrix = matrix4.create();
+        this.position = {x,y,z};
         this.currentRot = 0;
-        this.createP();
-        this.update();
+        this.updatePerspective();
+        this.updateRotationTranslation();
         this.quaternion = quaternion.create();
     }
 
@@ -35,23 +35,22 @@ class Camera{
         return this.quaternion;
     }
 
-    setPos(p){
-        this.pos = p;
-        this.pm = matrix4.create();
-        this.createP();
-        this.update();
+    setPos(position){
+        this.position = position;
+        this.updatePerspective();
+        this.updateRotationTranslation();
     }
-    createP(){
-        return matrix4.perspective(this.pm,64 * Math.PI / 180,this.gl.canvas.clientWidth / this.gl.canvas.clientHeight,0.1,30);
+    updatePerspective(){
+        return matrix4.perspective(this.perspectiveMatrix,64 * Math.PI / 180,this.gl.canvas.clientWidth / this.gl.canvas.clientHeight,0.1,30);
     }
 
     getDirection(){
         return {x:Math.sin(this.currentRot),y:0,z:Math.cos(this.currentRot)};
     }
 
-    update(){
-        matrix4.rotateY(this.pm,this.pm,-this.currentRot);;
-        matrix4.translate(this.pm, this.pm, [-this.pos.x, -this.pos.y, -this.pos.z]);
+    updateRotationTranslation(){
+        matrix4.rotateY(this.perspectiveMatrix,this.perspectiveMatrix,-this.currentRot);;
+        matrix4.translate(this.perspectiveMatrix, this.perspectiveMatrix, [-this.position.x, -this.position.y, -this.position.z]);
     }
 }
 export default Camera;

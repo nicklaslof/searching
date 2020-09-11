@@ -4,8 +4,8 @@ import Game from "../game.js";
 import Level from "../level/level.js"
 import LevelRender from "../level/levelrender.js"
 class IntroScreen{
-    constructor(gl, uic, shaderprogram,type) {
-        this.level = new Level(gl, shaderprogram,type);
+    constructor(gl, uic, shaderprogram) {
+        this.level = new Level(gl, shaderprogram);
         this.ui = new UI(uic);
         this.introPos = {x:45,y:0.3,z:45};
     }

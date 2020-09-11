@@ -25,9 +25,9 @@ class AppareringFloor extends Sprite{
         if (source == this) return;
         this.neededTrigger--;
     }
-    render(gl,shaderprogram,pm,darkness){
+    render(gl,shaderprogram,perspectiveMatrix,darkness){
         if (!this.visble) return;
-        super.render(gl,shaderprogram,pm,darkness);
+        super.render(gl,shaderprogram,perspectiveMatrix,darkness);
     }
 
 }

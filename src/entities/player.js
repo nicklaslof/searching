@@ -17,7 +17,7 @@ class Player extends Entity{
         this.daggerItemLevel = 0;
         this.wandItemLevel = 0;
         this.hitCounter = 0.5;
-        this.v = {x:0,z:0};
+        this.velocity = {x:0,z:0};
         this.strafe = {x:0,z:0};
         this.tempVector = {x:0,z:0};
     }
@@ -47,8 +47,8 @@ class Player extends Entity{
         if (this.eatDelay >0) this.eatDelay -= deltaTime;
 
         if (this.knockBack.x == 0 || this.knockBack.z == 0){
-            this.v.x = 0;
-            this.v.z = 0;
+            this.velocity.x = 0;
+            this.velocity.z = 0;
             this.strafe.x = 0;
             this.strafe.z = 0;
             let inputHandler = Game.inputHandler;
@@ -57,8 +57,8 @@ class Player extends Entity{
             LevelRender.camera.rotate((inputHandler.getMouseX()/9) * deltaTime);
             
             let cameraDirection = LevelRender.camera.getDirection();
-            if (inputHandler.isKeyDown(87))this.v.z = -1;
-            if (inputHandler.isKeyDown(83))this.v.z = 1;
+            if (inputHandler.isKeyDown(87))this.velocity.z = -1;
+            if (inputHandler.isKeyDown(83))this.velocity.z = 1;
            
             if (inputHandler.isKeyDown(65))this.cross(this.strafe,cameraDirection,up);
             if (inputHandler.isKeyDown(68))this.cross(this.strafe,cameraDirection,down);
@@ -66,8 +66,6 @@ class Player extends Entity{
                 this.isAttacking = this.showAttack = true;
                 this.attackCounter = 0.3;
                 this.attack(level);
-                //Game.playAudio(100,0.2);
-                //Game.playNoise(0.9);
                                
             }else{
                 this.isAttacking = false;
@@ -76,9 +74,9 @@ class Player extends Entity{
 
             if (inputHandler.isKeyDown(81)){ this.dropCurrentItem(level); inputHandler.kp[81] = false} ;
             
-            if (this.v.x !=0 || this.v.z != 0 || this.strafe.x != 0 || this.strafe.z !=0){
-                this.tempVector.x = cameraDirection.x * this.v.z + this.strafe.x;
-                this.tempVector.z = cameraDirection.z * this.v.z + this.strafe.z;
+            if (this.velocity.x !=0 || this.velocity.z != 0 || this.strafe.x != 0 || this.strafe.z !=0){
+                this.tempVector.x = cameraDirection.x * this.velocity.z + this.strafe.x;
+                this.tempVector.z = cameraDirection.z * this.velocity.z + this.strafe.z;
                 this.normalize(this.tempVector);
                 this.tempVector.x *= deltaTime*2.5;
                 this.tempVector.z *= deltaTime*2.5;
@@ -127,11 +125,11 @@ class Player extends Entity{
         this.inventory.removeItemFromSlot(this.inventory.selectedSlot);
     }
 
-    pickup(level,i){
+    pickup(level,item){
         Game.playAudio(350,0.1);
-        this.inventory.addItemToFirstAvailableSlot(level,i);
-        if (i.n == "dagger") if (this.daggerItemLevel < i.level) this.daggerItemLevel = i.level;
-        if (i.n == "wand") if (this.wandItemLevel < i.level) this.wandItemLevel = i.level;
+        this.inventory.addItemToFirstAvailableSlot(level,item);
+        if (item.n == "dagger") if (this.daggerItemLevel < item.level) this.daggerItemLevel = item.level;
+        if (item.n == "wand") if (this.wandItemLevel < item.level) this.wandItemLevel = item.level;
     }
 
     eat(){

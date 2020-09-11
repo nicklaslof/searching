@@ -3,7 +3,7 @@ class WallTile extends Tile{
     constructor(texture) {
         super(texture);
     }
-    c(tile){
+    connectsWith(tile){
         return true;
     }
 }

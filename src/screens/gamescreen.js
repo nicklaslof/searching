@@ -2,8 +2,8 @@
 import Level from "../level/level.js"
 import UI from "../ui/ui.js";
 class GameScreen{
-    constructor(gl, uic, shaderprogram,type) {
-        this.level = new Level(gl, shaderprogram,type);
+    constructor(gl, uic, shaderprogram) {
+        this.level = new Level(gl, shaderprogram);
         this.ui = new UI(uic);
     }
 
