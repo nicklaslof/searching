@@ -61,7 +61,7 @@ class Bat extends Billboardsprite{
     }
 
     removeThisEntity(level){
-        if (this.triggerId == 252)level.displayMessage("The bat drops dead revelaing a note that says","04 is in another dungeon.    /Thanks for playing",500);
+        if (this.triggerId == 252)level.displayMessage("The bat drops dead revelaing a note that says","04 is in another dungeon. /Thanks for playing",500);
         this.addParticles(level,0.12,-0.8);
         if (this.getRand() < 0.15 && level.getTile(Math.round(this.p.x), Math.round(this.p.z)) != Tiles.lava){
             if (this.triggerId == 254)this.drop(level,level.getDagger(level.player.daggerItemLevel+1));

@@ -74,7 +74,7 @@ class Level{
                         if (levelItem == 'p'){
                             level.player = new Player(x,0.3,z);
                             level.addEntity(level.player);
-                            level.displayMessage("Where am I?  I can't find my things","and where is 04?",10);
+                            level.displayMessage("Where am I? I can't find my things","and where is 04?",10);
                         }
                         if (levelItem == 'l'){
                             level.addTile(x,z,Tiles.lava);

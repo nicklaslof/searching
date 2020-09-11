@@ -1,5 +1,4 @@
 import Sprite from "./sprite.js";
-import Box from "./box.js";
 import LevelRender from "../level/levelrender.js";
 
 class AppareringFloor extends Sprite{

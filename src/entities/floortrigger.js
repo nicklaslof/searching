@@ -22,9 +22,7 @@ class FloorTrigger extends Sprite{
             level.untrigger(this.triggerId, this);
             Game.playAudio(120,0.1);
         }
-        if (this.untriggerCounter > 0.1){
-            this.somethingTriggering = false;
-        }
+        if (this.untriggerCounter > 0.1)this.somethingTriggering = false;
     }
 
     collidedBy(entity, level){

@@ -83,24 +83,16 @@ class Game{
         gain.connect(Game.audio.destination);
         oscillator.start();
         oscillator.frequency.value = frequency;
-        gain.gain.linearRampToValueAtTime(
-            gain.gain.value, Game.audio.currentTime
-        );
-        gain.gain.exponentialRampToValueAtTime(
-            0.00001, Game.audio.currentTime + length+0.2
-        );
+        gain.gain.linearRampToValueAtTime( gain.gain.value, Game.audio.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.00001, Game.audio.currentTime + length+0.2);
         oscillator.stop(Game.audio.currentTime + length+0.2);
     }
 
     static playNoise(length){
         if (Game.audio == null) return;
         Game.noiseGain.gain.cancelScheduledValues(Game.audio.currentTime);
-        Game.noiseGain.gain.linearRampToValueAtTime(
-            1, Game.audio.currentTime
-        );
-        Game.noiseGain.gain.exponentialRampToValueAtTime(
-            0.00001, Game.audio.currentTime + length+0.1
-        );
+        Game.noiseGain.gain.linearRampToValueAtTime(1, Game.audio.currentTime);
+        Game.noiseGain.gain.exponentialRampToValueAtTime(0.00001, Game.audio.currentTime + length+0.1);
     }
 
     static startRoguelike(){
