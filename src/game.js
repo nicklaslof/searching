@@ -53,7 +53,26 @@ class Game{
     }
 
     startAudio(){
+        if (Game.audio != null) return;
         Game.audio = new AudioContext();
+        var bufferSize = 512;
+        var lastOut = 0.0;
+
+        Game.noiseGain = Game.audio.createGain();
+        Game.noiseGain.connect(Game.audio.destination);
+        let noise = Game.audio.createScriptProcessor(bufferSize, 1, 1);
+        noise.onaudioprocess = function(e) {
+            var output = e.outputBuffer.getChannelData(0);
+            for (var i = 0; i < bufferSize; i++) {
+                var nn = Math.random() * 2 - 1;
+                output[i] = (lastOut + (0.02 * nn)) / 1.02;
+                lastOut = output[i];
+                output[i] *= 3.5;
+            }
+            return true;
+        }
+        noise.connect(Game.noiseGain);
+        Game.noiseGain.gain.value = 0;
     }
 
     static playAudio(frequency,length){
@@ -70,46 +89,18 @@ class Game{
         gain.gain.exponentialRampToValueAtTime(
             0.00001, Game.audio.currentTime + length+0.2
         );
-
-        setTimeout(function(){
-            oscillator.disconnect();
-            gain.disconnect();
-        },1000);
+        oscillator.stop(Game.audio.currentTime + length+0.2);
     }
 
     static playNoise(length){
         if (Game.audio == null) return;
-        
-        var bufferSize = 2048;
-        var lastOut = 0.0;
-
-        let gain = Game.audio.createGain();
-        gain.connect(Game.audio.destination);
-        let noise = Game.audio.createScriptProcessor(bufferSize, 1, 1);
-        noise.onaudioprocess = function(e) {
-            var output = e.outputBuffer.getChannelData(0);
-            for (var i = 0; i < bufferSize; i++) {
-                var nn = Math.random() * 2 - 1;
-                output[i] = (lastOut + (0.02 * nn)) / 1.02;
-                lastOut = output[i];
-                output[i] *= 3.5;
-            }
-        }
-        
-        gain.gain.linearRampToValueAtTime(
-            gain.gain.value, Game.audio.currentTime
+        Game.noiseGain.gain.cancelScheduledValues(Game.audio.currentTime);
+        Game.noiseGain.gain.linearRampToValueAtTime(
+            1, Game.audio.currentTime
         );
-
-        noise.connect(gain);
-
-        gain.gain.exponentialRampToValueAtTime(
+        Game.noiseGain.gain.exponentialRampToValueAtTime(
             0.00001, Game.audio.currentTime + length+0.1
         );
-
-        setTimeout(function(){
-            noise.disconnect();
-            gain.disconnect();
-        },1000);
     }
 
     static startRoguelike(){
