@@ -14,6 +14,7 @@ class AppareringFloor extends Sprite{
         if (source == this) return;
         this.neededTrigger++;
         if (this.neededTrigger ==this.neededTriggers){
+            // Remove the blocking tile causing that the player can not walk on the floor before it's visible
             level.removeTile(this.p.x, this.p.z);
             this.visble = true;
 

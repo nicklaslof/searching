@@ -8,6 +8,7 @@ class Billboardsprite extends Sprite{
 
     tick(deltatime,level){
         super.tick(deltatime,level);
+        //Set the mesh rotation to be the same one as the camera to make it always look at the player.
         this.mesh.setQuaternion(LevelRender.camera.getQuaternion());
     }
 

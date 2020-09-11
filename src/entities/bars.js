@@ -6,6 +6,7 @@ class Bars extends Sprite{
     constructor(x,y,z,gl, triggerId) {
         super("br", x,y+1,z,LevelRender.bars,gl,0,triggerId);
         let meshBuild = MeshBuilder.start(gl,x,y+1,z);
+        // A hack building the bars using a tiny texture repeating it.
         for(let x = 0; x < 4;x++){
             for (let y = 0; y < 8; y++){
                 MeshBuilder.front(this.texture.getUVs(),meshBuild,(0.24*x),(-0.24*y),0,this.light,1);
@@ -20,8 +21,10 @@ class Bars extends Sprite{
             this.p.z += 0.5;
             this.mesh.t(0.0,0,0.5);
         } 
+        //How many floortriggers are needed to open this bar
         this.neededTriggers = triggerId == 199 || triggerId == 197?2:triggerId == 191?3:triggerId == 196 || triggerId == 193?4:1;
         this.neededTrigger = 0;
+        //Since there is no method to detect when something is not colliding any more we just reset this here and wait for it to be set again in the trigger-function.
         this.triggered = false;
     }
 

@@ -28,16 +28,18 @@ class Entity{
         this.currentHealth += amount;
     }
     hit(level, hitByEntity, amount){
-            if (this.hitCounter>= 0.5){
-                let dirX = hitByEntity.p.x - this.p.x;
-                let dirZ = hitByEntity.p.z - this.p.z;
-                this.hitCounter = 0;
-                this.knockback(dirX, dirZ);
-                this.currentHealth -= amount;
-            }
+        //Only let the entity be hit after a certain timeout
+        if (this.hitCounter>= 0.5){
+            let dirX = hitByEntity.p.x - this.p.x;
+            let dirZ = hitByEntity.p.z - this.p.z;
+            this.hitCounter = 0;
+            this.knockback(dirX, dirZ);
+            this.currentHealth -= amount;
+        }
     }
 
     removeThisEntity(level){
+        //Remove the entity from the list of entities and from the collisiontile. If the entity should respawn set the timer.
         this.dispose = true;
         this.removeFromCollision(level,this.currentTileX, this.currentTileZ);
         
@@ -70,6 +72,7 @@ class Entity{
            this.removeThisEntity(level);
         }
 
+        //Knockback the player and reduce the knockback strength until it reaches 0.2
         if (this.knockBack.x > -0.2 && this.knockBack.x < 0.2) this.knockBack.x = 0;
         if (this.knockBack.z > -0.2 && this.knockBack.z < 0.2) this.knockBack.z = 0;
         if (this.knockBack.x !=0 || this.knockBack.z !=0){
@@ -84,6 +87,9 @@ class Entity{
         this.hitCounter +=deltaTime;
         let tileX = Math.round(this.p.x);
         let tileZ = Math.round(this.p.z);
+
+        //Move the entity to a different collisionTile if we have moved to a new tile position
+
         if (this.currentTileX != tileX){
             this.removeFromCollision(level,this.currentTileX, this.currentTileZ);
             this.currentTileX = tileX;
@@ -95,6 +101,7 @@ class Entity{
             this.addToCollision(level,this.currentTileX, this.currentTileZ);
         }
 
+        // Check the surrounding collisiontiles and call collision on the entitiy. Distance will be used in collidedby to narrow the collision down.
         for (let x = this.currentTileX-2; x < this.currentTileX+2; x++){
             for (let z = this.currentTileZ-2; z < this.currentTileZ+2; z++){
                 let tile = level.getCollisionTile(x,z);
@@ -135,6 +142,7 @@ class Entity{
     }
 
     canMove(level,x,z){
+        // Check the surrounding tiles if they will block this entity movement.
         let x1 = Math.round(x + this.radius);
         let z1 = Math.round(z + this.radius);
 		let x2 = Math.round(x - this.radius);
