@@ -67,14 +67,14 @@ class Sprite extends Entity{
         }
     }
 
-    render(gl,shaderprogram,perspectiveMatrix,darkness){
+    render(gl,shaderprogram,perspectiveMatrix,playerHurt){
         if (this.dispose) return;
     
         if (this.frameChanged){
-            this.mesh.render(gl,shaderprogram,perspectiveMatrix,this.texture.texture, darkness, this.texture.getUVs());
+            this.mesh.render(gl,shaderprogram,perspectiveMatrix,this.texture.texture, playerHurt, this.texture.getUVs());
             this.frameChanged = false;
         }else{
-            this.mesh.render(gl,shaderprogram,perspectiveMatrix,this.texture.texture,darkness,null,this.colorChanged?[this.c, this.c, this.c, this.c]:null);
+            this.mesh.render(gl,shaderprogram,perspectiveMatrix,this.texture.texture,playerHurt,null,this.colorChanged?[this.c, this.c, this.c, this.c]:null);
             this.colorChanged = false;
         }
     }

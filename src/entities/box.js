@@ -30,9 +30,9 @@ class Box extends Entity{
         level.displayMessage("A new box appears","",3);
         
     }
-    render(gl,shaderprogram,pm,darkness){
+    render(gl,shaderprogram,pm,playerHurt){
         this.mesh.setPos(this.p.x, this.p.y-0.1, this.p.z);
-        this.mesh.render(gl,shaderprogram,pm,this.texture.texture,darkness);    
+        this.mesh.render(gl,shaderprogram,pm,this.texture.texture,playerHurt);    
     }
     knockback(x,z,s){
         this.knockBack.x = x;
@@ -49,7 +49,7 @@ class Box extends Entity{
             let dirX = entity.p.x - this.p.x;
             let dirZ = entity.p.z - this.p.z;
             if(this.distanceToOtherEntity(entity) < 0.8){
-                Game.playNoise(0.5);
+                Game.playNoise(0.2);
                 this.knockback(Math.round(dirX), Math.round(dirZ),0.75);
                 this.hitCounter = 0;
 

@@ -47,15 +47,16 @@ class Bars extends Sprite{
             this.p.y -= 1;
             level.addTile(this.p.x, this.p.z, new Tile());
             this.triggered = false;
+            level.player.revertCheckpoint();
         }
     }
 
     tick(deltatime,level){
         super.tick(deltatime,level);
     }
-    render(gl,shaderprogram,perspectiveMatrix,darkness){
+    render(gl,shaderprogram,perspectiveMatrix,playerHurt){
         gl.disable(gl.CULL_FACE);
-        super.render(gl,shaderprogram,perspectiveMatrix,darkness);
+        super.render(gl,shaderprogram,perspectiveMatrix,playerHurt);
         gl.enable(gl.CULL_FACE);
     }
 }

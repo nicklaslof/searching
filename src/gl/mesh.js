@@ -21,7 +21,6 @@ class Mesh{
         this.lightsBuffer = gl.createBuffer();
         this.uvsBuffer = gl.createBuffer();
         this.indiciesBuffer = gl.createBuffer();
-        this.darknessBuffer = gl.createBuffer();
     }
 
     addVerticies(verticies, cols, uvs,lights){
@@ -35,15 +34,15 @@ class Mesh{
         let indiciesNeeded = this.verticies.length/4;
 
         this.verticiesBuffer32 = new Float32Array(this.verticies.length*3);
-        this.verticiesBuffer32.set(this.verticies);
+        this.cArrayBuffer32 = new Float32Array(this.verticies.length*4);
         this.uvArrayBuffer32 = new Float32Array(this.verticies.length*12);
         this.indiciesBuffer16 = new Uint16Array(indiciesNeeded*6);
 
         let vertexCounter = 0;
         let counter = 0;
 
+        this.verticiesBuffer32.set(this.verticies);
         
-        counter = 0;
         for (let i = 0; i < indiciesNeeded; i++){
             for (let c = 0; c < 6; c++){
                 this.indiciesBuffer16[counter+c] = indicies[c] + vertexCounter;
@@ -130,7 +129,6 @@ class Mesh{
     }
 
     uploadCols(){
-        this.cArrayBuffer32 = new Float32Array(this.verticies.length*4);
         this.cArrayBuffer32.set(this.cs);
         this.gl.bindBuffer(this.arrayBuffer, this.colorsBuffer);
         this.gl.bufferData(this.arrayBuffer, this.cArrayBuffer32, this.dynamicDraw);

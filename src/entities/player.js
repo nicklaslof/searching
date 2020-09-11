@@ -154,8 +154,14 @@ class Player extends Entity{
     }
 
     setCheckpoint(x,z){
+        this.prevCheckpoint = this.checkpoint;
         this.checkpoint = {x,z};
     }
+
+    revertCheckpoint(){
+        this.checkpoint = this.prevCheckpoint;
+    }
+
     attack(level){
         if (this.i == null) return;
         if (this.i.n == "wand"){

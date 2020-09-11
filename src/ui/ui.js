@@ -21,7 +21,7 @@ class UI{
         this.drawText("Elthen at patreon.com",230);
 
         this.drawText("WASD and mouse to control",310);
-        this.drawText("Q=drop item, E=eat",330);
+        this.drawText("Q=drop item, E=eat, Shift=Pickup",330);
         this.drawText("Press 1 to play Roguelike",380);
         this.drawText("Press 2 to play Checkpoints",400);
 
