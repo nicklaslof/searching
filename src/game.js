@@ -62,7 +62,7 @@ class Game{
         this.gamescreen = new IntroScreen(this.gl,this.uiCancas.getContext("2d"), this.shaderProgram);
     }
 
-    mainloop(time){
+    mainloop(t){
         //Mainloop of the game. Executed 60 times every second.
         if (Game.newGame){
             this.gamescreen = new GameScreen(this.gl, this.uiCancas.getContext("2d"), this.shaderProgram);
@@ -82,8 +82,8 @@ class Game{
         this.gl.disable(this.gl.BLEND);
 
         //Calculate deltatime based on time passed since last loop
-        let deltaTime = time - this.previousUpdate;
-        this.previousUpdate = time;
+        let deltaTime = t - this.previousUpdate;
+        this.previousUpdate = t;
         //Probably stupid way but don't let deltatime grow too big... should probably be a higher value... 
         if (deltaTime > 32) deltaTime = 32;
         this.gamescreen.tick(deltaTime/1000,this);

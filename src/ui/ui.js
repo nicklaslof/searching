@@ -14,14 +14,12 @@ class UI{
     renderIntro(){
         this.c.clearRect(0, 0, this.c.canvas.width, this.c.canvas.height);
         this.drawText("Searching for 04",70,"30px monospace");
-        this.drawText("by Nicklas Löf",145);
-        this.drawText("JS13k 2020",165);
+        this.drawText("by Nicklas Löf for JS13k 2020",145);
 
-        this.drawText("Graphics by Nicklas Löf",210);
-        this.drawText("Elthen at patreon.com",230);
 
-        this.drawText("WASD+mouse",310);
-        this.drawText("Q=drop item,E=eat",330);
+        this.drawText("Graphics by Nicklas Löf and Elthen at patreon.com",210);
+
+        this.drawText("WASD+mouse Q:drop item,E:eat",310);
         this.drawText("Press 1 Roguelike",400);
         this.drawText("Press 2 Checkpoints",420);
 

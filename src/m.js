@@ -4,9 +4,9 @@ window.onload = function () {
         e.target.style.display = "none";
         let g = new Game();
         requestAnimationFrame(mainloop);
-        function mainloop(t){
+        function mainloop(){
            requestAnimationFrame(mainloop);
-           g.mainloop(t);
+           g.mainloop(performance.now());
        }
     });
 };

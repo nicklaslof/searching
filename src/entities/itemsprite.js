@@ -19,7 +19,7 @@ collidedBy(entity, level){
     //Distance could have been a bit bigger but that would case a classic "pick up things trough walls" issue.
     if (entity.n == "p"){
         if( this.distanceToOtherEntity(entity) < 1){
-            level.displayMessage("Shift: Pickup",this.n=="dagger"||this.n=="wand"?this.n+" ("+this.i.getDamage()+" damage)":this.n,0.1);
+            level.displayMessage("Press Shift: Pickup",this.n=="dagger"||this.n=="wand"?this.n+" ("+this.i.getDamage()+" damage)":this.n,0.1);
             if (Game.inputHandler.isKeyDown(16)){
                     entity.pickup(level,this.i);
                     this.removeThisEntity(level);
