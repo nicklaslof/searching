@@ -3,12 +3,12 @@ class Inventory{
     constructor() {
         this.is = new Array(3);
         this.selectedSlot = 1;
-        this.slotWithItems = 0;
         this.apples = 0;
     }
 
     tick(){
         let inputHandler = Game.inputHandler;
+        //Switch inventory slots based on keys 1-3 pressed
         for (let key = 49; key < 52; key ++ ){
             if (inputHandler.isKeyDown(key)) this.selectedSlot=3-(51-key);
         }
@@ -18,6 +18,7 @@ class Inventory{
     eat(e){
         if (this.apples > 0){
             this.getItemInSlot(3).use(e);
+            //reduce the number of apples until it reaches 0. Then remove the last apple too.
             this.apples--;
             if (this.apples <= 0) this.is[2] = null;
         }
@@ -40,13 +41,13 @@ class Inventory{
     }
 
     removeItemFromSlot(slot){
+        //If the slot is the apple slot reduce the number of apples until it reaches 0. Then remove the last apple too.
         if (slot == 3){
             this.apples--;
             if (this.apples <= 0) this.is[2] = null;
             return;
         } 
         this.is[slot-1] = null;
-        this.slotWithItems--;
     }
     
     getItemInSlot(index){

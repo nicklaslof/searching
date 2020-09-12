@@ -1,3 +1,4 @@
+//A Webgl Texture which is a part of an texture atlas (x,y position of the atlas with a width and height)
 class Texture{
     constructor(texture, x, y, width, height){
         this.x = x;

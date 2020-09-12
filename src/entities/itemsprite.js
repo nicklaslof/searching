@@ -1,6 +1,7 @@
 import Billboardsprite from "./billboardsprite.js";
 import Game from "./../game.js";
 
+//ItemSprite is an Item when rendered on the floor in the level.
 class ItemSprite extends Billboardsprite{
 
 constructor(i,x,y,z,tex, gl) {
@@ -14,9 +15,10 @@ constructor(i,x,y,z,tex, gl) {
 
 collidedBy(entity, level){
     if (this.dispose) return;
+    //If collided entity is the player and it's closer than 1 unit away show the pickup message.
+    //Distance could have been a bit bigger but that would case a classic "pick up things trough walls" issue.
     if (entity.n == "p"){
-        let d = this.distanceToOtherEntity(entity);
-        if(d < 1){
+        if( this.distanceToOtherEntity(entity) < 1){
             level.displayMessage("Shift: Pickup",this.n=="dagger"||this.n=="wand"?this.n+" ("+this.i.getDamage()+" damage)":this.n,0.1);
             if (Game.inputHandler.isKeyDown(16)){
                     entity.pickup(level,this.i);

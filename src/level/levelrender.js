@@ -27,6 +27,7 @@ class LevelRender{
         LevelRender.camera = new Camera(gl);
         LevelRender.camera.setRotation(180);
 
+        //Load textureatlas and create textures from it.
         this.atlas = new GLTexture(gl, "a.png");
         LevelRender.stoneWall = this.newAtlasTexture(16,16,16,16);
         LevelRender.grassyStoneWall = this.newAtlasTexture(16,48,16,16);
@@ -55,6 +56,7 @@ class LevelRender{
     }
 
     render(){
+        //If level hasn't finished building yet don't try to render anything since it would spit out errors in the console
         if (this.dirty) return;
         
         this.wallMesh.render(this.gl,this.shaderprogram,LevelRender.camera.perspectiveMatrix, this.atlas,LevelRender.playerHurt);

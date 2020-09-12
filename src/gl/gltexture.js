@@ -1,3 +1,4 @@
+//WebGL reprentation of an image
 class GlTexture {
     constructor(gl, file) {
         this.tex = gl.createTexture();

@@ -1,5 +1,6 @@
 import Billboardsprite from "./billboardsprite.js"
 
+//Particle is just a sprite facing the player with a movement velocity in all directions and limited liftime (using entity health)
 class Particle extends Billboardsprite{
     constructor(x,y,z,tex,gl, health,velX,velY,velZ,s,color) {
         super("pa",x,y,z,tex,gl,health,0);

@@ -1,4 +1,5 @@
 const e = "error:";
+//WebGL shaderprogram
 class ShaderProgram{
 
     constructor(gl, vertexshader, fragmentshader){

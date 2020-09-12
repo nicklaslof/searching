@@ -1,6 +1,8 @@
 import Entity from "./entity.js"
 import Particle from "./particle.js"
 import LevelRender from "../level/levelrender.js"
+
+//Spawn lava particles with random interval.
 class LavaEffect extends Entity{
     constructor(x,y,z) {
         super("",x,y,z,0);
@@ -8,6 +10,7 @@ class LavaEffect extends Entity{
     }
 
     tick(deltaTime, level){
+        //If the player is more than 10 units aways then don't spawn anything
         if (this.distance(this.p, level.player.p)> 10) return;
         super.tick(deltaTime,level);
         this.counter -=deltaTime;

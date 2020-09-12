@@ -1,3 +1,4 @@
+//Stores entities in this tile. Used for checking collisions between entities without looping over all entities in the world all the time
 class CollisionTile{
     constructor() {
         this.e = []

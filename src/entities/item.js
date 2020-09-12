@@ -5,12 +5,14 @@ import * as quaternion from "../gl/quaternion.js";
 const lev1col = [1,1,1,1];
 const lev2col = [0,1,1,1];
 const lev3col = [0.5,0.3,0.5,1];
+//Item is object used in the player inventory and also drawn at the screen in the player hand and attack animation
 class Item{
     constructor(n, x,y,z,texture,gl,onGroundScale,level) {
         this.texture = texture;
         this.p = {x,y,z};
         this.rotation = {x,y,z};
         this.n = n;
+        //Set the tint color of the item(weapons only) based on the itemlevel.
         this.c = level==1?lev1col:level==2?lev2col:lev3col;
         this.light = 1;
         this.level = level==null?1:Math.min(level,3);

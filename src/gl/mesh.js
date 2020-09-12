@@ -1,6 +1,8 @@
 import * as matrix4 from "./matrix4.js";
 import * as quaternion from "./quaternion.js";
+//The order of and index forming a triangle
 const indicies = [0,1,2,0,2,3];
+//The mesh class which is responsive for rendering an object on the screen. See WebGL or OpenGL-tutorials for more info how this works.
 class Mesh{
     constructor(gl, x,y,z){
         this.verticies = [];
@@ -11,6 +13,7 @@ class Mesh{
         this.quaternion = quaternion.create();
         this.rotX = 0;
         this.rotY = 0;
+        //Got away with a few extra bytes by assigning these WebGL statics to class variables
         this.arrayBuffer = gl.ARRAY_BUFFER;
         this.dynamicDraw = gl.DYNAMIC_DRAW;
         this.elementArrayBuffer = gl.ELEMENT_ARRAY_BUFFER;
@@ -23,6 +26,7 @@ class Mesh{
         this.indiciesBuffer = gl.createBuffer();
     }
 
+    //Add verticies, colors, UVs and lights to this mesh
     addVerticies(verticies, cols, uvs,lights){
         verticies.forEach(vertex => { this.verticies.push(vertex); });
         this.updateCols(cols);  
@@ -31,11 +35,16 @@ class Mesh{
     }
 
     updateMesh(){
-        let indiciesNeeded = this.verticies.length/4;
+        //Calculate verticies, colors, UVs and lights of this mesh.
+        //This will create the Float32Arrays and Uint16Arrays that WebGL wants the data in.
 
+        //Every 6th verticies needs one index (two triangles)
+        let indiciesNeeded = this.verticies.length/6;
+
+        //Assign correct sizes of the buffers. Verticies x,y,z, Colors r,g,b,a, UVs 4 corners with 2 values each. Indicies 6 values forming two triangles
         this.verticiesBuffer32 = new Float32Array(this.verticies.length*3);
         this.cArrayBuffer32 = new Float32Array(this.verticies.length*4);
-        this.uvArrayBuffer32 = new Float32Array(this.verticies.length*12);
+        this.uvArrayBuffer32 = new Float32Array(this.verticies.length*8);
         this.indiciesBuffer16 = new Uint16Array(indiciesNeeded*6);
 
         let vertexCounter = 0;
@@ -43,6 +52,7 @@ class Mesh{
 
         this.verticiesBuffer32.set(this.verticies);
         
+        //Since we are always using squares the indicies will be the same for every 6 verticies
         for (let i = 0; i < indiciesNeeded; i++){
             for (let c = 0; c < 6; c++){
                 this.indiciesBuffer16[counter+c] = indicies[c] + vertexCounter;
@@ -53,6 +63,7 @@ class Mesh{
 
         this.numberOfIndicies = counter;
 
+        //Upload the arrays to the buffers on the graphic card
         this.gl.bindBuffer(this.arrayBuffer, this.positionsBuffer);
         this.gl.bufferData(this.arrayBuffer, this.verticiesBuffer32, this.dynamicDraw);
 
@@ -63,6 +74,7 @@ class Mesh{
         this.gl.bufferData(this.elementArrayBuffer, this.indiciesBuffer16, this.dynamicDraw);
     }
 
+    //Translate this mesh
     t(x, y, z){
         this.position.x += x;
         this.position.y += y;
@@ -70,13 +82,14 @@ class Mesh{
         this.updateMatrix();
     }
 
+    //Move this mesh to a new position.
     setPos(x, y, z){
         this.position.x = x;
         this.position.y = y;
         this.position.z = z;
         this.updateMatrix();
     }
-
+    //Scale the mesh
     setS(s){
         this.scale[0]=s;
         this.scale[1]=s;
@@ -84,32 +97,38 @@ class Mesh{
         this.updateMatrix();
     }
 
+    //Rotate mesh on X axis
     rotateX(r){
         quaternion.rotateX(this.quaternion, this.quaternion, r);
         this.updateMatrix();
     }
 
+    //Rotate mesh on Y axis
     rotateY(r){
         quaternion.rotateY(this.quaternion, this.quaternion, r);
         this.updateMatrix();
     }
+    //Set the rotation to be a copy of another object (Used for Billboard Sprites)
     setQuaternion(q){
         this.quaternion = q;
         this.updateMatrix();
     }
 
+    //Set the rotation to this euler roation
     setRotationX(r){
         this.rotX = r;
         quaternion.fromEuler(this.quaternion,this.rotX,this.rotY,0);
         this.updateMatrix();
     }
-    
+
+    //Set the rotation to this euler roation
     setRotationY(r){
         this.rotY = r;
         quaternion.fromEuler(this.quaternion,this.rotX,this.rotY,0);
         this.updateMatrix();
     }
     
+    //Update the mesh modelviewmatrix with the current rotation, position and scale
     updateMatrix(){
         matrix4.fromRotationTranslationScale(this.modelViewMatrix, this.quaternion, [this.position.x, this.position.y, this.position.z],this.scale);
     }
@@ -150,7 +169,7 @@ class Mesh{
         this.gl.bufferData(this.arrayBuffer, this.uvArrayBuffer32, this.dynamicDraw);
 
     }
-
+    //Render the mesh with WebGL. Allows updated color and UVs if needed (Show entities being hit and animation)
     render(gl, shaderProgram, projectionMatrix, texture,playerHurt, newUvs, newColors){
         if (newUvs != null){
             this.updateUVs(newUvs);

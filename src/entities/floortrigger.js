@@ -1,6 +1,7 @@
 import LevelRender from "../level/levelrender.js";
 import Sprite from "./sprite.js"
 import Game from "../game.js";
+//Floortriggers are plates on the floor that will cause various items in the level to trigger when the player is walking over them or an item is dropped or a box is placed over it.
 class FloorTrigger extends Sprite{
     constructor(x,y,z,gl,triggerId) {
         super("",x,y-0.98,z,LevelRender.floorTriggerNoActive,gl,0,triggerId);

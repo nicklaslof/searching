@@ -22,8 +22,9 @@ class UI{
 
         this.drawText("WASD and mouse to control",310);
         this.drawText("Q=drop item, E=eat, Shift=pickup",330);
-        this.drawText("Press 1 to play Roguelike",380);
-        this.drawText("Press 2 to play with Checkpoints",400);
+        this.drawText("Left click to fight and lock mouse pointer",350);
+        this.drawText("Press 1 to play Roguelike",400);
+        this.drawText("Press 2 to play with Checkpoints",420);
 
     }
     render(level){
