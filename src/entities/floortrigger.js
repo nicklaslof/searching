@@ -24,7 +24,7 @@ class FloorTrigger extends Sprite{
             Game.playAudio(120,0.1);
         }
         //Since there is no method to detect when something is not colliding any more we just reset this here and wait for it to be set again in the trigger-function.
-        if (this.untriggerCounter > 0.048)this.somethingTriggering = false;
+        if (this.untriggerCounter > 0.1)this.somethingTriggering = false;
     }
 
     collidedBy(entity, level){
@@ -32,7 +32,7 @@ class FloorTrigger extends Sprite{
         if (entity.n == "ba" || entity.n == "pp" || entity.n == "pa") return;
         //If the collided entitiy is not a box and only boxes can be used then ignore the collision.
         if ((this.triggerId == 200 || this.triggerId == 198 || this.triggerId == 197 || this.triggerId < 195) && entity.n != "b") return;
-        if (this.distanceToOtherEntity(entity) < 0.7){
+        if (this.distanceToOtherEntity(entity) < 0.8){
             this.somethingTriggering = true;
             this.untriggerCounter = 0;
             if(!this.triggered){
