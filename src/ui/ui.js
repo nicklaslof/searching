@@ -18,7 +18,7 @@ class UI{
         this.drawText("for JS13k 2020",165);
 
         this.drawText("Graphics by Nicklas Löf",210);
-        this.drawText("Elthen at patreon.com",230);
+        this.drawText("and Elthen at patreon.com",230);
 
         this.drawText("WASD and mouse to control",310);
         this.drawText("Q=drop item, E=eat, Shift=pickup",330);

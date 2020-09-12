@@ -10,10 +10,10 @@ class Box extends Entity{
         super("b",x,y-0.2,z,1,triggerId);
         let meshBuilder = MeshBuilder.start(gl, x,y,z);
         this.texture = LevelRender.dirt;
-        MeshBuilder.left(this.texture.getUVs(),meshBuilder,0,0,0,1,1,c);
-        MeshBuilder.right(this.texture.getUVs(),meshBuilder,0,0,0,1,1,c);
-        MeshBuilder.back(this.texture.getUVs(),meshBuilder,0,0,0,1,1,c);
-        MeshBuilder.front(this.texture.getUVs(),meshBuilder,0,0,0,1,1,c);
+        MeshBuilder.left(this.texture.getUVs(),meshBuilder,0,0,0,1,1,0,c);
+        MeshBuilder.right(this.texture.getUVs(),meshBuilder,0,0,0,1,1,0,c);
+        MeshBuilder.back(this.texture.getUVs(),meshBuilder,0,0,0,1,1,0,c);
+        MeshBuilder.front(this.texture.getUVs(),meshBuilder,0,0,0,1,1,0,c);
         MeshBuilder.top(this.texture.getUVs(),meshBuilder,0,0,0,1,0,c);
         MeshBuilder.bottom(this.texture.getUVs(),meshBuilder,0,0,0,1,0,c);
         this.mesh = MeshBuilder.build(meshBuilder);
