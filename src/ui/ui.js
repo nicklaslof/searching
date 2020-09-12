@@ -20,8 +20,8 @@ class UI{
         this.drawText("Graphics by Nicklas Löf and Elthen at patreon.com",210);
 
         this.drawText("WASD+mouse Q:drop item,E:eat",310);
-        this.drawText("Press 1 Roguelike",400);
-        this.drawText("Press 2 Checkpoints",420);
+        this.drawText("Press 1:Permadeaths",400);
+        this.drawText("Press 2:Checkpoints",420);
 
     }
     render(level){
