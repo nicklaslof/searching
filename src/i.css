@@ -1,8 +1,3 @@
 body{background-color: black}
 #ui{z-index: 10;}
-canvas{
-    position: absolute;
-    width:80%;
-    height:80%;
-    transform: translate(12%, 12%);  
-}
+canvas,button{color: #000;border: none;position: absolute;width:80%;height:80%;transform: translate(12%, 12%);}

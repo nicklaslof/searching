@@ -15,16 +15,15 @@ class UI{
         this.c.clearRect(0, 0, this.c.canvas.width, this.c.canvas.height);
         this.drawText("Searching for 04",70,"30px monospace");
         this.drawText("by Nicklas Löf",145);
-        this.drawText("for JS13k 2020",165);
+        this.drawText("JS13k 2020",165);
 
         this.drawText("Graphics by Nicklas Löf",210);
-        this.drawText("and Elthen at patreon.com",230);
+        this.drawText("Elthen at patreon.com",230);
 
-        this.drawText("WASD and mouse to control",310);
-        this.drawText("Q=drop item, E=eat, Shift=pickup",330);
-        this.drawText("Left click to fight and lock mouse pointer",350);
-        this.drawText("Press 1 to play Roguelike",400);
-        this.drawText("Press 2 to play with Checkpoints",420);
+        this.drawText("WASD+mouse",310);
+        this.drawText("Q=drop item,E=eat",330);
+        this.drawText("Press 1 Roguelike",400);
+        this.drawText("Press 2 Checkpoints",420);
 
     }
     render(level){

@@ -11,6 +11,8 @@ class Game{
     constructor() {
         this.uiCancas = document.getElementById("u");
         this.gameCanvas = document.getElementById("g");
+        this.gameCanvas.requestPointerLock();
+        this.startAudio();
         this.setSize(this.gameCanvas);
         this.setSize(this.uiCancas);
         Game.newGame = false;
@@ -91,7 +93,7 @@ class Game{
     setSize(canvas){
         canvas.width = this.width = width;
         canvas.height = this.height = height;
-        canvas.addEventListener('click', (e) => { this.gameCanvas.requestPointerLock(); this.startAudio();});
+        canvas.addEventListener('click', (e) => { this.gameCanvas.requestPointerLock();});
     }
 
     //Start an audiocontext if it hasn't already been started. Also starts a brownian noise scriptprocessor. https://noisehack.com/generate-noise-web-audio-api/
